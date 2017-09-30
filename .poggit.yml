@@ -1,8 +1,0 @@
----
-branches: master
-projects:
-  FactionsPro:
-    path: ""
-    model: default
-    icon: factionspro.png
-...
