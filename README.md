@@ -45,3 +45,8 @@ NOTE: Plugin Requires EconomyAPI To Use Most Features
 - /f withdraw <amount> : Withdraw Money From Your Faction (Leader Only)
 - /f map : See A Map Of Faction Claims, Where And Who
 - /f <c|ac> : Toggle Faction / Ally Chat On / Off 
+
+# Admin Only Commands (Requires OP)
+- /f addstrto <faction> : Force Add Power To A Faction
+- /f forcedelete <faction> : Force Delete A Faction
+- /f forceunclaim <faction> : Force Unclaim A Factions Land
