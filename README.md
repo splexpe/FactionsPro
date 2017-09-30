@@ -1,4 +1,4 @@
-# FactionsPro
+# FactionsPro - Modified Like Never Before
 
 Originally By Tethered, Edited & Modified By Potatoe
 NOTE: Plugin Requires EconomyAPI To Use Most Features
