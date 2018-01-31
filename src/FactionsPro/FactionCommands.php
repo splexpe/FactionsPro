@@ -1226,7 +1226,6 @@ class FactionCommands{
 						$e->addMoney($sender, $args[1], false, "faction bank account");
 						$sender->sendMessage($this->plugin->formatMessage("$".$args[1]." granted from faction", true));
 						return true;
-							*/
 					}
 					if(strtolower($args[0]) === "donate"){
 							$sender->sendMessage($this->plugin->formatMessage("This action currently is not available", true));
