@@ -2,10 +2,10 @@
 name: FactionsPro
 author: Tethered_
 description: Lets Bring Back FactionsPro The Better Way!
-version: 1.0
+version: 1.1
 main: FactionsPro\FactionMain
 api:
-- 3.0.0-ALPHA8
+- 3.0.0-ALPHA10
 commands:
   f:
     permission: f.command
