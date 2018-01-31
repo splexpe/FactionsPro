@@ -95,6 +95,7 @@ class FactionMain extends PluginBase implements Listener{
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
 		$this->fCommand->onCommand($sender, $command, $label, $args);
 	}
+	
 	public function setEnemies($faction1, $faction2){
         $stmt = $this->db->prepare("INSERT INTO enemies (faction1, faction2) VALUES (:faction1, :faction2);");  
         $stmt->bindValue(":faction1", $faction1);
@@ -322,6 +323,7 @@ class FactionMain extends PluginBase implements Listener{
             if($this->prefs->get("EnableOverClaim")){
                 if($power_sender < $power_claimedBy){
                     $sender->sendMessage($this->formatMessage("This area is aleady claimed by $claimedBy with $power_claimedBy STR. Your faction has $power_sender power. You don't have enough power to overclaim this plot."));
+		    return true;
                 } else {
                     $sender->sendMessage($this->formatMessage("This area is aleady claimed by $claimedBy with $power_claimedBy STR. Your faction has $power_sender power. Type /f overclaim to overclaim this plot if you want."));
                 }
