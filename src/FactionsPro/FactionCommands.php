@@ -29,7 +29,7 @@ class FactionCommands{
 		$this->plugin = $pg;
 	}
 	
-	public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool{
+	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
 		if($sender instanceof Player){
 			$player = $sender->getPlayer()->getName();
 			if(strtolower($command->getName('f'))){
@@ -53,13 +53,13 @@ class FactionCommands{
 									$x = mt_rand(0, $this->plugin->getNumberOfPlayers($fac) - 1);
 									$tper = $this->plugin->war_players[$f][$x];
 									$sender->teleport($this->plugin->getServer()->getPlayerByName($tper));
-									return;
+									return true;
 								}
 								if($f == $fac){
 									$x = mt_rand(0, $this->plugin->getNumberOfPlayers($fac) - 1);
 									$tper = $this->plugin->war_players[$r][$x];
 									$sender->teleport($this->plugin->getServer()->getPlayer($tper));
-									return;
+									return true;
 								}
 							}
 							$sender->sendMessage("You must be in a war to do that!");
@@ -740,9 +740,11 @@ class FactionCommands{
 								$sender->sendMessage($this->plugin->formatMessage("Faction successfully disbanded and the faction plot was unclaimed!", true));
 							} else {
 								$sender->sendMessage($this->plugin->formatMessage("You are not leader!"));
+								return true;
 							}
 						} else {
 							$sender->sendMessage($this->plugin->formatMessage("You are not in a faction!"));
+							return true;
 						}
 					}
 					
@@ -758,6 +760,7 @@ class FactionCommands{
               $this->plugin->subtractFactionPower($faction,$this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 						} else {
 							$sender->sendMessage($this->plugin->formatMessage("You must delete the faction or give\nleadership to someone else first!"));
+							return true;
 						}
 					}
 					
@@ -809,6 +812,7 @@ class FactionCommands{
 						} 
 						else{
 							$sender->sendMessage($this->plugin->formatMessage("Home is not set."));
+							return true;
 						}
 					}
                     
@@ -1194,7 +1198,7 @@ class FactionCommands{
 					if(strtolower($args[0]) === "withdraw" or strtolower($args[0]) === "wd"){
 							$sender->sendMessage($this->plugin->formatMessage("This action currently is not available", true));
 							return true;
-							/*
+							
                         if(($e = $this->plugin->getEconomy()) == null){
 						}
 						if(!isset($args[1])){
@@ -1227,7 +1231,7 @@ class FactionCommands{
 					if(strtolower($args[0]) === "donate"){
 							$sender->sendMessage($this->plugin->formatMessage("This action currently is not available", true));
 							return true;
-                        /*if(($e = $this->plugin->getEconomy()) === null){
+                        if(($e = $this->plugin->getEconomy()) === null){
 						}
 						if(!isset($args[1])){
 							$sender->sendMessage($this->plugin->formatMessage("Usage: /f donate <amount>"));
@@ -1249,7 +1253,7 @@ class FactionCommands{
 						if($e->reduceMoney($sender, $args[1], false, "faction bank account") === \onebone\economyapi\EconomyAPI::RET_SUCCESS){
 							$this->plugin->addToBalance($faction, $args[1]);
 							$sender->sendMessage($this->plugin->formatMessage("$".$args[1]." donated to your faction"));
-						}*/
+						}
 					}
 					if(strtolower($args[0]) == "allychat" or strtolower($args[0]) == "ac"){
 						if($this->plugin->isInFaction($player)){
@@ -1273,6 +1277,7 @@ class FactionCommands{
 			}
 		} else {
 			$this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run command in game"));
+			return true;
 		}
 	}
 }
