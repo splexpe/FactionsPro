@@ -2,7 +2,7 @@
 name: FactionsPro
 author: Tethered_
 description: Lets Bring Back FactionsPro The Better Way!
-version: 1.2
+version: 2.5.0-BETA
 main: FactionsPro\FactionMain
 api:
 - 3.0.0-ALPHA11
