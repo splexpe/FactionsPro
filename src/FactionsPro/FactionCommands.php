@@ -37,7 +37,7 @@ class FactionCommands{
 					$sender->sendMessage($this->plugin->formatMessage("Please use /f help for a list of commands"));
 					return true;
 				}
-				if(count($args == 2)){
+				if(count($args) == 1){
 					
 					///////////////////////////////// WAR /////////////////////////////////
 					
@@ -1279,6 +1279,7 @@ class FactionCommands{
 			return true;
 		}
 	}
+		return true;
 }
 		public function getMap(Player $observer, int $width, int $height, int $inDegrees, int $size = 16){ // No compass
 		$to = (int)sqrt($size);
