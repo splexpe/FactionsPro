@@ -30,13 +30,13 @@ class FactionCommands {
             $playerName = $sender->getPlayer()->getName();
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
-                    $sender->sendMessage($this->plugin->formatMessage("§bPlease use §3/f help §6for a list of commands"));
+                    $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("FactionHelpUsage"));
                     return true;
                 }
                     ///////////////////////////////// WAR /////////////////////////////////
                     if(strtolower($args[0]) == "war" or strtolower($args[0]) == "wr"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§5Please use: §d/f $args[0] <faction name:tp>\n§aDescription: §dRequest a war with a faction."));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("WarUsage"));
                             return true;
                         }
                         if (strtolower($args[1]) == "tp" or strtolower($args[1]) == "teleport") {
@@ -55,27 +55,27 @@ class FactionCommands {
                                     return true;
                                 }
                             }
-                            $sender->sendMessage("§cYou must be in a war to do that");
+                            $sender->sendMessage($this->plugin->prefs->get("WarError"));
                             return true;
                         }
                         if (!($this->alphanum($args[1]))) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cYou may only use letters and numbers"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("WarNameError"));
                             return true;
                         }
                         if (!$this->plugin->factionExists($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cThe Faction named §4$args[1] §cdoes not exist"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("WarDoesNotExist"));
                             return true;
                         }
                         if (!$this->plugin->isInFaction($sender->getName())) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to do this"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("WarMustBeInFac"));
                             return true;
                         }
                         if (!$this->plugin->isLeader($playerName)) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cOnly your faction leader may start wars"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("WarMustBeLeader"));
                             return true;
                         }
                         if (!$this->plugin->areEnemies($this->plugin->getPlayerFaction($playerName), $args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cYour faction is not an enemy of §4$args[1]"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("WarNotEnemy"));
                             return true;
                         } else {
                             $factionName = $args[1];
@@ -86,7 +86,7 @@ class FactionCommands {
                                         $task = new FactionWar($this->plugin, $r);
                                         $handler = $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 20 * 60 * 2);
                                         $task->setHandler($handler);
-                                        $p->sendMessage("§bThe war against §a$factionName §band §a$sFaction §bhas started!");
+                                        $p->sendMessage($this->plugin->prefs->get("WarSuccessMessage"));
                                         if ($this->plugin->getPlayerFaction($p->getName()) == $sFaction) {
                                             $this->plugin->war_players[$sFaction][] = $p->getName();
                                         }
@@ -103,41 +103,41 @@ class FactionCommands {
                             foreach ($this->plugin->getServer()->getOnlinePlayers() as $p) {
                                 if ($this->plugin->getPlayerFaction($p->getName()) == $factionName) {
                                     if ($this->plugin->getLeader($factionName) == $p->getName()) {
-                                        $p->sendMessage("§3$sFaction §bwants to start a war. Please use: §3'/f $args[0] $sFaction' §bto commence the war!");
-                                        $sender->sendMessage("§aThe Faction war has been requested. §bPlease wait for their response.");
+                                        $p->sendMessage($this->plugin->prefs->get("RequestToWar"));
+                                        $sender->sendMessage($this->plugin->prefs->get("WarRequestSent"));
                                         return true;
                                     }
                                 }
                             }
-                            $sender->sendMessage("§cFaction leader is not online.");
+                            $sender->sendMessage($this->plugin->prefs->get("WarLeaderOffline"));
                             return true;
                         }
                     }
                     /////////////////////////////// CREATE ///////////////////////////////
                     if(strtolower($args[0]) == "create" or strtolower($args[0]) == "make"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f $args[0] <faction name>"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("CreateUsage"));
 			    $sender->sendMessage($this->plugin->formatMessage("§b§aDescription: §dCreates a faction."));
                             return true;
                         }
                         if (!($this->alphanum($args[1]))) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cYou may only use letters and numbers"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("CreateError"));
                             return true;
                         }
                         if ($this->plugin->isNameBanned($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cThe name §4$args[1] §cis not allowed"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("CreateNameNotAllowed"));
                             return true;
                         }
                         if ($this->plugin->factionExists($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cThe Faction named §4$args[1] §calready exists"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("CreateFacAlreadyExists"));
                             return true;
                         }
                         if (strlen($args[1]) > $this->plugin->prefs->get("MaxFactionNameLength")) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cThat name is too long, please try again"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("MaxFacNameLimit"));
                             return true;
                         }
                         if ($this->plugin->isInFaction($sender->getName())) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cYou must leave the faction first"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("LeaveBeforeCreate"));
                             return true;
                         } else {
                             $factionName = $args[1];
@@ -159,7 +159,7 @@ class FactionCommands {
 				    $factionName
 			        ], $this->plugin->prefs->get("FactionCreationBroadcastMessage")));
 			   }
-                            $sender->sendMessage($this->plugin->formatMessage("§bYour Faction named §a$factionName §bhas been created. §6Next, use /f desc to make a faction description.", true));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("CreateSuccessMessage"));
 			    var_dump($this->plugin->db->query("SELECT * FROM balance;")->fetchArray(SQLITE3_ASSOC));
                             return true;
                         }
@@ -167,30 +167,30 @@ class FactionCommands {
                     /////////////////////////////// INVITE ///////////////////////////////
                     if(strtolower($args[0]) == "invite" or strtolower($args[0]) == "inv"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("§bPlease use: §3/f $args[0] <player>\n§aDescription: §dInvites a player to your faction."));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("InviteUsage"));
                             return true;
                         }
                         if ($this->plugin->isFactionFull($this->plugin->getPlayerFaction($playerName))) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cThis faction is full, please kick players to make room"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("FacFullMessage"));
                             return true;
                         }
                         $invited = $this->plugin->getServer()->getPlayer($args[1]);
                         if (!($invited instanceof Player)) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cThe player named §4$args[1] §cis currently not online"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("InviteNotOnline"));
                             return true;
                         }
                         if ($this->plugin->isInFaction($invited->getName()) == true) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cThe player named §4$args[1] §cis already in a faction"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("InvAlreadyInFac"));
                             return true;
                         }
                         if ($this->plugin->prefs->get("OnlyLeadersAndOfficersCanInvite")) {
                             if (!($this->plugin->isOfficer($playerName) || $this->plugin->isLeader($playerName))) {
-                                $sender->sendMessage($this->plugin->formatMessage("§cOnly your faction leader/officers can invite"));
+                                $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("LeaderNotOnlineMessage"));
                                 return true;
                             }
                         }
                         if ($invited->getName() == $playerName) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cYou can't invite yourself to your own faction"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("InviteSelfMessage"));
                             return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
@@ -202,8 +202,8 @@ class FactionCommands {
                         $stmt->bindValue(":invitedby", $sender->getName());
                         $stmt->bindValue(":timestamp", time());
                         $result = $stmt->execute();
-                        $sender->sendMessage($this->plugin->formatMessage("§a$invitedName §bhas been invited succesfully! §5Wait for $invitedName 's response.", true));
-                        $invited->sendMessage($this->plugin->formatMessage("§bYou have been invited to §a$factionName. §bType §3'/f accept / yes' or '/f deny / no' §binto chat to accept or deny!", true));
+                        $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("InvitedNameMessage"));
+                        $invited->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("InviteRequestMessage"));
                     }
                     /////////////////////////////// LEADER ///////////////////////////////
                     if ($args[0] == "leader"){
