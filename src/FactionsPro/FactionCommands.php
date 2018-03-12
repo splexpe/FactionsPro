@@ -220,7 +220,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage(($this->plugin->prefs->get("MustAddPlayer")));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("MustAddPlayer")));
                             return true;
                         }
                         if (!($this->plugin->getServer()->getPlayer($args[1]) instanceof Player)) {
@@ -367,7 +367,7 @@ class FactionCommands {
 			   return true;
 			}
                         if (!in_array($sender->getPlayer()->getLevel()->getName(), $this->plugin->prefs->get("ClaimWorlds"))) {
-                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("ClaimOnlyWorlds" . implode(" ", $this->plugin->prefs->get("ClaimWorlds"))));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("ClaimOnlyWorlds") . implode(" ", $this->plugin->prefs->get("ClaimWorlds"))));
                             return true;
                         }
                         if ($this->plugin->inOwnPlot($sender)) {
