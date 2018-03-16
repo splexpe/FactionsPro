@@ -904,7 +904,7 @@ class FactionCommands {
                             return true;
                         }
                         if (!$this->plugin->factionExists($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("FactionNoExist")));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("FactionNoExist")));
                             return true;
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Officer");
@@ -1066,7 +1066,7 @@ class FactionCommands {
                             return true;
                         }
                         if (!$this->plugin->factionExists($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("FactionNoExist"));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("FactionNoExist")));
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) == $args[1]) {
