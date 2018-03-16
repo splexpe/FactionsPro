@@ -29,7 +29,7 @@ class FactionListener implements Listener {
 		//MOTD Check
 		if($this->plugin->motdWaiting($playerName)) {
 			if(time() - $this->plugin->getMOTDTime($playerName) > $this->plugin->prefs->get("MOTDTime")) {
-				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§cTimed out. §bPlease use: §3/f desc again."));
+				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("DescTimedOut")));
 				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$playerName';");
 				$PCE->setCancelled(true);
 				return true;
@@ -38,7 +38,8 @@ class FactionListener implements Listener {
 				$faction = $this->plugin->getPlayerFaction($playerName);
 				$this->plugin->setMOTD($faction, $playerName, $motd);
 				$PCE->setCancelled(true);
-				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§dSuccessfully updated the faction description. Type §5/f who", true));
+				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("DescriptionMessage")));
+				return true;
 			}
 		}
 		if(isset($this->plugin->factionChatActive[$playerName])){
@@ -49,7 +50,7 @@ class FactionListener implements Listener {
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
 							$PCE->setCancelled(true);
-							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
+							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg); //May be configurable soon.
 						}
 					}
 				}
@@ -64,7 +65,7 @@ class FactionListener implements Listener {
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
 							$PCE->setCancelled(true);
 							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
-							$PCE->getPlayer()->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
+							$PCE->getPlayer()->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg); // May be configurable soon. ;3 Plus cleanup.
 						}
 					}
 				}
@@ -96,12 +97,12 @@ class FactionListener implements Listener {
 		if($this->plugin->isInPlot($e->getPlayer())){
 			if(!$this->plugin->inOwnPlot($e->getPlayer())){
 				if($e->getPlayer()->isCreative()){
-					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Switching to survival mode."));
+					$e->getPlayer()->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("RaidingDetectedMessage")));
 					$p->setGamemode(0);
 					$e->setCancelled(true);
 				}
 				if($this->plugin->essentialspe->baseapi->isGod($e->getPlayer())){
-					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Disabling god mode."));
+					$e->getPlayer()->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("RaidingDetected2nd")));
 					$e->setCancelled(true);
 				}
 			}
@@ -117,7 +118,7 @@ class FactionListener implements Listener {
 				return true;
 			}else{
 				$event->setCancelled(true);
-				$event->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot break blocks here. This is already a property of a faction. Type §2/f plotinfo §6for details."));
+				$event->getPlayer()->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("CannotBreakBlocksMessage")));
 				return true;
 			}
 		}
@@ -132,7 +133,7 @@ class FactionListener implements Listener {
 				return true;
 			} else {
 				$event->setCancelled(true);
-				$event->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot place blocks here. This is already a property of a faction. Type §2/f plotinfo for details."));
+				$event->getPlayer()->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("CannotPlaceBlocksMessage")));
 				return true;
 			}
 		}
@@ -192,7 +193,7 @@ class FactionListener implements Listener {
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
-							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§a(!)§r§e " . $player->getName() . " §ais now online");
+							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§a(!)§r§e " . $player->getName() . " §ais now online"); // Will be configurable soon.
                                }
                           }
                     }
@@ -208,7 +209,7 @@ class FactionListener implements Listener {
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
-                                                    $this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§c(!)§r§4 " . $player->getName() . " §cis now offline");
+                                                    $this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§c(!)§r§4 " . $player->getName() . " §cis now offline"); // Will be configurable soon.
             }
           }
         }
@@ -227,19 +228,19 @@ class FactionListener implements Listener {
         
           if($this->plugin->isInPlot($event->getPlayer())) {
              if($this->plugin->inOwnPlot($event->getPlayer())) {
-                $tip = $compass . "§l§6Protected area§r";
+                $tip = $compass . "§l§6Protected area§r"; // May be configurable soon.
                 $event->getPlayer()->sendTip($tip);
             } else {
-                $tip = $compass . "§l§c".$Faction;
+                $tip = $compass . "§l§c".$Faction; //May be configurable soon.
                 $event->getPlayer()->sendTip($tip);
                 }
             }
         if(!$this->plugin->ip->canGetHurt($event->getPlayer())) {
-               $tip = $compass . "§l§aPublic area§r";
+               $tip = $compass . "§l§aPublic area§r"; // May be configurable soon.
                $event->getPlayer()->sendTip($tip);
             }
         if(!$this->plugin->isInPlot($event->getPlayer())){
-               $tip = $compass . "§l§2Zona Book§r";
+               $tip = $compass . "§l§2Zona Book§r"; // May be configurable soon.
                $event->getPlayer()->sendTip($tip);
             }
         }
