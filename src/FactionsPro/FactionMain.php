@@ -90,6 +90,23 @@ class FactionMain extends PluginBase implements Listener {
 	    "AllyTime" => 60,
             "TopSTR" => "Top 10 BEST Factions",
 	    "TopMoney" => "Top 10 RICHEST Factions",
+	    "Allies" => "Our Allies",
+	    "WarUsage" => "Please use /f war <faction>|tp",
+	    "WarError" => "You must be in a war to use this command.",
+	    "WarNameError" => "§cYou may only use letters and numbers",
+	    "WarDoesNotExist" => "§cThe Faction named §4$args[1] §cdoes not exist",
+	    "MustBeInFacMessage" => "§cYou must be in a faction to do this",
+	    "WarMustBeLeader" => "§cYour faction is not an enemy of §4$args[1]",
+	    "WarSuccessMessage" => "§bThe war against §a$factionName §band §a$sFaction §bhas started!",
+	    "RequestToWar" => "§3$sFaction §bwants to start a war. Please use: §3'/f $args[0] $sFaction' §bto commence the war!",
+	    "WarRequestSent" => "§aThe Faction war has been requested. §bPlease wait for their response.",
+	    "WarLeaderOffline" => "§cFaction leader is not online.",
+	    "CreateUsage" => "§bPlease use: §3/f $args[0] <faction name>",
+	    "CreateError" => "§cYou may only use letters and numbers",
+	    "CreateNameNotAllowed" => "§cThe name §4$args[1] §cis not allowed",
+	    "CreateFacAlreadyExists" => "§cThe Faction named §4$args[1] §calready exists",
+	    "MaxFacNameLimit" => "§cThat name is too long, please try again",
+	    "LeaveBeforeCreate" => "§cYou must leave the faction first",
 	    "ServerName" => "VoidFactionsPE",
                 "prefix" => "§l§f[§bFactions§f] §r",
                 "spawnerPrices" => [
@@ -279,7 +296,7 @@ class FactionMain extends PluginBase implements Listener {
             $team .= TextFormat::ITALIC . TextFormat::GREEN . $row[$i]['faction2'] . TextFormat::RESET . TextFormat::WHITE . "§2,§a " . TextFormat::RESET;
             $i = $i + 1;
         }
-        $s->sendMessage($this->formatMessage("§3_____§2[§5§lAllies of §d*$faction*§r§2]§3_____", true));
+        $s->sendMessage($this->prefs->get("Allies"));
         $s->sendMessage($team);
     }
     public function sendListOfTop10FactionsTo($s) {
