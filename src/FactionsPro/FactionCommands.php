@@ -86,6 +86,14 @@ class FactionCommands {
                                         $task = new FactionWar($this->plugin, $r);
                                         $handler = $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 20 * 60 * 2);
                                         $task->setHandler($handler);
+					$p->sendMessage(str_replace([
+			            "%PLAYER%",
+		                    "%FACTION%",
+				    "%OTHERFAC%"
+				    ], [
+				    $sender->getName(),
+				    $factionName,
+				    $sFaction
                                         $p->sendMessage($this->plugin->prefs->get("WarSuccessMessage"));
                                         if ($this->plugin->getPlayerFaction($p->getName()) == $sFaction) {
                                             $this->plugin->war_players[$sFaction][] = $p->getName();
