@@ -96,7 +96,7 @@ class FactionMain extends PluginBase implements Listener {
 	    "WarNameError" => "§cYou may only use letters and numbers",
 	    "WarDoesNotExist" => "§cThe Faction §cdoes not exist",
 	    "MustBeInFacMessage" => "§cYou must be in a faction to do this",
-	    "WarMustBeLeader" => "§cYour faction is not an enemy of §4$args[1]",
+	    "WarMustBeLeader" => "§cYour faction is not an enemy.",
 	    "WarSuccessMessage" => "§bThe war against §a$factionName §band §a$sFaction §bhas started!",
 	    "RequestToWar" => "§3$sFaction §bwants to start a war. Please use: §3'/f war $sFaction' §bto commence the war!",
 	    "WarRequestSent" => "§aThe Faction war has been requested. §bPlease wait for their response.",
