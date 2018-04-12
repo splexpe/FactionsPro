@@ -94,7 +94,7 @@ class FactionCommands {
 				    $sender->getName(),
 				    $factionName,
 				    $sFaction
-                                        $p->sendMessage($this->plugin->prefs->get("WarSuccessMessage"));
+                               ],         $p->sendMessage($this->plugin->prefs->get("WarSuccessMessage"))));
                                         if ($this->plugin->getPlayerFaction($p->getName()) == $sFaction) {
                                             $this->plugin->war_players[$sFaction][] = $p->getName();
                                         }
