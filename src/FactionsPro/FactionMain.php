@@ -42,19 +42,19 @@ class FactionMain extends PluginBase implements Listener {
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
         $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
         if (!$this->antispam) {
-            $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system.");
+            $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. You can download it here: https://poggit.pmmp.io/ci/Awzaw/AntiSpamPro/AntiSpamPro. Disabling Rude faction names system.");
         }
         $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
         if (!$this->purechat) {
-            $this->getLogger()->info("PureChat is not installed. If you want to display Faction ranks in chat, then PureChat needs to be installed. Disabling Faction chat system.");
+            $this->getLogger()->info("PureChat is not installed. If you want to display Faction ranks in chat, then PureChat needs to be installed. You can download it here: https://poggit.pmmp.io/ci/poggit-orphanage/PureChat/PureChat. Disabling Faction chat system.");
         }
         $this->essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
         if (!$this->essentialspe) {
-            $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Faction Raiding system, then EssentialsPE needs to be installed. Disabling Raiding system.");
+            $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Faction Raiding system, then EssentialsPE needs to be installed You can download it here: https://poggit.pmmp.io/ci/iZeaoGamer/EssentialsPE/EssentialsPE. Disabling Raiding system.");
     	}
 	$this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 	if (!$this->economyapi) {
-	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
+	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. You can download it here: https://poggit.pmmp.io/ci/poggit-orphanage/EconomyS/EconomyAPI. Disabling the Factions Value system.");
 	}
         $this->fCommand = new FactionCommands($this);
         $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
@@ -107,6 +107,14 @@ class FactionMain extends PluginBase implements Listener {
 	    "CreateFacAlreadyExists" => "§cThe Faction §calready exists",
 	    "MaxFacNameLimit" => "§cThat name is too long, please try again",
 	    "LeaveBeforeCreate" => "§cYou must leave the faction first",
+	    "InviteUsage" => "§bPlease use: §a/f invite <player>",
+	    "FacFullMessage" => "§cYour faction is full.",
+	    "InviteNotOnline" => "§cThis player is not online.",
+	    "AlreadyInFac" => "§cThis player is already in a faction.",
+	    "LeaderNotOnlineMessage" => "§cYour leader is not online.",
+	    "InviteSelfMessage" => "§cYou cannot invite yourself.",
+	    "InvitedNameMessage" => "§aYou have succesfully invited a player! §bWait for their response.",
+	    "InviteRequestMessage" => "§aA player has invited you to their faction. §bUse: §3/f accept or /f deny §bto accept / deny their invitation.",
 	    "ServerName" => "VoidFactionsPE",
                 "prefix" => "§l§f[§bFactions§f] §r",
                 "spawnerPrices" => [
