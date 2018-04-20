@@ -36,7 +36,9 @@ class FactionCommands {
                     ///////////////////////////////// WAR /////////////////////////////////
                     if(strtolower($args[0]) == "war" or strtolower($args[0]) == "wr"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("WarUsage")));
+			    $p->sendMessage(str_replace([
+			"%USAGE%"
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("Usage")));
                             return true;
                         }
                         if (strtolower($args[1]) == "tp" or strtolower($args[1]) == "teleport") {
@@ -124,12 +126,14 @@ class FactionCommands {
                     /////////////////////////////// CREATE ///////////////////////////////
                     if(strtolower($args[0]) == "create" or strtolower($args[0]) == "make"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("CreateUsage")));
+			    $p->sendMessage(str_replace([
+				    "%USAGE%"
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("Usage")));
 			    $sender->sendMessage($this->plugin->formatMessage("§b§aDescription: §dCreates a faction."));
                             return true;
                         }
                         if (!($this->alphanum($args[1]))) {
-                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("CreateError")));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("ErrorMessage")));
                             return true;
                         }
                         if ($this->plugin->isNameBanned($args[1])) {
@@ -137,7 +141,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->factionExists($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("CreateFacAlreadyExists")));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("FacAlreadyExists")));
                             return true;
                         }
                         if (strlen($args[1]) > $this->plugin->prefs->get("MaxFactionNameLength")) {
@@ -175,7 +179,9 @@ class FactionCommands {
                     /////////////////////////////// INVITE ///////////////////////////////
                     if(strtolower($args[0]) == "invite" or strtolower($args[0]) == "inv"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("InviteUsage")));
+			    $p->sendMessage(str_replace([
+				    "%USAGE%"
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("Usage")));
                             return true;
                         }
                         if ($this->plugin->isFactionFull($this->plugin->getPlayerFaction($playerName))) {
