@@ -115,6 +115,12 @@ class FactionMain extends PluginBase implements Listener {
 	    "InviteSelfMessage" => "§cYou cannot invite yourself.",
 	    "InvitedNameMessage" => "§aYou have succesfully invited a player! §bWait for their response.",
 	    "InviteRequestMessage" => "§aA player has invited you to their faction. §bUse: §3/f accept or /f deny §bto accept / deny their invitation.",
+	    "LeaderUsage" => "§bPlease use: §a/f leader <player>",
+	    "MustBeInFacMessage" => "§cYou must be in a faction to execute this command",
+	    "MustBeLeaderMessage" => "§cYou must be a leader of this faction to execute this command",
+	    "PlayerNotOnline" => "§cThis player is not online",
+	    "TransferLeaderShipError" => "§cYou cannot make yourself leader.",
+	    "NoLongerLeaderMessage" => "§bYou are no longer leader.",
 	    "ServerName" => "VoidFactionsPE",
                 "prefix" => "§l§f[§bFactions§f] §r",
                 "spawnerPrices" => [
