@@ -129,7 +129,7 @@ class FactionCommands {
                     /////////////////////////////// CREATE ///////////////////////////////
                     if(strtolower($args[0]) == $this->plugin->prefs->get("create")){
                         if (!isset($args[1])) {
-			     $p->sendMessage(str_replace([
+			     $sender->sendMessage(str_replace([
 			"%USAGE%"
 			], [
 			$args[0]
@@ -184,7 +184,7 @@ class FactionCommands {
                     /////////////////////////////// INVITE ///////////////////////////////
                     if(strtolower($args[0]) == $this->plugin->prefs->get("invite")){
                         if (!isset($args[1])) {
-			    $p->sendMessage(str_replace([
+			    $sender->sendMessage(str_replace([
 			"%USAGE%"
 			], [
 			$args[0]
@@ -229,7 +229,7 @@ class FactionCommands {
                     /////////////////////////////// LEADER ///////////////////////////////
                     if(strtolower($args[0]) == $this->plugin->prefs->get("leader")){
                         if (!isset($args[1])) {
-                              $p->sendMessage(str_replace([
+                              $sender->sendMessage(str_replace([
 			"%USAGE%"
 			], [
 			$args[0]
@@ -274,7 +274,7 @@ class FactionCommands {
                     /////////////////////////////// PROMOTE ///////////////////////////////
                     if ($args[0] == "promote") {
                         if (!isset($args[1])) {
-                             $p->sendMessage(str_replace([
+                             $sender->sendMessage(str_replace([
 			"%USAGE%"
 			], [
 			$args[0]
@@ -317,7 +317,7 @@ class FactionCommands {
                     /////////////////////////////// DEMOTE ///////////////////////////////
                     if ($args[0] == "demote") {
                         if (!isset($args[1])) {
-                             $p->sendMessage(str_replace([
+                             $sender->sendMessage(str_replace([
 			"%USAGE%"
 			], [
 			$args[0]
@@ -361,7 +361,7 @@ class FactionCommands {
                     /////////////////////////////// KICK ///////////////////////////////
                     if(strtolower($args[0]) == $this->plugin->prefs->get("kick")){
                         if (!isset($args[1])) {
-                             $p->sendMessage(str_replace([
+                             $sender->sendMessage(str_replace([
 			"%USAGE%"
 			], [
 			$args[0]
