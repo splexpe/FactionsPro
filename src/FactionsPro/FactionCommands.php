@@ -791,7 +791,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// LEAVE ///////////////////////////////
-                    if(strtolower($args[0] == $this->plugin->prefs->get("leave")){
+                    if(strtolower($args[0] == $this->plugin->prefs->get("leave"))){
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("MustBeInFactionMessage")));
                             return true;
