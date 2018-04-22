@@ -34,7 +34,7 @@ class FactionCommands {
                     return true;
                 }
                     ///////////////////////////////// WAR /////////////////////////////////
-                    if(strtolower($args[0]) == "war" or strtolower($args[0]) == "wr"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("war")){
                         if (!isset($args[1])) {
 			    $p->sendMessage(str_replace([
 			"%USAGE%"
@@ -127,7 +127,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// CREATE ///////////////////////////////
-                    if(strtolower($args[0]) == $this->plugin->prefs->get("Create")){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("create")){
                         if (!isset($args[1])) {
 			     $p->sendMessage(str_replace([
 			"%USAGE%"
@@ -182,7 +182,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// INVITE ///////////////////////////////
-                    if(strtolower($args[0]) == "invite" or strtolower($args[0]) == "inv"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("invite")){
                         if (!isset($args[1])) {
 			    $p->sendMessage(str_replace([
 			"%USAGE%"
@@ -227,7 +227,7 @@ class FactionCommands {
                         $invited->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("InviteRequestMessage")));
                     }
                     /////////////////////////////// LEADER ///////////////////////////////
-                    if ($args[0] == "leader"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("leader")){
                         if (!isset($args[1])) {
                               $p->sendMessage(str_replace([
 			"%USAGE%"
@@ -359,7 +359,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// KICK ///////////////////////////////
-                    if(strtolower($args[0]) == "kick" or strtolower($args[0]) == "k"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("kick")){
                         if (!isset($args[1])) {
                              $p->sendMessage(str_replace([
 			"%USAGE%"
@@ -396,7 +396,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// CLAIM ///////////////////////////////
-                    if(strtolower($args[0]) == "claim" or strtolower($args[0]) == "cl"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("claim")){
 				if($this->plugin->prefs->get("ClaimingEnabled") == false){
 					$sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("ClaimError")));
 					return true;
@@ -463,7 +463,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("PlotClaimedInfoMessage")));
 			return true;
                     }
-                    if(strtolower($args[0]) == "forcedelete" or strtolower($args[0]) == "fdisband"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("forcedelete")){
                         if (!isset($args[1])) {
                              $p->sendMessage(str_replace([
 			"%USAGE%"
@@ -491,7 +491,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("ForceDeleteSuccessMessage")));
 			return true;
                     }
-                    if (strtolower($args[0]) == 'addstrto') {
+                    if (strtolower($args[0]) == $this->plugin->prefs->get("addstrto")) {
                         if (!isset($args[1]) or ! isset($args[2])) {
                              $p->sendMessage(str_replace([
 			"%USAGE%"
@@ -512,7 +512,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("AddSTRTOSuccessMessage")));
 			return true;
                     }
-                    if (strtolower($args[0]) == 'addbalto') {
+                    if (strtolower($args[0]) == $this->plugin->prefs->get("addbalto")) {
                         if (!isset($args[1]) or ! isset($args[2])) {
                              $p->sendMessage(str_replace([
 			"%USAGE%"
@@ -533,7 +533,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("AddBalToSuccessMessage")));
 			return true;
                     }
-		    if (strtolower($args[0]) == 'rmbalto') {
+		    if (strtolower($args[0]) == $this->plugin->prefs->get("rmbalto")) {
 	                if (!isset($args[1]) or ! isset($args[2])) {
 	                         $p->sendMessage(str_replace([
 			"%USAGE%"
@@ -553,7 +553,7 @@ class FactionCommands {
                         $this->plugin->takeFromBalance($args[1], $args[2]);
                         $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("RemovedBalanceSuccess")));
 		    }
-                    if(strtolower($args[0]) == 'rmpower') {
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("rmpower")) {
 		       if (!isset($args[1]) or ! isset($args[2])) {
                             $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("Usage")));
                             return true;
@@ -570,7 +570,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("RMPowerSuccessMessage")));
 			return true;
                     }
-                    if(strtolower($args[0]) == "playerfaction" or strtolower($args[0]) == "pf"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("playerfaction")){
                         if (!isset($args[1])) {
                              $p->sendMessage(str_replace([
 			"%USAGE%"
@@ -588,7 +588,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("PFInfoMessage")));
                     }
                     
-                    if (strtolower($args[0]) == "overclaim" or strtolower($args[0]) == "oc"){
+                    if (strtolower($args[0]) == $this->plugin->prefs->get("overclaim")){
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("MustBeInFactionMessage")));
                             return true;
@@ -651,7 +651,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// UNCLAIM ///////////////////////////////
-                    if(strtolower($args[0]) == "unclaim" or strtolower($args[0]) == "uncl"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("unclaim")){
 				  if($this->plugin->prefs->get("ClaimingEnabled") == false){
 					$sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("ClaimError")));
 					return true;
@@ -670,7 +670,7 @@ class FactionCommands {
 			return true;
                     }
                     /////////////////////////////// DESCRIPTION ///////////////////////////////
-                    if(strtolower($args[0]) == "desc" or strtolower($args[0]) == "motd"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("desc")){
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("MustBeInFactionMessage")));
                             return true;
@@ -687,7 +687,7 @@ class FactionCommands {
                         $result = $stmt->execute();
 		    }
 		    /////////////////////////////// TOP, also by @PrimusLV //////////////////////////
-					if(strtolower($args[0]) == "top" or strtolower($args[0]) == "lb"){
+					if(strtolower($args[0]) == $this->plugin->prefs->get("top")){ //Executes the command given in prefs.yml.
 					          if(!isset($args[1])){
 					          $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("TopUsage")));
                             		          return true;
@@ -704,7 +704,7 @@ class FactionCommands {
 		                          }
                                         }
                     /////////////////////////////// ACCEPT ///////////////////////////////
-                    if(strtolower($args[0]) == "accept" or strtolower($args[0]) == "yes"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("accept")){
                         $lowercaseName = strtolower($playerName);
                         $result = $this->plugin->db->query("SELECT * FROM confirm WHERE player='$lowercaseName';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
@@ -740,7 +740,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// DENY ///////////////////////////////
-                    if(strtolower($args[0]) == "deny" or strtolower($args[0]) == "no"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("deny")){
                         $lowercaseName = strtolower($playerName);
                         $result = $this->plugin->db->query("SELECT * FROM confirm WHERE player='$lowercaseName';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
@@ -761,7 +761,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// DELETE ///////////////////////////////
-                    if(strtolower($args[0]) == "del" or strtolower($args[0]) == "disband"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("del")){
                         if ($this->plugin->isInFaction($playerName) == true) {
                             if ($this->plugin->isLeader($playerName)) {
                                 $faction = $this->plugin->getPlayerFaction($playerName);
@@ -791,7 +791,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// LEAVE ///////////////////////////////
-                    if(strtolower($args[0] == "leave")) {
+                    if(strtolower($args[0] == $this->plugin->prefs->get("leave")){
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("MustBeInFactionMessage")));
                             return true;
@@ -810,7 +810,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// SETHOME ///////////////////////////////
-                    if(strtolower($args[0]) == "sethome" or strtolower($args[0]) == "shome"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("sethome")){
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("MustBeInFactionMessage")));
                             return true;
@@ -838,7 +838,7 @@ class FactionCommands {
 			return true;
                     }
                     /////////////////////////////// UNSETHOME ///////////////////////////////
-                    if(strtolower($args[0]) == "unsethome" or strtolower($args[0]) == "delhome"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("delhome")){
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("MustBeInFactionMessage")));
                             return true;
@@ -853,7 +853,7 @@ class FactionCommands {
 			return true;
                     }
                     /////////////////////////////// HOME ///////////////////////////////
-                    if (strtolower($args[0] == "home")) {
+                    if (strtolower($args[0] == $this->plugin->prefs->get("home"))) {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("MustBeInFactionMessage")));
                             return true;
@@ -923,7 +923,7 @@ class FactionCommands {
 		    /*TODO LIST*/
 		    
 		    /////////////////////////////// POWER ///////////////////////////////
-                    if(strtolower($args[0]) == "power" or strtolower($args[0]) == "pw"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("power")){
                         if(!$this->plugin->isInFaction($playerName)) {
 							$sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("MustBeInFactionMessage")));
                             return true;
@@ -933,7 +933,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("PowerInfo")));
 			return true;
                     }
-                    if(strtolower($args[0]) == "seepower" or strtolower($args[0]) == "sp"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("seepower")){
                         if(!isset($args[1])){
                              $p->sendMessage(str_replace([
 			"%USAGE%"
