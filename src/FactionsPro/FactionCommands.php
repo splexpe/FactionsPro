@@ -127,7 +127,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// CREATE ///////////////////////////////
-                    if(strtolower($args[0]) == "create" or strtolower($args[0]) == "make"){
+                    if(strtolower($args[0]) == $this->plugin->prefs->get("Create"){
                         if (!isset($args[1])) {
 			     $p->sendMessage(str_replace([
 			"%USAGE%"
