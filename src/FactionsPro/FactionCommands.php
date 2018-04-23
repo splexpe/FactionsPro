@@ -196,7 +196,7 @@ class FactionCommands {
                         $invited->sendMessage($this->plugin->formatMessage("$prefix §bYou have been invited to §a$factionName. §bType §3'/f accept / yes' or '/f deny / no' §binto chat to accept or deny!", true));
                     }
                     /////////////////////////////// LEADER ///////////////////////////////
-                    if (strtolower(($args[0]) == "leader" or $args[0]) == "transferleader"){
+                    if (strtolower($args[0]) == "leader" or strtolower($args[0]) == "transferleader"){
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f leader <player>\n§aDescription: §dMake someone else leader of the faction."));
                             return true;
@@ -278,7 +278,7 @@ class FactionCommands {
                     /////////////////////////////// DEMOTE ///////////////////////////////
                     if ($args[0] == "demote" or $args[0] == "dm2") {
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f demote <player>\n§aDescription: §dDemote a player from your faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <player>\n§aDescription: §dDemote a player from your faction"));
                             return true;
                         }
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
