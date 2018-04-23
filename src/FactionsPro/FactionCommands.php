@@ -1384,7 +1384,7 @@ class FactionCommands {
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 3){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§53/7§2]");
-				$sender->sendMessage(TextFormat::GREEN . "\n§a/f motd|desc - §7Set your faction Message of the day.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f motd|desc - §7Set your faction Message of the day.");
 				$sender->sendMessage(TextFormat::GREEN . "§a/f promote|pm2 <player> - §7Promote a player.");
 				$sender->sendMessage(TextFormat::GREEN . "§a/f sethome|shome - §7Set a faction home.\n§a/f unclaim|uncl - §7Unclaims a faction plot.\n§a/f unsethome|delhome - §7Deletes a faction home.\n§a/f top|lb - §7Checks top 10 BEST Factions on the server.\n§a/f war|wr <factionname|tp> - §7Starts a faction war / Requests a faction war.");
 				return true;
@@ -1392,7 +1392,7 @@ class FactionCommands {
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 4){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§54/7§2]");
-				$sender->sendMessage(TextFormat::RED . "\n§a/f enemy|e <faction> - §7Enemy with a faction");
+				$sender->sendMessage(TextFormat::RED . "§a/f enemy|e <faction> - §7Enemy with a faction");
 				$sender->sendMessage(TextFormat::RED . "§a/f ally|a <faction> - §7Ally a faction.");
 				$sender->sendMessage(TextFormat::RED . "§a/f allyok|allyaccept - §7Accepts a ally request.");
 				$sender->sendMessage(TextFormat::RED . "§a/f allydeny|no - §7Denies a ally request.");
@@ -1424,12 +1424,21 @@ class FactionCommands {
                         }
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 7){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§57/7§2]" . TextFormat::RED . "\n§a/f donate|pay <amount> - §7Donate to a faction from your Eco Bank.\n§a/f withdraw|wd <amount> - §7With draw from your faction bank\n§a/f balance|bal - §7Checks your faction balance\n§a/f map|compass - §7Faction Map command\n§a/f overclaim|oc - §7Overclaims a plot.\n§a/f seebalance|sb - §7Checks other faction balances.\n§4§ldo /f help 8 to see OP Commands.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§57/7§2]");
+				$sender->sendMessage(TextFormat::RED . "§a/f donate|pay <amount> - §7Donate to a faction from your Eco Bank.");
+				$sender->sendMessage(TextFormat::RED . "§a/f withdraw|wd <amount> - §7With draw from your faction bank");
+				$sender->sendMessage(TextFormat::RED . "§a/f balance|bal - §7Checks your faction balance");
+				$sender->sendMessage(TextFormat::RED . "§a/f map|compass - §7Faction Map command");
+				$sender->sendMessage(TextFormat::RED . "§a/f overclaim|oc - §7Overclaims a plot.");
+				$sender->sendMessage(TextFormat::RED . "§a/f seebalance|sb - §7Checks other faction balances.");
+			}
+			if($sender->isOp()){
+				$sender->sendMessage(TextFormat::RED . "§4§lUse /f help 8 to see OP Commands.");
 				return true;
 			}else{
 				$serverName = $this->plugin->prefs->get("ServerName");
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp (OP Commands) §2[§51/1§2]"
-				$sender->sendMessage(TextFormat::RED . "\n§4/f addstrto|addpower <faction> <STR> - §cAdds Strength to a faction.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp (OP Commands) §2[§51/1§2]");
+				$sender->sendMessage(TextFormat::RED. "§4/f addstrto|addpower <faction> <STR> - §cAdds Strength to a faction.");
 				$sender->sendMessage(TextFormat::RED . "§4/f addbalto|addmoney <faction> <money> - §cAdds Money to a faction.");
 				$sender->sendMessage(TextFormat::RED . "§4/f forcedelete|fdisband <faction> - §cForce deletes a faction.");
 				$sender->sendMessage(TextFormat::RED . "§4/f forceunclaim|func <faction> - §cForce unclaims a plot / land.");
@@ -1443,6 +1452,7 @@ class FactionCommands {
         }
         return true;
     }
+    
     public function alphanum($string){
         if(function_exists('ctype_alnum')){
             $return = ctype_alnum($string);
