@@ -1435,9 +1435,10 @@ class FactionCommands {
 			if($sender->isOp()){
 				$sender->sendMessage(TextFormat::RED . "§4§lUse /f help 8 to see OP Commands.");
 				return true;
-			}else{
-				$serverName = $this->plugin->prefs->get("ServerName");
+			}
 			    }
+				$serverName = $this->plugin->prefs->get("ServerName");
+				if($args[1] == 8){
 			    if($sender->isOp()){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp (OP Commands) §2[§51/1§2]");
 				$sender->sendMessage(TextFormat::RED. "§4/f addstrto|addpower <faction> <STR> - §cAdds Strength to a faction.");
