@@ -34,7 +34,7 @@ class FactionCommands {
                     ///////////////////////////////// WAR /////////////////////////////////
                     if(strtolower($args[0]) == "war" or strtolower($args[0]) == "wr"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §5Please use: §d/f $args[0] <faction name:tp>\n§aDescription: §dRequest a war with a faction."));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §5Please use: §d/f $args[0] <faction name:tp|teleport>\n§aDescription: §dRequest a war with a faction."));
                             return true;
                         }
                         if (strtolower($args[1]) == "tp" or strtolower($args[1]) == "teleport") {
@@ -198,7 +198,7 @@ class FactionCommands {
                     /////////////////////////////// LEADER ///////////////////////////////
                     if (strtolower($args[0]) == "leader" or strtolower($args[0]) == "transferleader"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f leader <player>\n§aDescription: §dMake someone else leader of the faction."));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <player>\n§aDescription: §dMake someone else leader of the faction."));
                             return true;
                         }
                         if (!$this->plugin->isInFaction($sender->getName())) {
@@ -262,14 +262,13 @@ class FactionCommands {
                             return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
-			$player = $player->getName();
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $player);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
                         $promotee = $this->plugin->getServer()->getPlayer($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a$player §bhas been promoted to Officer", true));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a$promotee §bhas been promoted to Officer", true));
                         if ($promotee instanceof Player) {
                             $promotee->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
                             return true;
@@ -308,7 +307,7 @@ class FactionCommands {
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
                         $demotee = $this->plugin->getServer()->getPlayer($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §5$player §2has been demoted to Member", true));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §5$demotee §2has been demoted to Member", true));
                         if ($demotee instanceof Player) {
                             $demotee->sendMessage($this->plugin->formatMessage("$prefix §2You were demoted to member of §5$factionName!", true));
                             return true;
@@ -338,10 +337,9 @@ class FactionCommands {
                             return true;
                         }
                         $kicked = $this->plugin->getServer()->getPlayer($args[1]);
-			$player = $player->getName();
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $this->plugin->db->query("DELETE FROM master WHERE player='$player';");
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$player", true));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$kicked", true));
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			$this->plugin->takeFromBalance($factionName, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
                         if ($kicked instanceof Player) {
@@ -473,9 +471,9 @@ class FactionCommands {
                         $this->plugin->addToBalance($args[1], $args[2]);
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bSuccessfully added §a$args[2] §bBalance to §a$args[1]", true));
                     }
-		    if (strtolower($args[0]) == 'rmbalto') {
+		    if (strtolower($args[0]) == "rmbalto" or strtolower($args[0]) == "rmmoney") {
 	                if (!isset($args[1]) or ! isset($args[2])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f rmbalto <faction> <money>\n§aDescription: §dRemoves Money from a faction."));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction> <money>\n§aDescription: §dRemoves Money from a faction."));
                             return true;
                         }
                         if (!$this->plugin->factionExists($args[1])) {
@@ -1439,6 +1437,8 @@ class FactionCommands {
 				$sender->sendMessage(TextFormat::RED . "§4/f addbalto|addmoney <faction> <money> - §cAdds Money to a faction.");
 				$sender->sendMessage(TextFormat::RED . "§4/f forcedelete|fdisband <faction> - §cForce deletes a faction.");
 				$sender->sendMessage(TextFormat::RED . "§4/f forceunclaim|func <faction> - §cForce unclaims a plot / land.");
+				$sender->sendMessage(TextFormat::RED . "§4/f rmbalto|rmmoney <faction> <money> - §cForcefully removes the money from a faction.");
+				$sender->sendMessage(TextFormat::RED . "§4/f rmstrto|rmpower <faction> <str> - §cForcefully removes the STR from a faction.");
 				return true;
 		        }
                      }
