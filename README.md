@@ -13,4 +13,10 @@ A modified plugin, better than ever. Being updated frequently. Edited by the VMP
 Check out the to-do list here:
 https://github.com/TheFixerDevelopment/FactionsPro/issues/16
 
+## KNOWN BUGS
+* No messages pops up when executing a command.
+* Unknown errors popup upon executing some commands.
+* Prefs.yml file is messed up. Working on fixing.
+* Prefixes are not yet implemented in this branch.
+
 If you want anything else added, please open a issue. Thank you.
