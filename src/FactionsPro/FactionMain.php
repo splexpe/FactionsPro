@@ -28,7 +28,7 @@ class FactionMain extends PluginBase implements Listener {
     public $esssentialspe;
     public $factionChatActive = [];
     public $allyChatActive = [];
-    private $prefix = "§l§f[§bFactions§f] §r";
+    private $prefix = "§l§f[§bFactions§f]";
     
     const HEX_SYMBOL = "e29688";
     
@@ -133,7 +133,7 @@ class FactionMain extends PluginBase implements Listener {
 	    "accept" => "accept",
 	    "deny" => "deny",
 	    "ServerName" => "VoidFactionsPE",
-                "prefix" => "§l§f[§bFactions§f] §r",
+                "pluginprefix" => "§l§f[§bFactions§f]",
                 "spawnerPrices" => [
                 	"skeleton" => 500,
                 	"pig" => 200,
