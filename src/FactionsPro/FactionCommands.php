@@ -1358,17 +1358,35 @@ class FactionCommands {
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 1){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§51/7§2]" . TextFormat::RED . "\n§a/f about|info - §7Shows Plugin information\n§a/f accept|yes - §7Accepts an faction invitation\n§a/f claim|cl - §7Claims a faction plot!\n§a/f create|make <name> - §7Creates a faction.\n§a/f del|disband - Deletes a faction.\n§a/f demote <player> - §7Demotes a player from a faction.\n§a/f deny|no - §7Denies a player's invitation.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§51/7§2]");
+				$sender->sendMessage(TextFormat::RED . "§a/f about|info - §7Shows Plugin information");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f accept|yes - §7Accepts an faction invitation");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f claim|cl - §7Claims a faction plot!");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f create|make <name> - §7Creates a faction.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f del|disband - Deletes a faction.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f demote|dm2 <player> - §7Demotes a player from a faction.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f deny|no - §7Denies a player's invitation.");
 				return true;
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 2){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§52/7§2]" . TextFormat::RED . "\n§a/f home|h - §7Teleports to your faction home.\n§a/f help <page> - §7Factions help.\n§a/f who - §7Your Faction info.\n§a/f who <faction> - §7Other faction info.\n§a/f invite|inv <player> - §7Invite a player to your faction.\n§a/f kick|k <player> - §7Kicks a player from your faction.\n§af/ leader <player> - §7Transfers leadership.\n§a/f leave|lv - §7Leaves a faction.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§52/7§2]");
+				$sender->sendMessage(TextFormat::RED . "§a/f home|base - §7Teleports to your faction home.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f help <page> - §7Factions help.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f who|facinfo - §7Your Faction info.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f who|facinfo <faction> - §7Other faction info.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f invite|inv <player> - §7Invite a player to your faction.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f kick|k <player> - §7Kicks a player from your faction.");
+				$sender->sendMessage(TextFormat::GREEN . "§af/ leader|transferleader <player> - §7Transfers leadership.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f leave|quit - §7Leaves a faction.");
 				return true;
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 3){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§53/7§2]" . TextFormat::RED . "\n§a/f motd|desc - §7Set your faction Message of the day.\n§a/f promote <player> - §7Promote a player.\n§a/f sethome|shome - §7Set a faction home.\n§a/f unclaim|uncl - §7Unclaims a faction plot.\n§a/f unsethome|delhome - §7Deletes a faction home.\n§a/f top|lb - §7Checks top 10 BEST Factions on the server.\n§a/f war|wr <factionname|tp> - §7Starts a faction war / Requests a faction war.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§53/7§2]");
+				$sender->sendMessage(TextFormat::GREEN . "\n§a/f motd|desc - §7Set your faction Message of the day.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f promote|pm2 <player> - §7Promote a player.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f sethome|shome - §7Set a faction home.\n§a/f unclaim|uncl - §7Unclaims a faction plot.\n§a/f unsethome|delhome - §7Deletes a faction home.\n§a/f top|lb - §7Checks top 10 BEST Factions on the server.\n§a/f war|wr <factionname|tp> - §7Starts a faction war / Requests a faction war.");
 				return true;
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
