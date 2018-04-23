@@ -1391,17 +1391,35 @@ class FactionCommands {
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 4){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§54/7§2]" . TextFormat::RED . "\n§a/f enemy <faction> - §7Enemy with a faction\n§a/f ally <faction> - §7Ally a faction.\n§a/f allyok|allyaccept - §7Accepts a ally request.\n§a/f allydeny|no - §7Denies a ally request.\n§a/f unally|una - §7Un allies with a faction.\n§a/f allies - §7Checks a list of allies you currently have.\n§a/f say|bc <MESSAGE> - §7Broadcast a faction measage.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§54/7§2]");
+				$sender->sendMessage(TextFormat::RED . "\n§a/f enemy|e <faction> - §7Enemy with a faction");
+				$sender->sendMessage(TextFormat::RED . "§a/f ally|a <faction> - §7Ally a faction.");
+				$sender->sendMessage(TextFormat::RED . "§a/f allyok|allyaccept - §7Accepts a ally request.");
+				$sender->sendMessage(TextFormat::RED . "§a/f allydeny|no - §7Denies a ally request.");
+				$sender->sendMessage(TextFormat::RED . "§a/f unally|una - §7Un allies with a faction.");
+				$sender->sendMessage(TextFormat::RED . "§a/f allies|ourallies - §7Checks a list of allies you currently have.");
+				$sender->sendMessage(TextFormat::RED . "§a/f say|bc <MESSAGE> - §7Broadcast a faction measage.");
 				return true;
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 5){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§55/7§2]" . TextFormat::RED . "\n§a/f chat|c - §7Toggles faction chat.\n§a/f allychat|ac - §7Toggles Ally chat.\n§a/f plotinfo|pinfo - §7Checks if a specific area is claimed or not.\n§a/f power|pw - §7Checks to see how much power you have.\n§a/f seepower|sp <faction> - §7Sees power of another faction.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§55/7§2]");
+				$sender->sendMessage(TextFormat::RED . "\n§a/f chat|c - §7Toggles faction chat.");
+				$sender->sendMessage(TextFormat::RED . "§a/f allychat|ac - §7Toggles Ally chat.");
+				$sender->sendMessage(TextFormat::RED . "§a/f plotinfo|pinfo - §7Checks if a specific area is claimed or not.");
+				$sender->sendMessage(TextFormat::RED . "§a/f power|pw - §7Checks to see how much power you have.");
+				$sender->sendMessage(TextFormat::RED . "§a/f seepower|sp <faction> - §7Sees power of another faction.");
 				return true;
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 6){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§56/7§2]" . TextFormat::RED . "\n§a/f listleader <faction> - §7Checks who the leader is in a faction.\n§a/f listmembers <faction> - §7Checks who the members are in a faction.\n§a/f listofficers <faction> - §7Checks who the officers are in a faction.\n§a/f ourmembers - §7Checks who your faction members are.\n§a/f ourofficers - §7Checks who your faction officers are.\n§a/f ourleader - §7Checks to see who your leader is.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§56/7§2]");
+				$sender->sendMessage(TextFormat::RED . "\n§a/f listleader|ll <faction> - §7Checks who the leader is in a faction.");
+				$sender->sendMessage(TextFormat::RED . "§a/f listmembers|lm <faction> - §7Checks who the members are in a faction.");
+				$sender->sendMessage(TextFormat::RED . "§a/f listofficers|lo <faction> - §7Checks who the officers are in a faction.");
+				$sender->sendMessage(TextFormat::RED . "§a/f ourmembers|members - §7Checks who your faction members are.");
+				$sender->sendMessage(TextFormat::RED . "§a/f ourofficers|officers - §7Checks who your faction officers are.");
+				$sender->sendMessage(TextFormat::RED . "§a/f ourleader|leaders - §7Checks to see who your leader is.");
 				return true;
                         }
 			$serverName = $this->plugin->prefs->get("ServerName");
@@ -1410,7 +1428,11 @@ class FactionCommands {
 				return true;
 			}else{
 				$serverName = $this->plugin->prefs->get("ServerName");
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp (OP Commands) §2[§51/1§2]" . TextFormat::RED . "\n§4/f addstrto <faction> <STR> - §cAdds Strength to a faction.\n§4/f addbalto <faction> <money> - §cAdds Money to a faction.\n§4/f forcedelete|fdisband <faction> - §cForce deletes a faction.\n§4/f forceunclaim|func <faction> - §cForce unclaims a plot / land.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp (OP Commands) §2[§51/1§2]"
+				$sender->sendMessage(TextFormat::RED . "\n§4/f addstrto|addpower <faction> <STR> - §cAdds Strength to a faction.");
+				$sender->sendMessage(TextFormat::RED . "§4/f addbalto|addmoney <faction> <money> - §cAdds Money to a faction.");
+				$sender->sendMessage(TextFormat::RED . "§4/f forcedelete|fdisband <faction> - §cForce deletes a faction.");
+				$sender->sendMessage(TextFormat::RED . "§4/f forceunclaim|func <faction> - §cForce unclaims a plot / land.");
 				return true;
 		        }
                      }
