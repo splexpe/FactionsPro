@@ -25,30 +25,36 @@ A modified plugin, better than ever. Being updated frequently. Edited by the VMP
 
 * You can now: Forcefully remove someone's power, and balance with a simple command.
 
+* Aliases commands are now implemented and functionable! - Example, use /f make instead of /f create.
+
+* Code revamp.
+
+* Branches for different options!
+
 * And still updating as we speak!
 
 
 ## Faction Commands
 
-/f create <faction> - Create a faction.
+/f create <faction> - Create a faction. Alias: /f make
   
-/f delete <faction> - Delete a faction.
+/f delete <faction> - Delete a faction. Alias: /f disband
   
-/f invite <name> - Invite a player to your faction.
+/f invite <name> - Invite a player to your faction. Alias: /f inv
   
-/f accept - Accepts a leader's invitation to join your faction.
+/f accept - Accepts a leader's invitation to join your faction. Alias: /f yes
 
-/f deny - Denies a leader's invitation to join your faction.
+/f deny - Denies a leader's invitation to join your faction. Alias: /f no
 
-/f who - Shows info about your faction.
+/f who - Shows info about your faction. Alias: /f facinfo
 
-/f who <faction> - Shows other faction information.
+/f who <faction> - Shows other faction information. Alias: /f facinfo <faction>
   
-/f leave - Quit's a faction.
+/f leave - Quit's a faction. Alias: /f quit
 
-/f kick <name> - Kicks a player from your faction.
+/f kick <name> - Kicks a player from your faction. Alias: /f k
   
-/f balance - Shows your faction money.
+/f balance - Shows your faction money. Alias: /f bal
 
 /f top money - Shows the top 10 Richest factions.
 
