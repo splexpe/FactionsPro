@@ -639,8 +639,8 @@ class FactionCommands {
                         }
                         $invitedTime = $array["timestamp"];
                         $currentTime = time();
-			$acceptTime = $this->plugin->prefs->get("AcceptTime");
-                        if (($currentTime - $invitedTime) <= $inviteTime) { //This should be configurable
+			$inviteTime = $this->plugin->prefs->get("InviteTime");
+                        if (($currentTime - $invitedTime) <= $inviteTime) { //Done.
                             $faction = $array["faction"];
                             $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                             $stmt->bindValue(":player", ($playerName));
@@ -668,8 +668,8 @@ class FactionCommands {
                         }
                         $invitedTime = $array["timestamp"];
                         $currentTime = time();
-			$denyTime = $this->plugin->prefs->get("DenyTime");
-                        if (($currentTime - $invitedTime) <= $DenyTime) { //This should be configurable
+			$inviteTime = $this->plugin->prefs->get("InviteTime");
+                        if (($currentTime - $invitedTime) <= $inviteTime) { //Done.
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$lowercaseName';");
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cInvite declined", true));
                             $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("$prefix §4$playerName §cdeclined the invitation"));
@@ -1116,8 +1116,8 @@ class FactionCommands {
                         }
                         $allyTime = $array["timestamp"];
                         $currentTime = time();
-			$allyAcceptTime = $this->plugin->prefs->get("AllyAcceptTime");
-                        if (($currentTime - $allyTime) <= $allyAcceptTime) { //Done.
+			$allyTimes = $this->plugin->prefs->get("AllyTimes");
+                        if (($currentTime - $allyTime) <= $allyTimes) { //Done.
                             $requested_fac = $this->plugin->getPlayerFaction($array["requestedby"]);
                             $sender_fac = $this->plugin->getPlayerFaction($playerName);
                             $this->plugin->setAllies($requested_fac, $sender_fac);
@@ -1154,8 +1154,8 @@ class FactionCommands {
                         }
                         $allyTime = $array["timestamp"];
                         $currentTime = time();
-			$allyDenyTime = $this->plugin->prefs->get("AllyDenyTime");
-                        if (($currentTime - $allyTime) <= $allyDenyTime) { //Done
+			$allyTimes = $this->plugin->prefs->get("AllyTimes");
+                        if (($currentTime - $allyTime) <= $allyTime) { //Done
                             $requested_fac = $this->plugin->getPlayerFaction($array["requestedby"]);
                             $sender_fac = $this->plugin->getPlayerFaction($playerName);
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
