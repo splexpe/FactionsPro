@@ -86,7 +86,7 @@ class FactionMain extends PluginBase implements Listener {
 	    "MoneyGainedPerAlly" => 50,
             "MoneyNeededToClaimAPlot" => 0,
 	    "ServerName" => "§6Void§bFactions§cPE",
-                "prefix" => "§7[§6Void§bFactions§cPE§7]",
+                "pluginprefix" => "§7[§6Void§bFactions§cPE§7]",
                 "spawnerPrices" => [
                 	"skeleton" => 500,
                 	"pig" => 200,
@@ -102,7 +102,7 @@ class FactionMain extends PluginBase implements Listener {
 			"empty" => 100
                 ],
 		));
-		$this->prefix = $this->prefs->get("prefix", $this->prefix);
+		$this->prefix = $this->prefs->get("pluginprefix", $this->prefix);
 		if(sqrt($size = $this->prefs->get("PlotSize")) % 2 !== 0){
 			$this->getLogger()->notice("Square Root Of Plot Size ($size) Must Not Be An unknown Number in the plugin! (The size was Currently: ".(sqrt($size = $this->prefs->get("PlotSize"))).")");
 			$this->getLogger()->notice("Available Sizes: 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024");
