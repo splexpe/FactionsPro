@@ -639,7 +639,8 @@ class FactionCommands {
                         }
                         $invitedTime = $array["timestamp"];
                         $currentTime = time();
-                        if (($currentTime - $invitedTime) <= 60) { //This should be configurable
+			$acceptTime = $this->plugin->prefs->get("AcceptTime");
+                        if (($currentTime - $invitedTime) <= $inviteTime) { //This should be configurable
                             $faction = $array["faction"];
                             $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                             $stmt->bindValue(":player", ($playerName));
@@ -667,7 +668,8 @@ class FactionCommands {
                         }
                         $invitedTime = $array["timestamp"];
                         $currentTime = time();
-                        if (($currentTime - $invitedTime) <= 60) { //This should be configurable
+			$denyTime = $this->plugin->prefs->get("DenyTime");
+                        if (($currentTime - $invitedTime) <= $DenyTime) { //This should be configurable
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$lowercaseName';");
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cInvite declined", true));
                             $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("$prefix §4$playerName §cdeclined the invitation"));
@@ -1114,7 +1116,8 @@ class FactionCommands {
                         }
                         $allyTime = $array["timestamp"];
                         $currentTime = time();
-                        if (($currentTime - $allyTime) <= 60) { //This should be configurable -> Use Beta branch to get this feature.
+			$allyAcceptTime = $this->plugin->prefs->get("AllyAcceptTime");
+                        if (($currentTime - $allyTime) <= $allyAcceptTime) { //Done.
                             $requested_fac = $this->plugin->getPlayerFaction($array["requestedby"]);
                             $sender_fac = $this->plugin->getPlayerFaction($playerName);
                             $this->plugin->setAllies($requested_fac, $sender_fac);
@@ -1151,7 +1154,8 @@ class FactionCommands {
                         }
                         $allyTime = $array["timestamp"];
                         $currentTime = time();
-                        if (($currentTime - $allyTime) <= 60) { //This should be configurable
+			$allyDenyTime = $this->plugin->prefs->get("AllyDenyTime");
+                        if (($currentTime - $allyTime) <= $allyDenyTime) { //Done
                             $requested_fac = $this->plugin->getPlayerFaction($array["requestedby"]);
                             $sender_fac = $this->plugin->getPlayerFaction($playerName);
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
@@ -1165,8 +1169,18 @@ class FactionCommands {
                     /////////////////////////////// ABOUT ///////////////////////////////
                     if(strtolower($args[0]) == "about" or strtolower($args[0]) == "info"){
                         $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
-                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b");
-			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:\n§aFaction Build release: §5381\n§aBuild Tested and works on: §5377-381\n§aPlugin Link: §5Not showing due to self-leak information\n§aPlugin download: §5Not showing due to self-leak information.\n§aAuthor: §5VMPE Development Team\n§aOriginal Author: §5Tethered\n§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.\n§aVersion: §5v2.0.6\n§aPlugin Version: §5v2.0.0");
+                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE");
+			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:");
+			$sender->sendMessage(TextFormat::GREEN . "§aFaction Build release: §5381");
+			$sender->sendMessage(TextFormat::GREEN . "§aBuild Tested and works on: §426-438");
+			$sender->sendMessage(TextFormat::GREEN . "§aPlugin Link: §5Not showing due to self-leak information");
+			$sender->sendMessage(TextFormat::GREEN . "§aPlugin download: §5Not showing due to self-leak information.");
+			$sender->sendMessage(TextFormat::GREEN . "§aAuthor: §5VMPE Development Team");
+			$sender->sendMessage(TextFormat::GREEN . "§aOriginal Author: §5Tethered");
+			$sender->sendMessage(TextFormat::GREEN . "§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.");
+			$sender->sendMessage(TextFormat::GREEN . "§aVersion: §5v2.0.0-implement");
+			$sender->sendMessage(TextFormat::GREEN . "§aPlugin Version: §5v2.0.0-implement");
+			$sender->sendMessage(TextFormat::GREEN . "§aSupported PMMP API's: §53.0.0-ALPHA10 - ALPHA14.");
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
 		    
