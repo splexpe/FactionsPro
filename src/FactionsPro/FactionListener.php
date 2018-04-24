@@ -2,8 +2,6 @@
 
 namespace FactionsPro;
 
-use pocketmine\plugin\PluginBase;
-use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
 use pocketmine\event\block\{BlockPlaceEvent, BlockBreakEvent};
 use pocketmine\Player;
