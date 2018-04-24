@@ -293,7 +293,7 @@ class FactionMain extends PluginBase implements Listener {
         $row = array();
         $i = 0;
 	$topstr = $this->prefs->get("TopSTR");
-        $s->sendMessage($this->formatMessage("$topstr", true));
+        $s->sendMessage("$topstr", true);
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $j = $i + 1;
             $cf = $resultArr['faction'];
@@ -459,7 +459,7 @@ class FactionMain extends PluginBase implements Listener {
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
 	$topmoney = $this->prefs->get("TopMoney");
-        $s->sendMessage(TextFormat::BOLD.TextFormat::RESET. $this->prefs->get("$topmoney", true));
+        $s->sendMessage("$topmoney", true);
         while($resultArr = $result->fetchArray(SQLITE3_ASSOC)){
         	var_dump($resultArr);
             $j = $i + 1;
