@@ -93,7 +93,7 @@ class FactionMain extends PluginBase implements Listener {
 	    "TopSTR" => "Top 10 BEST Factions",
 	    "EnoughToOverClaim" => "§bYou have enough STR power to overclaim this plot! Now, Type §3/f overclaim to overclaim this plot if you want.",
 	    "NotEnoughToOC" => "§cI'm sorry, but you do not have enough STR to overclaim this land.",
-	    "DisabledMessage" => "§cThe command §2/$args[0] §cis disabled!",
+	    "DisabledMessage" => "§cThis command §cis disabled!",
 	    "ServerName" => "§6Void§bFactions§cPE",
                 "pluginprefix" => "§7[§6Void§bFactions§cPE§7]",
                 "spawnerPrices" => [
