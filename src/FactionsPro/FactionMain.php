@@ -359,15 +359,15 @@ class FactionMain extends PluginBase implements Listener {
 	    if ($this->prefs->get("EnableOverClaim")) {
                 if ($power_sender < $power_claimedBy) {
 		    $noclaim = $this->prefs->get("NotEnoughToOC");
-                    $sender->sendMessage($this->formatMessage("$noclaim"));
+                    $sender->sendMessage($this->formatMessage("$noclaim", true));
                 } else {
 		    $yesclaim = $this->prefs->get("EnoughToOverClaim");
-                    $sender->sendMessage($this->formatMessage("$yesclaim"));
+                    $sender->sendMessage($this->formatMessage("$yesclaim", true));
                 }
                 return false;
             } else {
 		$ocmessage = $this->prefs->get("DisabledMessage");
-                $sender->sendMessage($this->formatMessage("$ocmessage"));
+                $sender->sendMessage($this->formatMessage("$ocmessage", true));
                 return false;
 	    }
         }
@@ -459,7 +459,7 @@ class FactionMain extends PluginBase implements Listener {
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
 	$topmoney = $this->prefs->get("TopMoney");
-        $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA. $this->prefs->get("$topmoney", true));
+        $s->sendMessage(TextFormat::BOLD.TextFormat::RESET. $this->prefs->get("$topmoney", true));
         while($resultArr = $result->fetchArray(SQLITE3_ASSOC)){
         	var_dump($resultArr);
             $j = $i + 1;
