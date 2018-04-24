@@ -59,14 +59,6 @@ BroadcastFactionDisband: true
 FactionDisbandBroadcast: "The Faction named %FACTION% was disbaned by %PLAYER%"
 defaultFactionBalance: 0
 # NEW: When creating a faction, how much Money should a faction have by default? Default: 0.
-MOTDTime: 30
-# NEW:  when setting a MOTD to your faction, they will have by default: 30 seconds untill it times out, and that you have to redo the command again.
-InviteTime: 60
-# NEW: When inviting someone to your faction, they will have the maximum of x amount of seconds before it times out.
-# Default: 60.
-AllyTime: 60
-# NEW When requesting to ally a faction, they will have the maximum of x amount of seconds before it times out.
-# Default: 60.
 TopSTR: "§5§lTop 10 BEST Factions"
 # NEW: Customise /f top str list to your own.
 # Use § color code.
