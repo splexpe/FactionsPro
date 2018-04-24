@@ -88,6 +88,7 @@ class FactionMain extends PluginBase implements Listener {
 	    "MOTDTime" => 60,
 	    "InviteTime" => 60,
 	    "AllyTimes" => 60,
+	    "OurAllies" => "Your allies",
 	    "TopMoney" => "Top 10 Richest factions",
 	    "TopSTR" => "Top 10 BEST Factions",
 	    "EnoughToOverClaim" => "§bYou have enough STR power to overclaim this plot! Now, Type §3/f overclaim to overclaim this plot if you want.",
