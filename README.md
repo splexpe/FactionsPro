@@ -109,3 +109,7 @@ Check out the to-do list here:
 https://github.com/TheFixerDevelopment/FactionsPro/issues/16
 
 If you want anything else added, please open a issue. Thank you.
+
+## Servers that are using this plugin:
+If you have a server that is running this plugin on, please open a new issue regarding the IP and port. I'll check it out to make sure you're using this plugin into your server.
+Thank you.
