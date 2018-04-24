@@ -127,22 +127,26 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// CREATE ///////////////////////////////
-                    if(strtolower($args[0]) == $this->plugin->prefs->get("create")){
+		    $create = $this->plugin->prefs->get("create");
+                    if(strtolower($args[0]) == "$create"){
                         if (!isset($args[1])) {
 			     $sender->sendMessage(str_replace([
 			"%USAGE%"
 			], [
 			$args[0]
-                     ],         $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("Usage")))));
+			],	$usage = $this->plugin->prefs->get("Usage")));
+                     $sender->sendMessage($this->plugin->formatMessage("$usage"));
 			    $sender->sendMessage($this->plugin->formatMessage("§b§aDescription: §dCreates a faction."));
                             return true;
                         }
                         if (!($this->alphanum($args[1]))) {
-                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("ErrorMessage")));
+			    $errorm = $this->plugin->prefs->get("ErrorMessage");
+                            $sender->sendMessage($this->plugin->formatMessage("$errorm"));
                             return true;
                         }
                         if ($this->plugin->isNameBanned($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("CreateNameNotAllowed")));
+			    $cname = $this->plugin->prefs->get("CreateNameNotAllowed");
+                            $sender->sendMessage($this->plugin->formatMessage("$cname"));
                             return true;
                         }
                         if ($this->plugin->factionExists($args[1])) {
