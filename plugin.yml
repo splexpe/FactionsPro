@@ -8,6 +8,7 @@ softdepend: ["PureChat", "AntiSpamPro", "EssentialsPE", "EconomyAPI"]
 commands:
   f:
     description: Faction commands.
+    aliases: ["factions"]
     permission: f.command
 permissions:
   f.command:
