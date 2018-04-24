@@ -87,6 +87,9 @@ class FactionMain extends PluginBase implements Listener {
             "MoneyNeededToClaimAPlot" => 0,
 	    "TopMoney" => "Top 10 Richest factions",
 	    "TopSTR" => "Top 10 BEST Factions",
+	    "EnoughToOverClaim" => "§bYou have enough STR power to overclaim this plot! Now, Type §3/f overclaim to overclaim this plot if you want.",
+	    "NotEnoughToOC" => "§cI'm sorry, but you do not have enough STR to overclaim this land.",
+	    "DisabledMessage" => "§cThe command §2/$args[0] §cis disabled!",
 	    "ServerName" => "§6Void§bFactions§cPE",
                 "pluginprefix" => "§7[§6Void§bFactions§cPE§7]",
                 "spawnerPrices" => [
@@ -276,7 +279,8 @@ class FactionMain extends PluginBase implements Listener {
             $team .= TextFormat::ITALIC . TextFormat::GREEN . $row[$i]['faction2'] . TextFormat::RESET . TextFormat::WHITE . "§2,§a " . TextFormat::RESET;
             $i = $i + 1;
         }
-        $s->sendMessage($this->formatMessage("§3_____§2[§5§lAllies of §d*$faction*§r§2]§3_____", true));
+	$allies = $this->prefs->get("OurAllies");
+        $s->sendMessage($this->formatMessage("$allies", true));
         $s->sendMessage($team);
     }
     public function sendListOfTop10FactionsTo($s) {
@@ -350,13 +354,16 @@ class FactionMain extends PluginBase implements Listener {
            
 	    if ($this->prefs->get("EnableOverClaim")) {
                 if ($power_sender < $power_claimedBy) {
-                    $sender->sendMessage($this->formatMessage("§cYou don't have enough power to overclaim this plot."));
+		    $noclaim = $this->prefs->get("NotEnoughToOC");
+                    $sender->sendMessage($this->formatMessage("$noclaim"));
                 } else {
-                    $sender->sendMessage($this->formatMessage("§bYou have enough STR power to overclaim this plot! Now, Type §3/f overclaim to overclaim this plot if you want."));
+		    $yesclaim = $this->prefs->get("EnoughToOverClaim");
+                    $sender->sendMessage($this->formatMessage("$yesclaim"));
                 }
                 return false;
             } else {
-                $sender->sendMessage($this->formatMessage("§2Overclaiming is disabled."));
+		$ocmessage = $this->prefs->get("DisabledMessage");
+                $sender->sendMessage($this->formatMessage("$ocmessage"));
                 return false;
 	    }
         }
