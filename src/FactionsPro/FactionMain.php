@@ -101,7 +101,7 @@ class FactionMain extends PluginBase implements Listener {
 	    "RequestToWar" => "§3The other faction §bwants to start a war. Please use: §3'/f war <faction>' §bto commence the war!",
 	    "WarRequestSent" => "§aThe Faction war has been requested. §bPlease wait for their response.",
 	    "WarLeaderOffline" => "§cFaction leader is not online.",
-	    "CreateUsage" => "§bPlease use: §3/f create <faction name>",
+	    "Usage" => "§bPlease use: §3/f %USAGE%",
 	    "CreateError" => "§cYou may only use letters and numbers",
 	    "CreateNameNotAllowed" => "§cThis name §cis not allowed",
 	    "CreateFacAlreadyExists" => "§cThe Faction §calready exists",
