@@ -25,7 +25,7 @@ class FactionCommands {
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if ($sender instanceof Player) {
             $playerName = $sender->getPlayer()->getName(); //Sender who executes the command.
-	    $prefix = $this->plugin->prefs->get("prefix"); //Prefix configurations.
+	    $prefix = $this->plugin->prefs->get("pluginprefix"); //Prefix configurations.
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
                     $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use §3/f help §6for a list of commands"));
@@ -1346,7 +1346,7 @@ class FactionCommands {
                     }
                     return true;
                 }
-		if(strtolower($args[0]) == "help"){
+		if(strtolower($args[0]) == "help" or strtolower($args[0]) == "?"){
 			if(!isset($args[1])) {
 			   $sender->sendMessage(TextFormat::BLUE . "$prefix §aPlease use §b/f help <page> §afor a list of pages. (1-7]");
 			   	return true;
@@ -1444,7 +1444,7 @@ class FactionCommands {
                      }
                 }
         } else {
-	    $prefix = $this->plugin->prefs->get("prefix");
+	    $prefix = $this->plugin->prefs->get("pluginprefix");
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("$prefix Please run this command in game"));
         }
         return true;
