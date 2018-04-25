@@ -1,10 +1,13 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\{Server, Player};
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\level\{Level, Position};
+
 class FactionCommands {
 	
     public $plugin;
@@ -1454,9 +1457,12 @@ class FactionCommands {
 				$sender->sendMessage(TextFormat::RED . "§4/f rmbalto|rmmoney <faction> <money> - §cForcefully removes the money from a faction.");
 				$sender->sendMessage(TextFormat::RED . "§4/f rmstrto|rmpower <faction> <str> - §cForcefully removes the STR from a faction.");
 				return true;
+			}
+			    break;
+				$sender->sendMessage("§cUnknown Command. §aPlease use §b/f help");
+				return true;
 		        }
                      }
-                }
         } else {
 	    $prefix = $this->plugin->prefs->get("pluginprefix");
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("$prefix Please run this command in game"));
