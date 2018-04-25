@@ -1447,8 +1447,9 @@ class FactionCommands {
 			if($sender->isOp()){
 				$sender->sendMessage(TextFormat::RED . "§4§lUse /f help 8 to see OP Commands.");
 				return true;
-			}else{
-				$serverName = $this->plugin->prefs->get("ServerName");
+			}
+			$serverName = $this->plugin->prefs->get("ServerName");
+			if($args[1] == 8){    
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp (OP Commands) §2[§51/1§2]");
 				$sender->sendMessage(TextFormat::RED. "§4/f addstrto|addpower <faction> <STR> - §cAdds Strength to a faction.");
 				$sender->sendMessage(TextFormat::RED . "§4/f addbalto|addmoney <faction> <money> - §cAdds Money to a faction.");
@@ -1458,11 +1459,8 @@ class FactionCommands {
 				$sender->sendMessage(TextFormat::RED . "§4/f rmstrto|rmpower <faction> <str> - §cForcefully removes the STR from a faction.");
 				return true;
 			}
-			    break;
-				$sender->sendMessage("§cUnknown Command. §aPlease use §b/f help");
-				return true;
 		        }
-                     }
+            }
         } else {
 	    $prefix = $this->plugin->prefs->get("pluginprefix");
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("$prefix Please run this command in game"));
