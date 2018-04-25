@@ -213,8 +213,26 @@ class FactionListener implements Listener {
         }
                }
     }
-    public function onMoveMAP(PlayerMoveEvent $event){
-        
+    public function onEnterEvent(PlayerMoveEvent $event){
+    $x = floor($event->getPlayer()->getX());
+    $y = floor($event->getPlayer()->getY());
+    $z = floor($event->getPlayer()->getZ());
+	    
+    if($this->plugin->isInPlot($event->getPlayer())) {
+	$faction = $this->plugin->getPlayerFaction();
+       $event->getPlayer()->addTitle("You have just entered", "A Faction's claim named: $faction", 40, 20, 40);
+    }
+    }
+    public function onLeaveClaim(PlayerMoveEvent $event){
+    $x = floor($event->getPlayer()->getX());
+    $y = floor($event->getPlayer()->getY());
+    $z = floor($event->getPlayer()->getZ());
+	       
+    if($this->plugin->drawPlot($eventt->getPlayer())) {
+    $event->getPlayer()->addTitle("You have just left", "A Faction's plot!", 40, 20, 40);
+    }
+    }
+    public function onMoveMAP(PlayerMoveEvent $event){    
     $x = floor($event->getPlayer()->getX());
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
