@@ -823,10 +823,10 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("§aFaction Warp set succesfully as $args[1]. §bNow, you can use: §3/f warp $args[1]", true));
 	    	    }TODO*/
 		    /////////////////////////////// F TITLES ///////////////////////////////
-		    /*TODO LIST*/
+		    //To-Do List.
 		    
 		    /////////////////////////////// F Titles upon entering / leaving a claim ///////////////////////////////
-		    /*TODO LIST*/
+		    /*TODO LIST - WIll be in FactionListener chat.
 		    
 		    /////////////////////////////// F RENAME ///////////////////////////////
 		    /*TODO LIST*/
