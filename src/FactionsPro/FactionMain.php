@@ -33,8 +33,7 @@ class FactionMain extends PluginBase implements Listener {
     const HEX_SYMBOL = "e29688";
     
     public function onLoad(): void{
-	    $prefix = $this->prefs->get("pluginprefix");
-	    $this->getLogger()->info("FactionsPro is being enabled. Prefix set to $prefix - If you want to change it, please go to the prefs.yml configurations.");
+	    $this->getLogger()->info("FactionsPro is being enabled - Please wait whilst our Loading system becomes visible.");
     }
     public function onEnable(): void{
         @mkdir($this->getDataFolder());
