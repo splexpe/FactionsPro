@@ -32,12 +32,16 @@ class FactionMain extends PluginBase implements Listener {
     
     const HEX_SYMBOL = "e29688";
     
+    public function onLoad(): void{
+	    $this->getlogger()->info("FactionsPro is being enabled. Prefix set to $prefix - If you want to change it, please go to the prefs.yml configurations.");
+    }
     public function onEnable(): void{
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
             $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
             fwrite($file, $txt);
+	    $this->getLogger()->info("FactionsPro has been enabled with success. If any errors popup after enabled, then let us know.");
         }
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
         $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
