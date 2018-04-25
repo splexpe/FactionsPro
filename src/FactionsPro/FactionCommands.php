@@ -1169,16 +1169,16 @@ class FactionCommands {
                     /////////////////////////////// ABOUT ///////////////////////////////
                     if(strtolower($args[0]) == "about" or strtolower($args[0]) == "info"){
                         $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
-                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE");
+                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is based from §6Void§bFactions§cPE");
 			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:");
-			$sender->sendMessage(TextFormat::GREEN . "§aFaction Build release: §5381");
-			$sender->sendMessage(TextFormat::GREEN . "§aBuild Tested and works on: §426-438");
+			$sender->sendMessage(TextFormat::GREEN . "§aFaction Build release: §5463");
+			$sender->sendMessage(TextFormat::GREEN . "§aBuild Tested and works on: §4426-438");
 			$sender->sendMessage(TextFormat::GREEN . "§aPlugin Link: §5Not showing due to self-leak information");
 			$sender->sendMessage(TextFormat::GREEN . "§aPlugin download: §5Not showing due to self-leak information.");
 			$sender->sendMessage(TextFormat::GREEN . "§aAuthor: §5VMPE Development Team");
 			$sender->sendMessage(TextFormat::GREEN . "§aOriginal Author: §5Tethered");
 			$sender->sendMessage(TextFormat::GREEN . "§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.");
-			$sender->sendMessage(TextFormat::GREEN . "§aVersion: §5v2.0.0-implement");
+			$sender->sendMessage(TextFormat::GREEN . "§aVersion: §5v2.0.0-implement-1");
 			$sender->sendMessage(TextFormat::GREEN . "§aPlugin Version: §5v2.0.0-implement");
 			$sender->sendMessage(TextFormat::GREEN . "§aSupported PMMP API's: §53.0.0-ALPHA10 - ALPHA14.");
                     }
