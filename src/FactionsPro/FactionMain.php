@@ -34,7 +34,7 @@ class FactionMain extends PluginBase implements Listener {
     
     public function onLoad(): void{
 	    $prefix = $this->prefs->get("pluginprefix");
-	    $this->getlogger()->info("FactionsPro is being enabled. Prefix set to $prefix - If you want to change it, please go to the prefs.yml configurations.");
+	    $this->getLogger()->info("FactionsPro is being enabled. Prefix set to $prefix - If you want to change it, please go to the prefs.yml configurations.");
     }
     public function onEnable(): void{
         @mkdir($this->getDataFolder());
