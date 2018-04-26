@@ -1389,7 +1389,7 @@ class FactionCommands {
 				$sender->sendMessage(TextFormat::GREEN . "§a/f who|facinfo <faction> - §7Other faction info.");
 				$sender->sendMessage(TextFormat::GREEN . "§a/f invite|inv <player> - §7Invite a player to your faction.");
 				$sender->sendMessage(TextFormat::GREEN . "§a/f kick|k <player> - §7Kicks a player from your faction.");
-				$sender->sendMessage(TextFormat::GREEN . "§af/ leader|transferleader <player> - §7Transfers leadership.");
+				$sender->sendMessage(TextFormat::GREEN . "§a/f leader|transferleader <player> - §7Transfers leadership.");
 				$sender->sendMessage(TextFormat::GREEN . "§a/f leave|quit - §7Leaves a faction.");
 				return true;
 			}
@@ -1416,7 +1416,7 @@ class FactionCommands {
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 5){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§55/7§2]");
-				$sender->sendMessage(TextFormat::RED . "\n§a/f chat|c - §7Toggles faction chat.");
+				$sender->sendMessage(TextFormat::RED . "§a/f chat|c - §7Toggles faction chat.");
 				$sender->sendMessage(TextFormat::RED . "§a/f allychat|ac - §7Toggles Ally chat.");
 				$sender->sendMessage(TextFormat::RED . "§a/f plotinfo|pinfo - §7Checks if a specific area is claimed or not.");
 				$sender->sendMessage(TextFormat::RED . "§a/f power|pw - §7Checks to see how much power you have.");
@@ -1426,7 +1426,7 @@ class FactionCommands {
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 6){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§56/7§2]");
-				$sender->sendMessage(TextFormat::RED . "\n§a/f listleader|ll <faction> - §7Checks who the leader is in a faction.");
+				$sender->sendMessage(TextFormat::RED . "§a/f listleader|ll <faction> - §7Checks who the leader is in a faction.");
 				$sender->sendMessage(TextFormat::RED . "§a/f listmembers|lm <faction> - §7Checks who the members are in a faction.");
 				$sender->sendMessage(TextFormat::RED . "§a/f listofficers|lo <faction> - §7Checks who the officers are in a faction.");
 				$sender->sendMessage(TextFormat::RED . "§a/f ourmembers|members - §7Checks who your faction members are.");
