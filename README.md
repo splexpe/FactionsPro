@@ -128,9 +128,9 @@ If you have a server that is running this plugin on, please open a new issue reg
 Thank you.
 
 
-## Copy right Notice
+## Copyright Notice
 If you're using this plugin, please do not edit the plugin to credit yourself only. If you do, we will mark it as copy right, and take down your server. What we mean by Not being able to edit the plugin, is for example: DOn't edit /f about to make it say "Author The LOOOL Team", as they never orinated it. What we did, is Edit the /f about to make us credit for something we did, but also credited the original author within the plugin (plugin.yml as well as the FactionCommands.php file), and made sure the original author got credited, as if it wasn't for him, we wouldn't have what we got today. One of the best factions plugins out there in MCPE. What is allowed, is allowing yourself to have its own help page, and what's in configurations, is allowed. Thank you.
 
 
-## What do we plan in the futre of this plugin?
+## What do we plan in the future of this plugin?
 We do plan on adding more Configurations for the Factions plugin, ex: More to do with Help pages, and making it even more customiseable than it already is.
