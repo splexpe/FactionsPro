@@ -151,7 +151,14 @@ class FactionCommands {
                             $this->plugin->updateAllies($factionName);
                             $this->plugin->setFactionPower($factionName, $this->plugin->prefs->get("TheDefaultPowerEveryFactionStartsWith"));
 			    $this->plugin->setBalance($factionName, $this->plugin->prefs->get("defaultFactionBalance"));
-                            $this->plugin->getServer()->broadcastMessage("§a$playerName §bhas created a faction named §c$factionName");
+			    $factioncreate = $this->plugin->prefs->get("FactionCreationBroadcast");
+			  $sender->sendMessage(str_replace([
+			"%PLAYER%",
+			"%FACTION%"
+			], [
+			$sender->getName(),
+			$factionName
+			  ],  $this->plugin->getServer()->broadcastMessage("$factioncreate")));
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour Faction named §a$factionName §bhas been created. §6Next, use /f desc to make a faction description.", true));
 			    var_dump($this->plugin->db->query("SELECT * FROM balance;")->fetchArray(SQLITE3_ASSOC));
                             return true;
@@ -300,7 +307,7 @@ class FactionCommands {
                             return true;
                         }
                         if (!$this->plugin->isOfficer($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$player §cis already a Member of this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis already a Member of this faction"));
                             return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
@@ -694,7 +701,14 @@ class FactionCommands {
                                 $this->plugin->db->query("DELETE FROM motd WHERE faction='$faction';");
                                 $this->plugin->db->query("DELETE FROM home WHERE faction='$faction';");
 			        $this->plugin->db->query("DELETE FROM balance WHERE faction='$faction';");
-		                $this->plugin->getServer()->broadcastMessage("§aThe player: §2$playerName §awho owned §3$faction §bhas been disbanded!");
+			        $factiondel = $this->plugin->prefs->get("FactionDisbandBroadcast");
+			        $sender->sendMessage(str_replace([
+			"%PLAYER%",
+			"%FACTION%"
+			], [
+			$sender->getName(),
+			$factionName
+			  ],               $this->plugin->getServer()->broadcastMessage("$factiondel")));
                                 $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe Faction named: §a$faction §bhas been successfully disbanded and the faction plot, and Overclaims are unclaimed.", true));
                             } else {
                                 $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou are not leader!"));
