@@ -2,6 +2,9 @@
 
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
+## NOTICE
+## There may be some broken features implemented in this branch, so don't expect it to work. If it does work, then great, but if any features / implementations do not work, please feel free to open a new issue. We'll always be glad to help solve the issue.
+
 ## Features
 * All the features from the good 'ol' days are now back, and working with PMMP Latest APi's.
 
@@ -30,6 +33,16 @@ A modified plugin, better than ever. Being updated frequently. Edited by the VMP
 * Code revamp.
 
 * Branches for different options!
+
+* New Implementations / features! Working on super new exclusive features for free! No payments required!
+
+* We try fixing bugs / glitches. We never give up like some developers out there do.
+
+* Nice new features / implementations arriving here at FactionsPro almost all the time! - I said almost, not all the time! :P
+
+* Good thing is - If a feature / implementation is broken, we either try and fix / patch it or we revert it - If there's no way of fixing that bug / glitch.
+
+* Customiseable commands to make it your own along with: Messages, names, and more. That way, you can make the plugin just like your own. :P
 
 * And still updating as we speak!
 
@@ -113,3 +126,11 @@ If you want anything else added, please open a issue. Thank you.
 ## Servers that are using this plugin:
 If you have a server that is running this plugin on, please open a new issue regarding the IP and port. I'll check it out to make sure you're using this plugin into your server. If your server has reached its requirements, it will be added onto this tab right here.
 Thank you.
+
+
+## Copy right Notice
+If you're using this plugin, please do not edit the plugin to credit yourself only. If you do, we will mark it as copy right, and take down your server. What we mean by Not being able to edit the plugin, is for example: DOn't edit /f about to make it say "Author The LOOOL Team", as they never orinated it. What we did, is Edit the /f about to make us credit for something we did, but also credited the original author within the plugin (plugin.yml as well as the FactionCommands.php file), and made sure the original author got credited, as if it wasn't for him, we wouldn't have what we got today. One of the best factions plugins out there in MCPE. What is allowed, is allowing yourself to have its own help page, and what's in configurations, is allowed. Thank you.
+
+
+## What do we plan in the futre of this plugin?
+We do plan on adding more Configurations for the Factions plugin, ex: More to do with Help pages, and making it even more customiseable than it already is.
