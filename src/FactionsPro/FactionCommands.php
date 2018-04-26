@@ -1331,13 +1331,14 @@ class FactionCommands {
                         $numPlayers = $this->plugin->getNumberOfPlayers($faction);
 			$maxPlayers = $this->plugin->prefs->get("MaxPlayersPerFaction");
 			$balance = $this->plugin->getBalance($faction);
-                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§l$faction Information§r§2]§3_____" . TextFormat::RESET);
+			$factioninfo = $this->plugin->prefs->get("FactionInfo");
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::RESET . "$factioninfo" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§cLeader Name: " . TextFormat::YELLOW . "§5$leader" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§dPlayers: " . TextFormat::LIGHT_PURPLE . "§5$numPlayers/$maxPlayers" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§eStrength " . TextFormat::RED . "§d$power" . " §5STR" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§aDescription: " . TextFormat::AQUA . TextFormat::UNDERLINE . "§5$message" . TextFormat::RESET);
 			$sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Balance: " . TextFormat::AQUA . "§5$" . TextFormat::DARK_PURPLE . "$balance" . TextFormat::RESET);
-                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§l$faction Information§2]§3_____§r" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::RESET . "$factioninfo" . TextFormat::RESET);
 		    } else {
                         if (!$this->plugin->isInFaction($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this!"));
@@ -1352,14 +1353,15 @@ class FactionCommands {
                         $numPlayers = $this->plugin->getNumberOfPlayers($faction);
 			$maxPlayers = $this->plugin->prefs->get("MaxPlayersPerFaction");
 			$balance = $this->plugin->getBalance($faction);
-                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§lYour Faction Information§r§2]§3_____" . TextFormat::RESET);
+			$myfacmessage = $this->plugin->prefs->get("MyFactionMessage");
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::RESET . "$myfacmessage" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Name: " . TextFormat::GREEN . "§5$faction" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§cLeader Name: " . TextFormat::YELLOW . "§5$leader" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§dPlayers: " . TextFormat::LIGHT_PURPLE . "§5$numPlayers/$maxPlayers" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§eStrength: " . TextFormat::RED . "§d$power" . " §5STR" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§aDescription: " . TextFormat::AQUA . TextFormat::UNDERLINE . "§b$message" . TextFormat::RESET);
 			$sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Balance: " . TextFormat::AQUA . "§5$" . TextFormat::DARK_PURPLE . "$balance" . TextFormat::RESET);
-                        $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§3_____§2[§5§lYour Faction Information§r§2]§3_____" . TextFormat::RESET);
+                        $sender->sendMessage(TextFormat::GOLD . TextFormat::RESET . "$myfacmessage" . TextFormat::RESET);
                     }
                     return true;
                 }
