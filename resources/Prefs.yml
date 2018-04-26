@@ -23,7 +23,7 @@ PlayersNeededInFactionToClaimAPlot: 5
 # The amount of players required to claim a faction plot. Default: 5. You can set this to 0 to disable.
 
 PowerNeededToClaimAPlot: 1000
-The amount of power required to claim a faction plot. Default: 1000. You can set this to 0 to disable.
+# The amount of power required to claim a faction plot. Default: 1000. You can set this to 0 to disable.
 
 PowerNeededToSetOrUpdateAHome: 250
 # ADDED BACK - The power which is needed th set / update a home. Default: 250. Select 0 to disable.
