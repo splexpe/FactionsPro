@@ -27,8 +27,9 @@ class FactionListener implements Listener {
 		//MOTD Check
 		if($this->plugin->motdWaiting($playerName)) {
 			$motdtime = $this->plugin->prefs->get("MOTDTime");
+			$preifx = $this->plugin->prefs->get("pluginprefix");
 			if(time() - $this->plugin->getMOTDTime($playerName) > $motdtime) {
-				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§cTimed out. §bPlease use: §3/f desc again."));
+				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("$prefix §cTimed out. §bPlease use: §3/f desc again."));
 				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$playerName';");
 				$PCE->setCancelled(true);
 				return true;
@@ -37,7 +38,8 @@ class FactionListener implements Listener {
 				$faction = $this->plugin->getPlayerFaction($playerName);
 				$this->plugin->setMOTD($faction, $playerName, $motd);
 				$PCE->setCancelled(true);
-				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§dSuccessfully updated the faction description. Type §5/f who", true));
+				$prefix = $this->plugin->prefs->get("pluginprefix");
+				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("$prefix §dSuccessfully updated the faction description. Type §5/f who", true));
 			}
 		}
 		if(isset($this->plugin->factionChatActive[$playerName])){
@@ -213,7 +215,7 @@ class FactionListener implements Listener {
         }
                }
     }
-    public function onEnterEvent(PlayerMoveEvent $event){
+    public function onEnterEvent(PlayerMoveEvent $event){ //Upon entering claim event.
     $x = floor($event->getPlayer()->getX());
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
@@ -223,7 +225,7 @@ class FactionListener implements Listener {
        $event->getPlayer()->addTitle("You have just entered", "A Faction's claim named: $faction", 40, 20, 40);
     }
     }
-    public function onLeaveClaim(PlayerMoveEvent $event){
+    public function onLeaveClaim(PlayerMoveEvent $event){ //Upon leaving claim event.
     $x = floor($event->getPlayer()->getX());
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
