@@ -230,7 +230,7 @@ class FactionListener implements Listener {
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
 	       
-    if($this->plugin->drawPlot($event->getPlayer(), $faction, $x, $y, $z, $event->getPlayer()->getLevel()->getName(), $this->plugin->prefs->get("PlotSize")) {
+    if($this->plugin->drawPlot($event->getPlayer(), $faction, $x, $y, $z, $event->getPlayer()->getLevel()->getName(), $this->plugin->prefs->get("PlotSize"))) {
     $event->getPlayer()->addTitle("You have just left", "A Faction's plot!", 40, 20, 40);
     }
     }
