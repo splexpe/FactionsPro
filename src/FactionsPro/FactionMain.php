@@ -37,14 +37,10 @@ class FactionMain extends PluginBase implements Listener {
     }
     public function onEnable(): void{
         @mkdir($this->getDataFolder());
-	if(!file_exists($this->getDataFolder() . "Prefs.yml")){
-            $this->saveDefaultConfig();
-	}
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
             $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
             fwrite($file, $txt);
-	    $prefs = $this->prefs;
 	    $this->getLogger()->info("FactionsPro has been enabled with success. If any errors popup after enabled, then let us know.");
         }
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
@@ -65,7 +61,59 @@ class FactionMain extends PluginBase implements Listener {
 	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
 	}
         $this->fCommand = new FactionCommands($this);
-	$this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
+        $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
+            "MaxFactionNameLength" => 15,
+            "MaxPlayersPerFaction" => 30,
+            "OnlyLeadersAndOfficersCanInvite" => true,
+            "OfficersCanClaim" => false,
+	    "ClaimingEnabled" => true,
+            "PlotSize" => 16,
+            "PlayersNeededInFactionToClaimAPlot" => 5,
+            "PowerNeededToClaimAPlot" => 1000,
+            "PowerNeededToSetOrUpdateAHome" => 250,
+            "PowerGainedPerPlayerInFaction" => 50,
+            "PowerGainedPerKillingAnEnemy" => 10,
+            "PowerGainedPerAlly" => 100,
+            "AllyLimitPerFaction" => 5,
+            "TheDefaultPowerEveryFactionStartsWith" => 0,
+	    "EnableOverClaim" => true,
+            "ClaimWorlds" => [],
+            "AllowChat" => true,
+            "AllowFactionPvp" => false,
+            "AllowAlliedPvp" => false,
+            "FactionCreationBroadcast" => "§a%PLAYER% §bhas created a faction named §c%FACTION%",
+            "FactionDisbandBroadcast" => "§aThe player: §2%PLAYER% §awho owned §3%FACTION% §bhas been disbanded!",
+            "defaultFactionBalance" => 0,
+	    "MoneyGainedPerPlayerInFaction" => 20,
+	    "MoneyGainedPerAlly" => 50,
+            "MoneyNeededToClaimAPlot" => 0,
+	    "MOTDTime" => 60,
+	    "InviteTime" => 60,
+	    "AllyTimes" => 60,
+	    "OurAllies" => "Your allies",
+	    "TopMoney" => "Top 10 Richest factions",
+	    "TopSTR" => "Top 10 BEST Factions",
+	    "EnoughToOverClaim" => "§bYou have enough STR power to overclaim this plot! Now, Type §3/f overclaim to overclaim this plot if you want.",
+	    "NotEnoughToOC" => "§cI'm sorry, but you do not have enough STR to overclaim this land.",
+	    "DisabledMessage" => "§cThis command §cis disabled!",
+	    "MyFactionMessage" => "§3_____§2[§5§lYour Faction Information§r§2]§3_____",
+	    "FactionInfo" => "§3_____§2[§5§lFaction Information§r§2]§3_____",
+	    "ServerName" => "§6Void§bFactions§cPE",
+                "pluginprefix" => "§7[§6Void§bFactions§cPE§7]",
+                "spawnerPrices" => [
+                	"skeleton" => 500,
+                	"pig" => 200,
+                	"chicken" => 100,
+                	"iron golem" => 5000,
+                	"zombie" => 800,
+                	"creeper" => 4000,
+                	"cow" => 700,
+                	"spider" => 500,
+                	"magma" => 10000,
+                	"ghast" => 10000,
+                	"blaze" => 15000,
+			"empty" => 100
+                ],
 		));
 		$this->prefix = $this->prefs->get("pluginprefix", $this->prefix);
 		if(sqrt($size = $this->prefs->get("PlotSize")) % 2 !== 0){
