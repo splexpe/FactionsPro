@@ -7,11 +7,9 @@ use pocketmine\event\block\{BlockPlaceEvent, BlockBreakEvent};
 use pocketmine\Player;
 use pocketmine\event\entity\{EntityDamageEvent, EntityDamageByEntityEvent};
 use EssentialsPE\BaseFiles\BaseAPI;
-use pocketmine\tile\MobSpawner;
+use pocketmine\block\{MonsterSpawner, Block};
 use pocketmine\utils\{Config, TextFormat};
-use pocketmine\scheduler\PluginTask;
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
-use pocketmine\block\Block;
 
 class FactionListener implements Listener {
 	
@@ -94,6 +92,8 @@ class FactionListener implements Listener {
 	}
 	
 	public function onInteract(PlayerInteractEvent $e){
+		$name = $player->getName();
+		$player = $e->getPlayer();
 		if($this->plugin->isInPlot($e->getPlayer())){
 			if(!$this->plugin->inOwnPlot($e->getPlayer())){
 				if($e->getPlayer()->isCreative()){
@@ -113,6 +113,7 @@ class FactionListener implements Listener {
 		$x = $event->getBlock()->getX();
 		$y = $event->getBlock()->getY();
 		$z = $event->getBlock()->getZ();
+		$player = $event->getPlayer();
 		if($this->plugin->pointIsInPlot($x, $z)){
 			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())){
 				return true;
@@ -128,6 +129,7 @@ class FactionListener implements Listener {
       		$x = $event->getBlock()->getX();
 		$y = $event->getBlock()->getY();
      		$z = $event->getBlock()->getZ();
+		$player = $event->getPlayer();
 		if($this->plugin->pointIsInPlot($x, $z)) {
 			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())) {
 				return true;
@@ -219,6 +221,7 @@ class FactionListener implements Listener {
     $x = floor($event->getPlayer()->getX());
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
+    $player = $event->getPlayer();
 	    
     if($this->plugin->isInPlot($event->getPlayer())) {
 	$faction = $this->plugin->getPlayerFaction();
@@ -229,6 +232,8 @@ class FactionListener implements Listener {
     $x = floor($event->getPlayer()->getX());
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
+    $faction = $this->plugin->getPlayerFaction();
+    $player = $event->getPlayer();
 	       
     if($this->plugin->drawPlot($event->getPlayer(), $faction, $x, $y, $z, $event->getPlayer()->getLevel()->getName(), $this->plugin->prefs->get("PlotSize"))) {
     $event->getPlayer()->addTitle("You have just left", "A Faction's plot!", 40, 20, 40);
@@ -238,6 +243,7 @@ class FactionListener implements Listener {
     $x = floor($event->getPlayer()->getX());
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
+    $player = $event->getPlayer();
        $Faction = $this->plugin->factionFromPoint($x,$z);
            $asciiCompass = self::getASCIICompass($event->getPlayer()->getYaw(), TextFormat::RED, TextFormat::GREEN);
              $compass = "     " . $asciiCompass[0] . "\n     " . $asciiCompass[1] . "\n     " . $asciiCompass[2] . "\n";
