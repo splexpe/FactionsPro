@@ -44,7 +44,7 @@ class FactionMain extends PluginBase implements Listener {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
             $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
             fwrite($file, $txt);
-	    $prefs = $this->prefs;
+	    $prefs = $this->prefs->get;
 	    $this->getLogger()->info("FactionsPro has been enabled with success. If any errors popup after enabled, then let us know.");
         }
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
