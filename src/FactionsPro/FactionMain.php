@@ -37,10 +37,14 @@ class FactionMain extends PluginBase implements Listener {
     }
     public function onEnable(): void{
         @mkdir($this->getDataFolder());
+	if(!file_exists($this->getDataFolder() . "Prefs.yml")){
+            $this->saveDefaultConfig();
+	}
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
             $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
             fwrite($file, $txt);
+	    $prefs = $this->prefs;
 	    $this->getLogger()->info("FactionsPro has been enabled with success. If any errors popup after enabled, then let us know.");
         }
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
@@ -61,8 +65,6 @@ class FactionMain extends PluginBase implements Listener {
 	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
 	}
         $this->fCommand = new FactionCommands($this);
-        $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
-		));
 		$this->prefix = $this->prefs->get("pluginprefix", $this->prefix);
 		if(sqrt($size = $this->prefs->get("PlotSize")) % 2 !== 0){
 			$this->getLogger()->notice("Square Root Of Plot Size ($size) Must Not Be An unknown Number in the plugin! (The size was Currently: ".(sqrt($size = $this->prefs->get("PlotSize"))).")");
