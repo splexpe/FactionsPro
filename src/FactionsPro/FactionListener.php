@@ -222,9 +222,9 @@ class FactionListener implements Listener {
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
     $player = $event->getPlayer();
-	    
+  
     if($this->plugin->isInPlot($event->getPlayer())) {
-	$faction = $this->plugin->getPlayerFaction();
+	$faction = $this->plugin->getPlayerFaction($event->getPlayer());
        $event->getPlayer()->addTitle("You have just entered", "A Faction's claim named: $faction", 40, 20, 40);
     }
     }
@@ -232,8 +232,9 @@ class FactionListener implements Listener {
     $x = floor($event->getPlayer()->getX());
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
-    $faction = $this->plugin->getPlayerFaction();
     $player = $event->getPlayer();
+    $faction = $this->plugin->getPlayerFaction($event->getPlayer());
+   
 	       
     if($this->plugin->drawPlot($event->getPlayer(), $faction, $x, $y, $z, $event->getPlayer()->getLevel()->getName(), $this->plugin->prefs->get("PlotSize"))) {
     $event->getPlayer()->addTitle("You have just left", "A Faction's plot!", 40, 20, 40);
