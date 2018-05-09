@@ -119,7 +119,7 @@ A modified plugin, better than ever. Being updated frequently. Edited by the VMP
 
 ## TO-DO LIST
 Check out the to-do list here:
-https://github.com/TheFixerDevelopment/FactionsPro/issues/16
+https://github.com/TheFixerDevelopment/FactionsPro/issues/24
 
 If you want anything else added, please open a issue. Thank you.
 
