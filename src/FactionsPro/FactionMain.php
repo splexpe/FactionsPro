@@ -354,7 +354,7 @@ class FactionMain extends PluginBase implements Listener {
     }
     public function drawPlot($sender, $faction, $x, $y, $z, $level, $size) {
         $arm = ($size - 1) / 2;
-        $block = new Snow();
+        $block = new Air();
         if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) {
             $claimedBy = $this->factionFromPoint($x, $z);
             $power_claimedBy = $this->getFactionPower($claimedBy);
