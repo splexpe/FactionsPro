@@ -60,6 +60,13 @@ class FactionMain extends PluginBase implements Listener {
 	if (!$this->economyapi) {
 	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
 	}
+	if(!file_exists($this->getDataFolder()."lang/")){ 
+                  @mkdir($this->getDataFolder()."lang/"); 
+                      }
+                  if(!is_file($this->getDataFolder()."lang/Messages.yml")){
+                  $this->saveResource("lang/Messages.yml"); 
+                  }
+		 $this->msg = new Config($this->getDataFolder() . "lang/Messages.yml", Config::YAML);
         $this->fCommand = new FactionCommands($this);
         $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
             "MaxFactionNameLength" => 15,
