@@ -15,7 +15,7 @@ class ConfigManager {
         $this->config = $config;
         $prefix = $this->plugin->prefs->get("prefix");
         $this->plugin = $plugin;
-        $this->messages = new Config($this->plugin->getDataFolder()."lang/messages", Config::YAML);
+        $this->messages = new Config($this->plugin->getDataFolder()."lang/Messages", Config::YAML);
     }
     public function setUsage($usage){
         $this->messages->setNested("helpmessage", $usage);
