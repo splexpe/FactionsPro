@@ -68,52 +68,7 @@ class FactionMain extends PluginBase implements Listener {
                   }
 		 $this->messages = new Config($this->getDataFolder() . "lang/Messages.yml", Config::YAML);
         $this->fCommand = new FactionCommands($this);
-        $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
-            "MaxFactionNameLength" => 15,
-            "MaxPlayersPerFaction" => 30,
-            "OnlyLeadersAndOfficersCanInvite" => true,
-            "OfficersCanClaim" => false,
-	    "ClaimingEnabled" => true,
-            "PlotSize" => 16,
-            "PlayersNeededInFactionToClaimAPlot" => 5,
-            "PowerNeededToClaimAPlot" => 1000,
-            "PowerNeededToSetOrUpdateAHome" => 250,
-            "PowerGainedPerPlayerInFaction" => 50,
-            "PowerGainedPerKillingAnEnemy" => 10,
-            "PowerGainedPerAlly" => 100,
-            "AllyLimitPerFaction" => 5,
-            "TheDefaultPowerEveryFactionStartsWith" => 0,
-	    "EnableOverClaim" => true,
-            "ClaimWorlds" => [],
-            "AllowChat" => true,
-            "AllowFactionPvp" => false,
-            "AllowAlliedPvp" => false,
-            "FactionCreationBroadcast" => "§a%PLAYER% §bhas created a faction named §c%FACTION%",
-            "FactionDisbandBroadcast" => "§aThe player: §2%PLAYER% §awho owned §3%FACTION% §bhas been disbanded!",
-            "defaultFactionBalance" => 0,
-	    "MoneyGainedPerPlayerInFaction" => 20,
-	    "MoneyGainedPerAlly" => 50,
-            "MoneyNeededToClaimAPlot" => 0,
-	    "MOTDTime" => 60,
-	    "InviteTime" => 60,
-	    "AllyTimes" => 60,
-	    "ServerName" => "§6Void§bFactions§cPE",
-                "pluginprefix" => "§7[§6Void§bFactions§cPE§7]",
-                "spawnerPrices" => [
-                	"skeleton" => 500,
-                	"pig" => 200,
-                	"chicken" => 100,
-                	"iron golem" => 5000,
-                	"zombie" => 800,
-                	"creeper" => 4000,
-                	"cow" => 700,
-                	"spider" => 500,
-                	"magma" => 10000,
-                	"ghast" => 10000,
-                	"blaze" => 15000,
-			"empty" => 100
-                ],
-		));
+        $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", Config::YAML);
 		$this->prefix = $this->prefs->get("pluginprefix", $this->prefix);
 		if(sqrt($size = $this->prefs->get("PlotSize")) % 2 !== 0){
 			$this->getLogger()->notice("Square Root Of Plot Size ($size) Must Not Be An unknown Number in the plugin! (The size was Currently: ".(sqrt($size = $this->prefs->get("PlotSize"))).")");
