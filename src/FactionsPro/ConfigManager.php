@@ -17,6 +17,10 @@ class ConfigManager {
         $this->plugin = $plugin;
         $this->messages = new Config($this->plugin->getDataFolder()."lang/Messages", Config::YAML);
     }
+    public function setConsole($only){
+        $this->messages->setNested("consolemessage", $only);
+        $this->messages->save();
+    }
     public function setUsage($usage){
         $this->messages->setNested("helpmessage", $usage);
         $this->messages->setNested("warcommand", $usage);
