@@ -15,8 +15,8 @@ class ConfigManager {
         $this->config = $config;
         $prefix = $this->plugin->prefs->get("pluginprefix");
         $this->plugin = $plugin;
-        $this-prefs = new Config($this->plugin->getDataFolder()."Prefs", Config::YAML);
-        $this->messages = new Config($this->plugin->getDataFolder()."lang/Messages", Config::YAML);
+        $this-prefs = new Config($this->plugin->getDataFolder() . "Prefs.yml", Config::YAML);
+        $this->messages = new Config($this->plugin->getDataFolder() . "lang/Messages", Config::YAML);
     }
     public function setPrefs($prefs){
              $this->prefs->setNested("MaxFactionNameLength", $prefs);
