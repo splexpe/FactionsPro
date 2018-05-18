@@ -164,7 +164,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->isFactionFull($this->plugin->getPlayerFaction($playerName))) {
-                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("pluginprefix"). $this->plugin->messages->get("invite_facfull")));
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("pluginprefix "). $this->plugin->messages->get("invite_facfull")));
                             return true;
                         }
                         $invited = $this->plugin->getServer()->getPlayer($args[1]);
@@ -266,7 +266,7 @@ class FactionCommands {
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
-                        $stmt->bindValue(":player", $player);
+                        $stmt->bindValue(":player", $args[1]);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
@@ -292,7 +292,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named: §4$player §cis not in this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named: §4$args[1] §cis not in this faction"));
                             return true;
                         }
                         if ($args[1] == $sender->getName()) {
@@ -300,12 +300,12 @@ class FactionCommands {
                             return true;
                         }
                         if (!$this->plugin->isOfficer($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$player §cis already a Member of this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis already a Member of this faction"));
                             return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
-                        $stmt->bindValue(":player", $player);
+                        $stmt->bindValue(":player", $args[1]);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
@@ -340,7 +340,7 @@ class FactionCommands {
                         }
                         $kicked = $this->plugin->getServer()->getPlayer($args[1]);
                         $factionName = $this->plugin->getPlayerFaction($playerName);
-                        $this->plugin->db->query("DELETE FROM master WHERE player='$player';");
+                        $this->plugin->db->query("DELETE FROM master WHERE player='$kicked';");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$kicked", true));
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			$this->plugin->takeFromBalance($factionName, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
@@ -1182,7 +1182,7 @@ class FactionCommands {
 			$sender->sendMessage(TextFormat::GREEN . "§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.");
 			$sender->sendMessage(TextFormat::GREEN . "§aVersion: §5v2.0.0-implement-1");
 			$sender->sendMessage(TextFormat::GREEN . "§aPlugin Version: §5v2.0.0-implement");
-			$sender->sendMessage(TextFormat::GREEN . "§aSupported PMMP API's: §53.0.0-ALPHA10 - ALPHA14.");
+			$sender->sendMessage(TextFormat::GREEN . "§aSupported PMMP API's: §53.0.0-ALPHA10 - ALPHA15.");
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
 		    
@@ -1464,7 +1464,7 @@ class FactionCommands {
             }
         } else {
 	    $prefix = $this->plugin->prefs->get("pluginprefix");
-            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage($this->plugin->prefs->get("pluginprefix"). $this->plugin->messages->get("consolemessage")));
+            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage($this->plugin->prefs->get("pluginprefix "). $this->plugin->messages->get("consolemessage")));
         }
         return true;
     }
