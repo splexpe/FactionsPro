@@ -31,7 +31,7 @@ class FactionCommands {
 	    $prefix = $this->plugin->prefs->get("pluginprefix"); //Prefix configurations.
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
-                    $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use §3/f help §6for a list of commands"));
+                    $sender->sendMessage($this->plugin->formatMessage("$prefix."$this->plugin->messages->get("helpmessage")));
                     return true;
                 }
                     ///////////////////////////////// WAR /////////////////////////////////
@@ -164,7 +164,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->isFactionFull($this->plugin->getPlayerFaction($playerName))) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThis faction is full, please kick players to make room"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix" $this->plugin->messages->get("invite_facfull")));
                             return true;
                         }
                         $invited = $this->plugin->getServer()->getPlayer($args[1]);
@@ -1465,7 +1465,7 @@ class FactionCommands {
             }
         } else {
 	    $prefix = $this->plugin->prefs->get("pluginprefix");
-            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("$prefix Please run this command in game"));
+            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("$prefix" $this->plugin->messages->get("consolemessage")));
         }
         return true;
     }
