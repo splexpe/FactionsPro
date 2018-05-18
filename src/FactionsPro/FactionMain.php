@@ -68,6 +68,9 @@ class FactionMain extends PluginBase implements Listener {
                   }
 		 $this->messages = new Config($this->getDataFolder() . "lang/Messages.yml", Config::YAML);
         $this->fCommand = new FactionCommands($this);
+	    if(!is_file($this->getDataFolder()."Prefs.yml")){
+		    $this->saveResource("Prefs.yml");
+	    }
         $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", Config::YAML);
 		$this->prefix = $this->prefs->get("pluginprefix", $this->prefix);
 		if(sqrt($size = $this->prefs->get("PlotSize")) % 2 !== 0){
