@@ -23,7 +23,7 @@ class ConfigManager {
              $this->prefs->setNested("MaxPlayersPerFaction", $prefs);
              $this->prefs->setNested("OnlyLeadersAndOfficersCanInvite", $prefs);
              $this->prefs->setNested("OfficersCanClaim", $prefs);
-	         $this->prefs->setNested("ClaimingEnabled", $prefs);
+	     $this->prefs->setNested("ClaimingEnabled", $prefs);
              $this->prefs->setNested("PlotSize", $prefs);
              $this->prefs->setNested("PlayersNeededInFactionToClaimAPlot", $prefs);
              $this->prefs->setNested("PowerNeededToClaimAPlot", $prefs);
@@ -33,7 +33,7 @@ class ConfigManager {
              $this->prefs->setNested("PowerGainedPerAlly", $prefs);
              $this->prefs->setNested("AllyLimitPerFaction", $prefs);
              $this->prefs->setNested("TheDefaultPowerEveryFactionStartsWith", $prefs);
-	         $this->prefs->setNested("EnableOverClaim", $prefs);
+	     $this->prefs->setNested("EnableOverClaim", $prefs);
              $this->prefs->setNested("ClaimWorlds", $prefs);
              $this->prefs->setNested("AllowChat", $prefs);
              $this->prefs->setNested("AllowFactionPvp", $prefs);
@@ -41,13 +41,13 @@ class ConfigManager {
              $this->messages->setNested("FactionCreationBroadcast", $prefs);
              $this->messages->setNested("FactionDisbandBroadcast", $prefs);
              $this->prefs->setNested("defaultFactionBalance", $prefs);
-	         $this->prefs->setNested("MoneyGainedPerPlayerInFaction", $prefs);
-	         $this->prefs->setNested("MoneyGainedPerAlly", $prefs);
+	     $this->prefs->setNested("MoneyGainedPerPlayerInFaction", $prefs);
+	     $this->prefs->setNested("MoneyGainedPerAlly", $prefs);
              $this->prefs->setNested("MoneyNeededToClaimAPlot", $prefs);
-	         $this->prefs->setNested("MOTDTime", $prefs);
-	         $this->prefs->setNested("InviteTime", $prefs);
-	         $this->prefs->setNested("AllyTimes", $prefs);
-	         $this->prefs->setNested("ServerName", $prefs);
+	     $this->prefs->setNested("MOTDTime", $prefs);
+	     $this->prefs->setNested("InviteTime", $prefs);
+	     $this->prefs->setNested("AllyTimes", $prefs);
+	     $this->prefs->setNested("ServerName", $prefs);
              $this->prefs->setNested("pluginprefix", $prefs);
              //Spawner configurations:
              $this->prefs->setNested("skeleton", $prefs);
@@ -62,7 +62,7 @@ class ConfigManager {
              $this->prefs->setNested("ghast", $prefs);
              $this->prefs->setNested("blaze", $prefs);
              $this->prefs->setNested("empty", $prefs);
-			 $this->prefs->save();
+	     $this->prefs->save();
     }
     public function setConsole($only){
         $this->messages->setNested("consolemessage", $only);
