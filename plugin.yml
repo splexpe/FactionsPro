@@ -1,11 +1,10 @@
 ---
 name: FactionsPro
-author: Tethered_
-description: Lets Bring Back FactionsPro The Better Way!
-version: 2.5.0-BETA
+author: Tethered_. edited by VMPE Development Team
+description: Lets Bring Back FactionsPro The Better Way! [old branch]
+version: 1.0.0-old
 main: FactionsPro\FactionMain
-api:
-- 3.0.0-ALPHA11
+api: [3.0.0-ALPHA11, 3.0.0-ALPHA12, 3.0.0-ALPHA13, 3.0.0-ALPHA14, 3.0.0-ALPHA15]
 commands:
   f:
     permission: f.command
