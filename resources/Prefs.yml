@@ -81,36 +81,14 @@ AllowFactionPvp: false
 AllowAlliedPvp: false
 # Allow allies to PvP each other? Options: false | true - Default: false
 
-FactionCreationBroadcast: "§a%PLAYER% §bhas created a faction named §c%FACTION%"
-# The faction broadcast creation message. We plan on adding whether it should be broadcasted either true, or false soon.
-
-FactionDisbandBroadcast: "§aThe player: §2%PLAYER% §awho owned §3%FACTION% §bhas been disbanded!"
-# The faction broadcast Deletion message. We plan on adding whether it should be broadcasted either true, or false soon.
-
 defaultFactionBalance: 0
 # NEW: When creating a faction, how much Money should a faction have by default? Default: 0.
-
-TopSTR: "§5§lTop 10 BEST Factions"
-# NEW: Customise /f top str list to your own.
-# Use § color code.
-
-TopMoney: "§5§lTop 10 RICHEST Factions"
-# NEW: Customise /f top money message to your own.
-# Use § for color code.
-
-FactionInfo: "§3_____§2[§5§lFaction Information§r§2]§3_____"
-# The message when you type /f who <faction> and the title message of what it says. You can configure this to whatever you want.
-# Use § for color code.
-
-MyFactionInfo: "§3_____§2[§5§lYour Faction Information§r§2]§3_____"
-# The message when you type /f who and the title message of what it says. You can configure this to whatever you want.
-# Use § color code.
 
 pluginprefix: "§7[§6Void§bFactions§cPE§7]"
 # Faction Commands prefix, is here! Use this prefix for any of your commands! Only one option which changes everything!
 # Use § for color code.
 
-spawnerPrices:
+## SpawnerPrices:
 skeleton: 500
 pig: 200
 chicken: 100
