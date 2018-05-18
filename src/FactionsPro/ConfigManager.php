@@ -13,9 +13,56 @@ class ConfigManager {
     
     public function __construct($config, FactionMain $plugin) {
         $this->config = $config;
-        $prefix = $this->plugin->prefs->get("prefix");
+        $prefix = $this->plugin->prefs->get("pluginprefix");
         $this->plugin = $plugin;
+        $this-prefs = new Config($this->plugin->getDataFolder()."Prefs", Config::YAML);
         $this->messages = new Config($this->plugin->getDataFolder()."lang/Messages", Config::YAML);
+    }
+    public function setPrefs($prefs){
+             $this->prefs->setNested("MaxFactionNameLength", $prefs);
+             $this->prefs->setNested("MaxPlayersPerFaction", $prefs);
+             $this->prefs->setNested("OnlyLeadersAndOfficersCanInvite", $prefs);
+             $this->prefs->setNested("OfficersCanClaim", $prefs);
+	         $this->prefs->setNested("ClaimingEnabled", $prefs);
+             $this->prefs->setNested("PlotSize", $prefs);
+             $this->prefs->setNested("PlayersNeededInFactionToClaimAPlot", $prefs);
+             $this->prefs->setNested("PowerNeededToClaimAPlot", $prefs);
+             $this->prefs->setNested("PowerNeededToSetOrUpdateAHome", $prefs);
+             $this->prefs->setNested("PowerGainedPerPlayerInFaction", $prefs);
+             $this->prefs->setNested("PowerGainedPerKillingAnEnemy", $prefs);
+             $this->prefs->setNested("PowerGainedPerAlly", $prefs);
+             $this->prefs->setNested("AllyLimitPerFaction", $prefs);
+             $this->prefs->setNested("TheDefaultPowerEveryFactionStartsWith", $prefs);
+	         $this->prefs->setNested("EnableOverClaim", $prefs);
+             $this->prefs->setNested("ClaimWorlds", $prefs);
+             $this->prefs->setNested("AllowChat", $prefs);
+             $this->prefs->setNested("AllowFactionPvp", $prefs);
+             $this->prefs->setNested("AllowAlliedPvp", $prefs);
+             $this->messages->setNested("FactionCreationBroadcast", $prefs);
+             $this->messages->setNested("FactionDisbandBroadcast", $prefs);
+             $this->prefs->setNested("defaultFactionBalance", $prefs);
+	         $this->prefs->setNested("MoneyGainedPerPlayerInFaction", $prefs);
+	         $this->prefs->setNested("MoneyGainedPerAlly", $prefs);
+             $this->prefs->setNested("MoneyNeededToClaimAPlot", $prefs);
+	         $this->prefs->setNested("MOTDTime", $prefs);
+	         $this->prefs->setNested("InviteTime", $prefs);
+	         $this->prefs->setNested("AllyTimes", $prefs);
+	         $this->prefs->setNested("ServerName", $prefs);
+             $this->prefs->setNested("pluginprefix", $prefs);
+             //Spawner configurations:
+             $this->prefs->setNested("skeleton", $prefs);
+             $this->prefs->setNested("pig", $prefs);
+             $this->prefs->setNested("chicken", $prefs);
+             $this->prefs->setNested("iron golem", $prefs);
+             $this->prefs->setNested("zombie", $prefs);
+             $this->prefs->setNested("creeper", $prefs);
+             $this->prefs->setNested("cow", $prefs);
+             $this->prefs->setNested("spider", $prefs);
+             $this->prefs->setNested("magma", $prefs);
+             $this->prefs->setNested("ghast", $prefs);
+             $this->prefs->setNested("blaze", $prefs);
+             $this->prefs->setNested("empty", $prefs);
+			 $this->prefs->save();
     }
     public function setConsole($only){
         $this->messages->setNested("consolemessage", $only);
