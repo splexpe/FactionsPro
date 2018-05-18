@@ -5,4 +5,7 @@ helpmessage: Please use /f help for a list of commands.
 
 ## Errors
 invite_facfull: You are unable to invite players because your faction is full.
+
+## Console
+consolemessage: Please use this command in game.
 ## More coming soon.
