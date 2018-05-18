@@ -37,7 +37,6 @@ class FactionCommands{
 					$sender->sendMessage($this->plugin->formatMessage("Please use /f help for a list of commands"));
 					return true;
 				}
-				if(count($args) == 2){
 					
 					///////////////////////////////// WAR /////////////////////////////////
 					
@@ -423,7 +422,7 @@ class FactionCommands{
 						}
 					}
 				if(strtolower($args[0]) == "help"){
-					if(!isset($args[1]) || $args[1] == 1){
+					if($args[1] == 1){
 						$sender->sendMessage(TF::GOLD . "____________.[§2Factions Help (1/7)§6]._____________" . TF::RED . "\n§b/f about\n§b/f accept§e To Join A Fac\n§b/f overclaim§e To OverClaim A Faction\n§b/f claim§e To Claim Some Land\n§b/f create <name>§e To Create A Faction\n§b/f del§e To Delete a Faction\n§b/f demote <player>§e To Demote a Officer to a Member\n§b/f deny§e To Deny A Faction Request");
 						return true;
 					}
@@ -451,7 +450,6 @@ class FactionCommands{
 						return true;
 					}
 				}
-				if(count($args == 2)){
 					
 					/////////////////////////////// CLAIM ///////////////////////////////
 					
@@ -1138,7 +1136,7 @@ class FactionCommands{
 						}
 						$allyTime = $array["timestamp"];
 						$currentTime = time();
-						if( ($currentTime - $allyTime) <= 60 ){ //This should be configurable
+						if( ($currentTime - $allyTime) <= 60 ){
                             $requested_fac = $this->plugin->getPlayerFaction($array["requestedby"]);
                             $sender_fac = $this->plugin->getPlayerFaction($player);
 							$this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
