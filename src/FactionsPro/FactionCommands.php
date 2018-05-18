@@ -1,5 +1,7 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command,CommandSender};
 use pocketmine\event\Listener;
@@ -12,7 +14,9 @@ use pocketmine\event\player\{PlayerJoinEvent, PlayerChatEvent};
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\math\Vector3;
 use pocketmine\level\{Position, Level};
+
 class FactionCommands{
+	
 	// ASCII Map
 	CONST MAP_WIDTH = 48;
 	CONST MAP_HEIGHT = 8;
@@ -33,7 +37,7 @@ class FactionCommands{
 		if($sender instanceof Player){
 			$player = $sender->getPlayer()->getName();
 			if(strtolower($command->getName('f'))){
-				if(empty($args)){
+				if (empty($args)) {
 					$sender->sendMessage($this->plugin->formatMessage("Please use /f help for a list of commands"));
 					return true;
 				}
@@ -1271,14 +1275,12 @@ class FactionCommands{
 						}
 					}
 				}
-			}
 		} else {
 			$this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("Please run command in game"));
 			return true;
 		}
-	}
 		return true;
-}
+        }
 		public function getMap(Player $observer, int $width, int $height, int $inDegrees, int $size = 16){ // No compass
 		$to = (int)sqrt($size);
 		$centerPs = new Vector3($observer->x >> $to, 0, $observer->z >> $to);
