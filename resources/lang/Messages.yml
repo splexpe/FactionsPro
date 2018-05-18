@@ -1,11 +1,12 @@
 ## The new Messages.yml config file for FactionsPro, made by VMPE Development Team. Enjoy.
 
+## Color codes are acceptable! Use § for color codes.
 ## Usages
-helpmessage: Please use /f help for a list of commands.
+helpmessage: §bPlease use: §6/f help §bfor a list of commands.
 
 ## Errors
-invite_facfull: You are unable to invite players because your faction is full.
+invite_facfull: §cYou are unable to invite players because your faction is full.
 
 ## Console
-consolemessage: Please use this command in game.
+consolemessage: Please use this command in game. Thank you.
 ## More coming soon.
