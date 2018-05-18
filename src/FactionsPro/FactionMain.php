@@ -66,7 +66,7 @@ class FactionMain extends PluginBase implements Listener {
                   if(!is_file($this->getDataFolder()."lang/Messages.yml")){
                   $this->saveResource("lang/Messages.yml"); 
                   }
-		 $this->msg = new Config($this->getDataFolder() . "lang/Messages.yml", Config::YAML);
+		 $this->messages = new Config($this->getDataFolder() . "lang/Messages.yml", Config::YAML);
         $this->fCommand = new FactionCommands($this);
         $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
             "MaxFactionNameLength" => 15,
@@ -97,14 +97,6 @@ class FactionMain extends PluginBase implements Listener {
 	    "MOTDTime" => 60,
 	    "InviteTime" => 60,
 	    "AllyTimes" => 60,
-	    "OurAllies" => "Your allies",
-	    "TopMoney" => "Top 10 Richest factions",
-	    "TopSTR" => "Top 10 BEST Factions",
-	    "EnoughToOverClaim" => "§bYou have enough STR power to overclaim this plot! Now, Type §3/f overclaim to overclaim this plot if you want.",
-	    "NotEnoughToOC" => "§cI'm sorry, but you do not have enough STR to overclaim this land.",
-	    "DisabledMessage" => "§cThis command §cis disabled!",
-	    "MyFactionMessage" => "§3_____§2[§5§lYour Faction Information§r§2]§3_____",
-	    "FactionInfo" => "§3_____§2[§5§lFaction Information§r§2]§3_____",
 	    "ServerName" => "§6Void§bFactions§cPE",
                 "pluginprefix" => "§7[§6Void§bFactions§cPE§7]",
                 "spawnerPrices" => [
