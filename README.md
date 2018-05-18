@@ -1,4 +1,5 @@
 # FactionsPro - Modified Like Never Before
+## WARNING: This branch is the older version of FactionsPro, before any new features were implemented into our latest one, which you can get, by either going to the BETA Branch, or going to the features/implement branch. This may not work out as it should, but give it a try.
 
 Originally By Tethered, Edited & Modified By Potatoe
 NOTE: Plugin Requires EconomyAPI To Use Most Features
