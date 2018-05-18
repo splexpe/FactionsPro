@@ -15,7 +15,7 @@ consolemessage: Please use this command in game. Thank you.
 FactionCreationBroadcast: §a%PLAYER% §bhas created a faction named §c%FACTION%
 # The faction broadcast creation message. We plan on adding whether it should be broadcasted either true, or false soon.
 
-FactionDisbandBroadcast: §aThe player: §2%PLAYER% §awho owned §3%FACTION% §bhas been disbanded!
+FactionDisbandBroadcast: §aThe player §2%PLAYER% §awho owned §3%FACTION% §bhas been disbanded!
 # The faction broadcast Deletion message. We plan on adding whether it should be broadcasted either true, or false soon.
 
 TopSTR: §5§lTop 10 BEST Factions
