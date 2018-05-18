@@ -295,7 +295,7 @@ class FactionMain extends PluginBase implements Listener {
         $result = $this->db->query("SELECT faction FROM strength ORDER BY power DESC LIMIT 10;");
         $row = array();
         $i = 0;
-	$topstr = $this->prefs->get("TopSTR");
+	$topstr = $this->messages->get("TopSTR");
         $s->sendMessage("$topstr", true);
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $j = $i + 1;
@@ -361,16 +361,19 @@ class FactionMain extends PluginBase implements Listener {
            
 	    if ($this->prefs->get("EnableOverClaim")) {
                 if ($power_sender < $power_claimedBy) {
-		    $noclaim = $this->prefs->get("NotEnoughToOC");
-                    $sender->sendMessage($this->formatMessage("$noclaim", true));
+	            $prefix = $this->prefs->get("pluginprefix");
+		    $noclaim = $this->messages->get("NotEnoughToOC");
+                    $sender->sendMessage($this->formatMessage("$prefix $noclaim", true));
                 } else {
-		    $yesclaim = $this->prefs->get("EnoughToOverClaim");
-                    $sender->sendMessage($this->formatMessage("$yesclaim", true));
+		    $prefix = $this->prefs->get("pluginprefix");
+		    $yesclaim = $this->messages->get("EnoughToOverClaim");
+                    $sender->sendMessage($this->formatMessage("$prefix $yesclaim", true));
                 }
                 return false;
             } else {
+		$prefix = $this->prefs->get("pluginprefix");
 		$ocmessage = $this->prefs->get("DisabledMessage");
-                $sender->sendMessage($this->formatMessage("$ocmessage", true));
+                $sender->sendMessage($this->formatMessage("$prefix $ocmessage", true));
                 return false;
 	    }
         }
@@ -461,8 +464,9 @@ class FactionMain extends PluginBase implements Listener {
 	public function sendListOfTop10RichestFactionsTo(Player $s){
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
-	$topmoney = $this->prefs->get("TopMoney");
-        $s->sendMessage("$topmoney", true);
+        $prefix = $this->prefs->get("pluginprefix");
+	$topmoney = $this->messages->get("TopMoney");
+        $s->sendMessage("$prefix $topmoney", true);
         while($resultArr = $result->fetchArray(SQLITE3_ASSOC)){
         	var_dump($resultArr);
             $j = $i + 1;
