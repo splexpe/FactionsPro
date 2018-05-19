@@ -92,8 +92,7 @@ class FactionListener implements Listener {
 	}
 	
 	public function onInteract(PlayerInteractEvent $e){
-		$name = $player->getName();
-		$player = $e->getPlayer();
+		$playerName = $e->getPlayer();
 		if($this->plugin->isInPlot($e->getPlayer())){
 			if(!$this->plugin->inOwnPlot($e->getPlayer())){
 				if($e->getPlayer()->isCreative()){
@@ -221,7 +220,7 @@ class FactionListener implements Listener {
     $x = floor($event->getPlayer()->getX());
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
-    $player = $event->getPlayer();
+    $playerName = $event->getPlayer();
   
     if($this->plugin->isInPlot($event->getPlayer())) {
 	$faction = $this->plugin->getPlayerFaction($event->getPlayer());
@@ -232,7 +231,7 @@ class FactionListener implements Listener {
     $x = floor($event->getPlayer()->getX());
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
-    $player = $event->getPlayer();
+    $playerName = $event->getPlayer();
     $faction = $this->plugin->getPlayerFaction($event->getPlayer());
    
 	       
