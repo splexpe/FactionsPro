@@ -11,7 +11,7 @@ use pocketmine\{Server, Player};
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\block\Snow;
+use pocketmine\block\Air;
 use pocketmine\math\Vector3;
 use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
 use pocketmine\level\{Position, Level};
