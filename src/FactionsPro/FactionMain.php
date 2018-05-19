@@ -335,8 +335,6 @@ class FactionMain extends PluginBase implements Listener {
                 return false;
 	    }
         }
-        $level->setBlock(new Vector3($x + $arm, $y, $z + $arm), $block);
-        $level->setBlock(new Vector3($x - $arm, $y, $z - $arm), $block);
         $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
         return true;
     }
