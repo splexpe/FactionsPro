@@ -220,9 +220,13 @@ class FactionListener implements Listener {
     $x = floor($event->getPlayer()->getX());
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
+    $x1 = $this->plugin->cornerIsInPlot());
+    $z1 = $this->plugin->cornerIsInPlot());
+    $x2 = $this->plugin->cornerIsInPlot());
+    $z2 = $this->plugin->cornerIsInPlot());
     $playerName = $event->getPlayer();
   
-    if($this->plugin->cornerIsInPlot($x, $y, $z)) {
+    if($this->plugin->cornerIsInPlot($x1, $z1, $x2, $z2)) {
 	$faction = $this->plugin->getPlayerFaction($event->getPlayer());
        $event->getPlayer()->addTitle("You have just entered", "A Faction's claim named: $faction", 40, 20, 40);
     }
