@@ -31,7 +31,7 @@ class FactionCommands {
 	    $prefix = $this->plugin->prefs->get("pluginprefix"); //Prefix configurations.
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
-                    $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("pluginprefix"). $this->plugin->messages->get("helpmessage")));
+                    $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("pluginprefix "). $this->plugin->messages->get("helpmessage")));
                     return true;
                 }
                     ///////////////////////////////// WAR /////////////////////////////////
