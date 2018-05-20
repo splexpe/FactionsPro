@@ -26,7 +26,7 @@ class FactionListener implements Listener {
 		if($this->plugin->motdWaiting($playerName)) {
 			$motdtime = $this->plugin->prefs->get("MOTDTime");
 			$prefix = $this->plugin->prefs->get("pluginprefix");
-			if(time() - $this->plugin->getMOTDTime($playerName) > $this->plugin->prefs->get("MOTDTime") {
+			if(time() - $this->plugin->getMOTDTime($playerName) > 60) {
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("$prefix §cTimed out. §bPlease use: §3/f desc again."));
 				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$playerName';");
 				$PCE->setCancelled(true);
