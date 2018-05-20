@@ -26,7 +26,7 @@ class FactionListener implements Listener {
 		if($this->plugin->motdWaiting($playerName)) {
 			$motdtime = $this->plugin->prefs->get("MOTDTime");
 			$prefix = $this->plugin->prefs->get("pluginprefix");
-			if(time() - $this->plugin->getMOTDTime($playerName) > $motdtime) {
+			if(time() - $this->plugin->getMOTDTime($playerName) > $this->plugin->prefs->get("MOTDTime") {
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("$prefix §cTimed out. §bPlease use: §3/f desc again."));
 				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$playerName';");
 				$PCE->setCancelled(true);
@@ -97,10 +97,10 @@ class FactionListener implements Listener {
 			if(!$this->plugin->inOwnPlot($e->getPlayer())){
 				if($e->getPlayer()->isCreative()){
 					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Switching to survival mode."));
-					$p->setGamemode(0);
+					$e->getPlayer()->setGamemode(0);
 					$e->setCancelled(true);
 				}
-				if($this->plugin->essentialsPE->getBaseFiles()->setGodMode($e->getPlayer(), $ev->getGodMode())){
+				if($this->plugin->EssentialsPE->getBaseFiles()->setGodMode($e->getPlayer(), $ev->getGodMode())){
 					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Disabling god mode."));
 					$e->setCancelled(true);
 				}
