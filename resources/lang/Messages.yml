@@ -4,6 +4,7 @@
 
 ## Usages
 helpmessage: §bPlease use §6/f help §bfor a list of commands.
+warcommand: §bPlease use §6/f {ALIAS} §bfor war related commands.
 
 ## Errors
 invite_facfull: §cYou are unable to invite players because your faction is full.
