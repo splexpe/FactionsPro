@@ -37,7 +37,8 @@ class FactionCommands {
                     ///////////////////////////////// WAR /////////////////////////////////
                     if(strtolower($args[0]) == "war" or strtolower($args[0]) == "wr"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("pluginprefix"), str_replace("{ALIAS}", $args[0], $this->plugin->messages->get("warcommand"))));
+			    $warusage = $this->plugin->messages->get("warcommand");
+                            $sender->sendMessage($this->plugin->formatMessage($this->plugin->prefs->get("pluginprefix "), str_replace("{ALIAS}", $args[0], $this->plugin->messages->get("warcommand"))));
                             return true;
                         }
                         if (strtolower($args[1]) == "tp" or strtolower($args[1]) == "teleport") {
