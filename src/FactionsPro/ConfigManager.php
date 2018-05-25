@@ -25,6 +25,8 @@ class ConfigManager {
              $this->prefs->setNested("OfficersCanClaim", $prefs);
 	     $this->prefs->setNested("ClaimingEnabled", $prefs);
              $this->prefs->setNested("PlotSize", $prefs);
+	     $this->prefs->setNested("OfficerBadge", $prefs);
+	     $this->prefs->setNested("LeaderBadge", $prefs);
              $this->prefs->setNested("PlayersNeededInFactionToClaimAPlot", $prefs);
              $this->prefs->setNested("PowerNeededToClaimAPlot", $prefs);
              $this->prefs->setNested("PowerNeededToSetOrUpdateAHome", $prefs);
