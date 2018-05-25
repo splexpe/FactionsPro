@@ -431,6 +431,34 @@ class FactionMain extends PluginBase implements Listener {
             $s->sendMessage(TextFormat::BOLD.TextFormat::GOLD.$j.". ".TextFormat::RESET.TextFormat::AQUA.$cf.TextFormat::RED.TextFormat::BOLD." §c- ".TextFormat::LIGHT_PURPLE."§d$".$pf);
             $i = $i + 1;
         } 
+	}
+    public function getPlayerFaction($player){
+        $player = $player->getName();
+        return $this->getFaction($player);
+    }
+    /**
+     * @param Player $player
+     * @return string
+     */
+    public function getPlayerRank($player){
+        $player = $player->getName();
+	    $officerbadge = $this->prefs->get("OfficerBadge");
+	    $leaderbadge = $this->prefs->get("LeaderBadge");
+        if($this->isInFaction($player->getName()))
+	{
+            if($this->isOfficer($player)) {
+                return '$officerbadge';
+            }
+            elseif($this->isLeader($player)){
+                return '$leaderbadge';
+            }
+            else
+            {
+                return '';
+            }
+        }
+        // TODO
+        return '';
     }
 	public function getSpawnerPrice(string $type) : int {
 		$sp = $this->prefs->get("spawnerPrices");
