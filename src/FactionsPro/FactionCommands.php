@@ -342,6 +342,9 @@ class FactionCommands {
                         if($this->plugin->factionChatActive[$playerName]) {
                        	unset($this->plugin->factionChatActive[$playerName]);
                         }
+                        if ($this->plugin->allyChatActive[$playerName]) {
+                        unset($this->plugin->allyChatActive[$playerName]);
+                        }
                         $kicked = $this->plugin->getServer()->getPlayer($args[1]);
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $this->plugin->db->query("DELETE FROM master WHERE player='$kicked';");
@@ -444,6 +447,9 @@ class FactionCommands {
 		        $this->plugin->db->query("DELETE FROM balance WHERE faction='$args[1]';");
 		            	if ($this->plugin->factionChatActive[$playerName]) {
                         unset($this->plugin->factionChatActive[$playerName]);
+		            	}
+                        if ($this->plugin->allyChatActive[$playerName]) {
+                        unset($this->plugin->allyChatActive[$playerName]);
 	                $this->plugin->getServer()->broadcastMessage("§4$playerName §chas forcefully deleted the faction named §4$args[1]");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §aUnwanted faction was successfully deleted and their faction plot was unclaimed!", true));
                     }
@@ -695,6 +701,9 @@ class FactionCommands {
                     }
 				if($this->plugin->factionChatActive[$playerName]) {
                        	        unset($this->plugin->factionChatActive[$playerName]);
+				}
+				if (isset($this->plugin->allyChatActive[$playerName])) {
+                                unset($this->plugin->allyChatActive[$playerName]);
                                 $faction = $this->plugin->getPlayerFaction($playerName);
                                 $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction';");
                                 $this->plugin->db->query("DELETE FROM master WHERE faction='$faction';");
@@ -723,8 +732,11 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->isLeader($playerName) == false) {
-			if ($this->plugin->factionChatActive[$playerName]) {
+			if (isset($this->plugin->factionChatActive[$playerName])) {
                         unset($this->plugin->factionChatActive[$playerName]);
+			}
+			if (isset($this->plugin->allyChatActive[$playerName])) {
+                                unset($this->plugin->allyChatActive[$playerName]);
                             $faction = $this->plugin->getPlayerFaction($playerName);
                             $name = $sender->getName();
                             $this->plugin->db->query("DELETE FROM master WHERE player='$name';");
