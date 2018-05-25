@@ -702,7 +702,7 @@ class FactionCommands {
 				if($this->plugin->factionChatActive[$playerName]) {
                        	        unset($this->plugin->factionChatActive[$playerName]);
 				}
-				if (isset($this->plugin->allyChatActive[$playerName])) {
+				if($this->plugin->allyChatActive[$playerName]) {
                                 unset($this->plugin->allyChatActive[$playerName]);
                                 $faction = $this->plugin->getPlayerFaction($playerName);
                                 $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction';");
@@ -732,10 +732,10 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->isLeader($playerName) == false) {
-			if (isset($this->plugin->factionChatActive[$playerName])) {
+			if ($this->plugin->factionChatActive[$playerName]) {
                         unset($this->plugin->factionChatActive[$playerName]);
 			}
-			if (isset($this->plugin->allyChatActive[$playerName])) {
+			if ($this->plugin->allyChatActive[$playerName]) {
                                 unset($this->plugin->allyChatActive[$playerName]);
                             $faction = $this->plugin->getPlayerFaction($playerName);
                             $name = $sender->getName();
