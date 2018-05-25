@@ -194,7 +194,7 @@ class FactionListener implements Listener {
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
-							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§a(!)§r§e " . $player->getName() . " §ais now online");
+							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§a(!)§r§e " . $player->getName() . " §ais now online"); //SHould be configurable soon.
                                }
                           }
                     }
@@ -210,7 +210,7 @@ class FactionListener implements Listener {
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
-                                                    $this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§c(!)§r§4 " . $player->getName() . " §cis now offline");
+                                                    $this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§c(!)§r§4 " . $player->getName() . " §cis now offline"); //Should be configurable soon.
             }
           }
         }
