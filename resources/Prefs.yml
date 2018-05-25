@@ -61,6 +61,11 @@ EnableOverClaim: true
 # Whether to enable or disable overclaim.
 # Default: true
 
+OfficerBadge: *
+## The badge that is in front of the faction name (in chat)
+
+LeaderBadge: **
+## The badge that is in front of the faction name (in chat)
 AllyLimitPerFaction: 7
 # limitations of allies per faction. Default: 7. 0 to disable.
 
