@@ -339,6 +339,9 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
                         }
+                        if($this->plugin->factionChatActive[$playerName]) {
+                       	unset($this->plugin->factionChatActive[$playerName]);
+                        }
                         $kicked = $this->plugin->getServer()->getPlayer($args[1]);
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $this->plugin->db->query("DELETE FROM master WHERE player='$kicked';");
@@ -439,6 +442,8 @@ class FactionCommands {
                         $this->plugin->db->query("DELETE FROM motd WHERE faction='$args[1]';");
                         $this->plugin->db->query("DELETE FROM home WHERE faction='$args[1]';");
 		        $this->plugin->db->query("DELETE FROM balance WHERE faction='$args[1]';");
+		            	if ($this->plugin->factionChatActive[$playerName]) {
+                        unset($this->plugin->factionChatActive[$playerName]);
 	                $this->plugin->getServer()->broadcastMessage("§4$playerName §chas forcefully deleted the faction named §4$args[1]");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §aUnwanted faction was successfully deleted and their faction plot was unclaimed!", true));
                     }
@@ -685,6 +690,11 @@ class FactionCommands {
                     if(strtolower($args[0]) == "del" or strtolower($args[0]) == "disband"){
                         if ($this->plugin->isInFaction($playerName) == true) {
                             if ($this->plugin->isLeader($playerName)) {
+                            }
+                        }
+                    }
+				if($this->plugin->factionChatActive[$playerName]) {
+                       	        unset($this->plugin->factionChatActive[$playerName]);
                                 $faction = $this->plugin->getPlayerFaction($playerName);
                                 $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction';");
                                 $this->plugin->db->query("DELETE FROM master WHERE faction='$faction';");
@@ -705,6 +715,7 @@ class FactionCommands {
 			    return true;
                         }
                     }
+}
                     /////////////////////////////// LEAVE ///////////////////////////////
                     if(strtolower($args[0] == "leave" or strtolower($args[0] == "quit"))) {
                         if (!$this->plugin->isInFaction($playerName)) {
@@ -712,6 +723,8 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->isLeader($playerName) == false) {
+			if ($this->plugin->factionChatActive[$playerName]) {
+                        unset($this->plugin->factionChatActive[$playerName]);
                             $faction = $this->plugin->getPlayerFaction($playerName);
                             $name = $sender->getName();
                             $this->plugin->db->query("DELETE FROM master WHERE player='$name';");
@@ -1461,15 +1474,14 @@ class FactionCommands {
 				$sender->sendMessage(TextFormat::RED . "§4/f rmstrto|rmpower <faction> <str> - §cForcefully removes the STR from a faction.");
 				return true;
 			}
-		        }
-            }
-        } else {
+		   }
+       } else {
 	    $prefix = $this->plugin->prefs->get("pluginprefix");
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage($this->plugin->prefs->get("pluginprefix "). $this->plugin->messages->get("consolemessage")));
-        }
+       }
         return true;
     }
-    
+
     public function alphanum($string){
         if(function_exists('ctype_alnum')){
             $return = ctype_alnum($string);
