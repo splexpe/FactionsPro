@@ -1,7 +1,5 @@
 <?php
-
 namespace FactionsPro;
-
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
@@ -15,7 +13,6 @@ use pocketmine\block\Air;
 use pocketmine\math\Vector3;
 use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
 use pocketmine\level\{Position, Level};
-
 class FactionMain extends PluginBase implements Listener {
     
     public $db;
@@ -432,7 +429,7 @@ class FactionMain extends PluginBase implements Listener {
             $i = $i + 1;
         } 
 	}
-    public function getPlayerFaction($player){
+    public function getFactionByPlayer($player){
         $player = $player->getName();
         return $this->getFaction($player);
     }
@@ -453,6 +450,7 @@ class FactionMain extends PluginBase implements Listener {
                 return '$leaderbadge';
 	    }
     	}
+    }
 	public function getSpawnerPrice(string $type) : int {
 		$sp = $this->prefs->get("spawnerPrices");
 		if(isset($sp[$type])) return $sp[$type];
