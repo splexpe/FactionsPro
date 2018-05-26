@@ -451,15 +451,8 @@ class FactionMain extends PluginBase implements Listener {
             }
             elseif($this->isLeader($player)){
                 return '$leaderbadge';
-            }
-            else
-            {
-                return '';
-            }
-        }
-        // TODO
-        return '';
-    }
+	    }
+    	}
 	public function getSpawnerPrice(string $type) : int {
 		$sp = $this->prefs->get("spawnerPrices");
 		if(isset($sp[$type])) return $sp[$type];
