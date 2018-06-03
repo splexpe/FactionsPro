@@ -57,18 +57,8 @@ class FactionMain extends PluginBase implements Listener {
 	if (!$this->economyapi) {
 	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
 	}
-	if(!file_exists($this->getDataFolder()."lang/")){ 
-                  @mkdir($this->getDataFolder()."lang/"); 
-                      }
-                  if(!is_file($this->getDataFolder()."lang/Messages.yml")){
-                  $this->saveResource("lang/Messages.yml"); 
-                  }
-		 $this->messages = new Config($this->getDataFolder() . "lang/Messages.yml", Config::YAML);
-        $this->fCommand = new FactionCommands($this);
-	    if(!is_file($this->getDataFolder()."Prefs.yml")){
-		    $this->saveResource("Prefs.yml");
-	    }
-        $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", Config::YAML);
+	@mkdir($this->getDataFolder());
+        $this->saveDefaultConfig();
 		$this->prefix = $this->prefs->get("pluginprefix", $this->prefix);
 		if(sqrt($size = $this->prefs->get("PlotSize")) % 2 !== 0){
 			$this->getLogger()->notice("Square Root Of Plot Size ($size) Must Not Be An unknown Number in the plugin! (The size was Currently: ".(sqrt($size = $this->prefs->get("PlotSize"))).")");
