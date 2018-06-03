@@ -120,4 +120,41 @@ InviteTime: 60
 
 AllyTimes: 60
 ## How many times in seconds until the invite times out.
+
+## These are the Messages, within the plugin:
+## Color codes are acceptable! Use § for color codes.
+
+## Usages
+helpmessage: §bPlease use §6/f help §bfor a list of commands.
+warcommand: §bPlease use §6/f {ALIAS} §bfor war related commands.
+
+## Errors
+invite_facfull: §cYou are unable to invite players because your faction is full.
+
+## Console
+consolemessage: Please use this command in game. Thank you.
+
+## Messages:
+FactionCreationBroadcast: §a%PLAYER% §bhas created a faction named §c%FACTION%
+# The faction broadcast creation message. We plan on adding whether it should be broadcasted either true, or false soon.
+
+FactionDisbandBroadcast: §aThe player §2%PLAYER% §awho owned §3%FACTION% §bhas been disbanded!
+# The faction broadcast Deletion message. We plan on adding whether it should be broadcasted either true, or false soon.
+
+TopSTR: §5§lTop 10 BEST Factions
+# NEW: Customise /f top str list to your own.
+# Use § color code.
+
+TopMoney: §5§lTop 10 RICHEST Factions
+# NEW: Customise /f top money message to your own.
+# Use § for color code.
+
+FactionInfo: §3_____§2[§5§lFaction Information§r§2]§3_____
+# The message when you type /f who <faction> and the title message of what it says. You can configure this to whatever you want.
+# Use § for color code.
+
+MyFactionInfo: §3_____§2[§5§lYour Faction Information§r§2]§3_____
+# The message when you type /f who and the title message of what it says. You can configure this to whatever you want.
+# Use § color code.
+## More coming soon.
 ...
