@@ -462,7 +462,6 @@ class Main extends PluginBase implements Listener {
 	CONST MAP_KEY_SEPARATOR = TextFormat::AQUA . "*"; /*Del*/
 	CONST MAP_KEY_OVERFLOW = TextFormat::WHITE . "-" . TextFormat::WHITE; # ::MAGIC?
 	CONST MAP_OVERFLOW_MESSAGE = self::MAP_KEY_OVERFLOW . ": Too Many Factions (>" . 107 . ") on this Map.";
-    }
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if ($sender instanceof Player) {
             $playerName = $sender->getPlayer()->getName(); //Sender who executes the command.
