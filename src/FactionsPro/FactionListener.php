@@ -48,7 +48,7 @@ class FactionListener implements Listener {
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
 							$PCE->setCancelled(true);
-							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
+							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage($this->plugin->getConfig()->get("fchatprefix") . $playerName . $this->plugin->getConfig()->get("fchatmsgcolor". $msg));
 						}
 					}
 				}
@@ -100,7 +100,7 @@ class FactionListener implements Listener {
 					$e->getPlayer()->setGamemode(0);
 					$e->setCancelled(true);
 				}
-				if($this->plugin->EssentialsPE->getBaseFiles()->setGodMode($e->getPlayer(), $ev->getGodMode())){
+				if($this->plugin->essentialspe->getAPI()->setGodMode($e->getPlayer(), $ev->getGodMode())){
 					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Disabling god mode."));
 					$e->setCancelled(true);
 				}
@@ -194,7 +194,7 @@ class FactionListener implements Listener {
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
-							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§a(!)§r§e " . $player->getName() . " §ais now online"); //Should be configurable soon.
+							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage($this->plugin->getConfig()->get("bcastjoinprefix") . $player->getName() . $this->plugin->getConfig()->get("bcastjoinmsg"));
                                }
                           }
                     }
@@ -210,7 +210,7 @@ class FactionListener implements Listener {
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
-                                                    $this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§c(!)§r§4 " . $player->getName() . " §cis now offline"); //Should be configurable soon.
+                                                    $this->plugin->getServer()->getPlayer($fP->getName())->sendMessage($this->plugin->getConfig()->get("bcastquitprefix") . $player->getName() . $this->plugin->getConfig()->get("bcastquitmsg"));
             }
           }
         }
