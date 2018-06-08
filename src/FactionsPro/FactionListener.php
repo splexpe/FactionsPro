@@ -15,7 +15,7 @@ class FactionListener implements Listener {
 	
 	public $plugin;
 	
-	public function __construct(FactionMain $pg) {
+	public function __construct(Main $pg) {
 		$this->plugin = $pg;
 	}
 	
