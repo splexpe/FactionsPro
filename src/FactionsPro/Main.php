@@ -1489,103 +1489,103 @@ class Main extends PluginBase implements Listener {
                     }
                     if(strtolower($args[0]) == "forceunclaim" or strtolower($args[0]) == "func"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction>\n§aDescription: §dForce Unclaims a land. - Operators only."));
+                            $sender->sendMessage($this->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction>\n§aDescription: §dForce Unclaims a land. - Operators only."));
                             return true;
                         }
-                        if (!$this->plugin->factionExists($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoesn't exist"));
+                        if (!$this->factionExists($args[1])) {
+                            $sender->sendMessage($this->formatMessage("$prefix §cThe faction named §4$args[1] §cdoesn't exist"));
                             return true;
                         }
                         if (!($sender->isOp())) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §4§lYou must be OP to do this."));
+                            $sender->sendMessage($this->formatMessage("$prefix §4§lYou must be OP to do this."));
                             return true;
                         }
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §bSuccessfully unclaimed the unwanted plot of §a$args[1]"));
-                        $this->plugin->db->query("DELETE FROM plots WHERE faction='$args[1]';");
+                        $sender->sendMessage($this->formatMessage("$prefix §bSuccessfully unclaimed the unwanted plot of §a$args[1]"));
+                        $this->db->query("DELETE FROM plots WHERE faction='$args[1]';");
                     }
                     if (strtolower($args[0] == "allies" or strtolower($args[0] == "ourallies"))) {
                         if (!isset($args[1])) {
-                            if (!$this->plugin->isInFaction($playerName)) {
-                                $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
+                            if (!$this->isInFaction($playerName)) {
+                                $sender->sendMessage($this->formatMessage("$prefix §cYou must be in a faction to do this"));
                                 return true;
                             }
-                            $this->plugin->updateAllies($this->plugin->getPlayerFaction($playerName));
-                            $this->plugin->getAllAllies($sender, $this->plugin->getPlayerFaction($playerName));
+                            $this->updateAllies($this->getPlayerFaction($playerName));
+                            $this->getAllAllies($sender, $this->getPlayerFaction($playerName));
                         } else {
-                            if (!$this->plugin->factionExists($args[1])) {
-                                $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoesn't exist"));
+                            if (!$this->factionExists($args[1])) {
+                                $sender->sendMessage($this->formatMessage("$prefix §cThe faction named §4$args[1] §cdoesn't exist"));
                                 return true;
                             }
-                            $this->plugin->updateAllies($args[1]);
-                            $this->plugin->getAllAllies($sender, $args[1]);
+                            $this->updateAllies($args[1]);
+                            $this->getAllAllies($sender, $args[1]);
                         }
                     }
                     if(strtolower($args[0]) == "allyok" or strtolower($args[0]) == "allyaccept"){
-                        if (!$this->plugin->isInFaction($playerName)) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
+                        if (!$this->isInFaction($playerName)) {
+                            $sender->sendMessage($this->formatMessage("$prefix §cYou must be in a faction to do this"));
                             return true;
                         }
-                        if (!$this->plugin->isLeader($playerName)) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be a leader to do this"));
+                        if (!$this->isLeader($playerName)) {
+                            $sender->sendMessage($this->formatMessage("$prefix §cYou must be a leader to do this"));
                             return true;
                         }
                         $lowercaseName = strtolower($playerName);
-                        $result = $this->plugin->db->query("SELECT * FROM alliance WHERE player='$lowercaseName';");
+                        $result = $this->db->query("SELECT * FROM alliance WHERE player='$lowercaseName';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
                         if (empty($array) == true) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction has not been requested to ally with any factions"));
+                            $sender->sendMessage($this->formatMessage("$prefix §cYour faction has not been requested to ally with any factions"));
                             return true;
                         }
                         $allyTime = $array["timestamp"];
                         $currentTime = time();
-			$allyTimes = $this->plugin->prefs->get("AllyTimes");
+			$allyTimes = $this->getConfig()->get("AllyTimes");
                         if (($currentTime - $allyTime) <= $allyTimes) { //Done.
-                            $requested_fac = $this->plugin->getPlayerFaction($array["requestedby"]);
-                            $sender_fac = $this->plugin->getPlayerFaction($playerName);
-                            $this->plugin->setAllies($requested_fac, $sender_fac);
-                            $this->plugin->setAllies($sender_fac, $requested_fac);
-                            $this->plugin->addFactionPower($sender_fac, $this->plugin->prefs->get("PowerGainedPerAlly"));
-                            $this->plugin->addFactionPower($requested_fac, $this->plugin->prefs->get("PowerGainedPerAlly"));
-			    $this->plugin->addToBalance($sender_fac, $this->plugin->prefs->get("MoneyGainedPerAlly"));
-			    $this->plugin->addToBalance($requested_fac, $this->plugin->prefs->get("MoneyGainedPerAlly"));
-                            $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
-                            $this->plugin->updateAllies($requested_fac);
-                            $this->plugin->updateAllies($sender_fac);
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour faction has successfully allied with §a$requested_fac", true));
-                            $this->plugin->getServer()->getPlayer($array["requestedby"])->sendMessage($this->plugin->formatMessage("$prefix §a$playerName §bfrom §a$sender_fac §bhas accepted the alliance!", true));
+                            $requested_fac = $this->getPlayerFaction($array["requestedby"]);
+                            $sender_fac = $this->getPlayerFaction($playerName);
+                            $this->setAllies($requested_fac, $sender_fac);
+                            $this->setAllies($sender_fac, $requested_fac);
+                            $this->addFactionPower($sender_fac, $this->getConfig()->get("PowerGainedPerAlly"));
+                            $this->addFactionPower($requested_fac, $this->getConfig()->get("PowerGainedPerAlly"));
+			    $this->addToBalance($sender_fac, $this->getConfig()->get("MoneyGainedPerAlly"));
+			    $this->addToBalance($requested_fac, $this->getConfig()->prefs->get("MoneyGainedPerAlly"));
+                            $this->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
+                            $this->updateAllies($requested_fac);
+                            $this->updateAllies($sender_fac);
+                            $sender->sendMessage($this->formatMessage("$prefix §bYour faction has successfully allied with §a$requested_fac", true));
+                            $this->getServer()->getPlayer($array["requestedby"])->sendMessage($this->formatMessage("$prefix §a$playerName §bfrom §a$sender_fac §bhas accepted the alliance!", true));
                         } else {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cRequest has timed out"));
-                            $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
+                            $sender->sendMessage($this->formatMessage("$prefix §cRequest has timed out"));
+                            $this->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
                         }
                     }
                     if(strtolower($args[0]) == "allyno" or strtolower($args[0]) == "allydeny"){
-                        if (!$this->plugin->isInFaction($playerName)) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
+                        if (!$this->isInFaction($playerName)) {
+                            $sender->sendMessage($this->formatMessage("$prefix §cYou must be in a faction to do this"));
                             return true;
                         }
-                        if (!$this->plugin->isLeader($playerName)) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be a leader to do this"));
+                        if (!$this->isLeader($playerName)) {
+                            $sender->sendMessage($this->formatMessage("$prefix §cYou must be a leader to do this"));
                             return true;
                         }
                         $lowercaseName = strtolower($playerName);
-                        $result = $this->plugin->db->query("SELECT * FROM alliance WHERE player='$lowercaseName';");
+                        $result = $this->db->query("SELECT * FROM alliance WHERE player='$lowercaseName';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
                         if (empty($array) == true) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction has not been requested to ally with any factions"));
+                            $sender->sendMessage($this->formatMessage("$prefix §cYour faction has not been requested to ally with any factions"));
                             return true;
                         }
                         $allyTime = $array["timestamp"];
                         $currentTime = time();
-			$allyTimes = $this->plugin->prefs->get("AllyTimes");
+			$allyTimes = $this->getConfig()->get("AllyTimes");
                         if (($currentTime - $allyTime) <= $allyTime) { //Done
-                            $requested_fac = $this->plugin->getPlayerFaction($array["requestedby"]);
-                            $sender_fac = $this->plugin->getPlayerFaction($playerName);
-                            $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour faction has successfully declined the alliance request.", true));
-                            $this->plugin->getServer()->getPlayer($array["requestedby"])->sendMessage($this->plugin->formatMessage("$prefix §a$playerName §bfrom §a$sender_fac §bhas declined the alliance!"));
+                            $requested_fac = $this->getPlayerFaction($array["requestedby"]);
+                            $sender_fac = $this->getPlayerFaction($playerName);
+                            $this->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
+                            $sender->sendMessage($this->formatMessage("$prefix §bYour faction has successfully declined the alliance request.", true));
+                            $this->getServer()->getPlayer($array["requestedby"])->sendMessage($this->formatMessage("$prefix §a$playerName §bfrom §a$sender_fac §bhas declined the alliance!"));
                         } else {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cRequest has timed out"));
-                            $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
+                            $sender->sendMessage($this->formatMessage("$prefix §cRequest has timed out"));
+                            $this->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
                         }
                     }
                     /////////////////////////////// ABOUT ///////////////////////////////
@@ -1601,122 +1601,122 @@ class Main extends PluginBase implements Listener {
 			$sender->sendMessage(TextFormat::GREEN . "§aOriginal Author: §5Tethered");
 			$sender->sendMessage(TextFormat::GREEN . "§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.");
 			$sender->sendMessage(TextFormat::GREEN . "§aVersion: §5v2.0.0-implement-1");
-			$sender->sendMessage(TextFormat::GREEN . "§aPlugin Version: §5v2.0.0-implement");
+			$sender->sendMessage(TextFormat::GREEN . "§aPlugin Version: §5v3.0.0-DEVc");
 			$sender->sendMessage(TextFormat::GREEN . "§aSupported PMMP API's: §53.0.0-ALPHA10 - ALPHA15.");
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
 		    
                     if (strtolower($args[0]) == "chat" or strtolower($args[0]) == "c") {
-                        if (!$this->plugin->prefs->get("AllowChat")){
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §6All Faction chat is disabled", false));
+                        if (!$this->getConfig()->get("AllowChat")){
+                            $sender->sendMessage($this->formatMessage("$prefix §6All Faction chat is disabled", false));
                         }
                         
-                        if ($this->plugin->isInFaction($playerName)) {
-                            if (isset($this->plugin->factionChatActive[$playerName])) {
-                                unset($this->plugin->factionChatActive[$playerName]);
-                                $sender->sendMessage($this->plugin->formatMessage("$prefix §6Faction chat disabled", true));
+                        if ($this->isInFaction($playerName)) {
+                            if (isset($this->factionChatActive[$playerName])) {
+                                unset($this->factionChatActive[$playerName]);
+                                $sender->sendMessage($this->formatMessage("$prefix §6Faction chat disabled", true));
                             } else {
-                                $this->plugin->factionChatActive[$playerName] = 1;
-                                $sender->sendMessage($this->plugin->formatMessage("$prefix §aFaction chat enabled", true));
+                                $this->factionChatActive[$playerName] = 1;
+                                $sender->sendMessage($this->formatMessage("$prefix §aFaction chat enabled", true));
                             }
                         } else {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou are not in a faction"));
+                            $sender->sendMessage($this->formatMessage("$prefix §cYou are not in a faction"));
                             return true;
                         }
                     }
                     if (strtolower($args[0]) == "allychat" or strtolower($args[0]) == "ac") {
-                        if (!$this->plugin->prefs->get("AllowChat")){
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cAll Faction chat is disabled", false));
+                        if (!$this->getConfig()->get("AllowChat")){
+                            $sender->sendMessage($this->formatMessage("$prefix §cAll Faction chat is disabled", false));
                         }
                         
-                        if ($this->plugin->isInFaction($playerName)) {
-                            if (isset($this->plugin->allyChatActive[$playerName])) {
-                                unset($this->plugin->allyChatActive[$playerName]);
-                                $sender->sendMessage($this->plugin->formatMessage("$prefix §6Ally chat disabled", true));
+                        if ($this->isInFaction($playerName)) {
+                            if (isset($this->allyChatActive[$playerName])) {
+                                unset($this->allyChatActive[$playerName]);
+                                $sender->sendMessage($this->formatMessage("$prefix §6Ally chat disabled", true));
                             } else {
-                                $this->plugin->allyChatActive[$playerName] = 1;
-                                $sender->sendMessage($this->plugin->formatMessage("$prefix §aAlly chat enabled", true));
+                                $this->allyChatActive[$playerName] = 1;
+                                $sender->sendMessage($this->formatMessage("$prefix §aAlly chat enabled", true));
                             }
                         } else {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou are not in a faction"));
+                            $sender->sendMessage($this->formatMessage("$prefix §cYou are not in a faction"));
                             return true;
                         }
                     }
 		////////////////////////////// BALANCE, by primus ;) ///////////////////////////////////////
 					if(strtolower($args[0]) == "bal" or strtolower($args[0]) == "balance"){
-						if(!$this->plugin->isInFaction($playerName)){
-							$sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to check balance!", false));
+						if(!$this->isInFaction($playerName)){
+							$sender->sendMessage($this->formatMessage("$prefix §cYou must be in a faction to check balance!", false));
 							return true;
 						}
-						$faction = $this->plugin->getPlayerFaction($playerName);
-						$balance = $this->plugin->getBalance($faction);
-						$sender->sendMessage($this->plugin->formatMessage("$prefix §6Faction balance: " . TextFormat::GREEN . "$".$balance));
+						$faction = $this->getPlayerFaction($playerName);
+						$balance = $this->getBalance($faction);
+						$sender->sendMessage($this->formatMessage("$prefix §6Faction balance: " . TextFormat::GREEN . "$".$balance));
 						return true;
 					}
 		    			if(strtolower($args[0]) == "seebalance" or strtolower($args[0]) == "sb"){
                         		   if(!isset($args[1])){
-                            		        $sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §b/f $args[0] <faction>\n§aDescription: §bAllows you to see A faction's balance."));
+                            		        $sender->sendMessage($this->formatMessage("$prefix §aPlease use: §b/f $args[0] <faction>\n§aDescription: §bAllows you to see A faction's balance."));
                            			return true;
                         		   }
-                        		   if(!$this->plugin->factionExists($args[1])) {
-									   $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoes not exist"));
+                        		   if(!$this->factionExists($args[1])) {
+									   $sender->sendMessage($this->formatMessage("$prefix §cThe faction named §4$args[1] §cdoes not exist"));
                             		       return true;
 					   }
-                       			   $balance = $this->plugin->getBalance($args[1]);
-                       			   $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe faction §a $args[1] §bhas §a$balance §bMoney", true));
+                       			   $balance = $this->getBalance($args[1]);
+                       			   $sender->sendMessage($this->formatMessage("$prefix §bThe faction §a $args[1] §bhas §a$balance §bMoney", true));
                     			}
 					if(strtolower($args[0]) == "withdraw" or strtolower($args[0]) == "wd"){
 					   if(!isset($args[1])){
-							$sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <amount>\n§aDescription: §dWithdraw money from your faction bank."));
+							$sender->sendMessage($this->formatMessage("$prefix §bPlease use: §3/f $args[0] <amount>\n§aDescription: §dWithdraw money from your faction bank."));
 							return true;
                                                 }
                         if(($e = $this->plugin->getEconomy()) == null){
 						}
 						if(!is_numeric($args[1])){
-							$sender->sendMessage($this->plugin->formatMessage("$prefix §cAmount must be numeric value. You put §4$args[1]", false));
+							$sender->sendMessage($this->formatMessage("$prefix §cAmount must be numeric value. You put §4$args[1]", false));
 							return true;
 						}
-						if(!$this->plugin->isInFaction($playerName)){
-							$sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to check balance!", false));
+						if(!$this->isInFaction($playerName)){
+							$sender->sendMessage($this->formatMessage("$prefix §cYou must be in a faction to check balance!", false));
 							return true;
 						}
-						if(!$this->plugin->isLeader($playerName)){
-							$sender->sendMessage($this->plugin->formatMessage("$prefix §cOnly leader can withdraw from faction bank account!", false));
+						if(!$this->isLeader($playerName)){
+							$sender->sendMessage($this->formatMessage("$prefix §cOnly leader can withdraw from faction bank account!", false));
 							return true;
 						}
-						$faction = $this->plugin->getPlayerFaction($sender->getName());
-						if( (($fM = $this->plugin->getBalance($faction)) - ($args[1]) ) < 0 ){
-							$sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction doesn't have enough money! It has: §4$fM", false));
+						$faction = $this->getPlayerFaction($sender->getName());
+						if( (($fM = $this->getBalance($faction)) - ($args[1]) ) < 0 ){
+							$sender->sendMessage($this->formatMessage("$prefix §cYour faction doesn't have enough money! It has: §4$fM", false));
 							return true;
 						}
-						$this->plugin->takeFromBalance($faction, $args[1]);
+						$this->takeFromBalance($faction, $args[1]);
 						$e->addMoney($sender, $args[1], false, "faction bank account");
-						$sender->sendMessage($this->plugin->formatMessage("$prefix §a$".$args[1]." §bgranted from faction", true));
+						$sender->sendMessage($this->formatMessage("$prefix §a$".$args[1]." §bgranted from faction", true));
 						return true;
 					}
 					if(strtolower($args[0]) == "donate" or strtolower($args[0]) == "pay"){
 					   if(!isset($args[1])){
-						       $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <amount>\n§aDescription: §dDonate money to your/the faction you're in."));
+						       $sender->sendMessage($this->formatMessage("$prefix §bPlease use: §3/f $args[0] <amount>\n§aDescription: §dDonate money to your/the faction you're in."));
 						       return true;
                                                 }
                         if(($e = $this->plugin->getEconomy()) === null){
 						}
 						if(!is_numeric($args[1])){
-							$sender->sendMessage($this->plugin->formatMessage("$prefix §cAmount must be numeric value. You put: §4$args[1]", false));
+							$sender->sendMessage($this->formatMessage("$prefix §cAmount must be numeric value. You put: §4$args[1]", false));
 							return true;
 						}
-						if(!$this->plugin->isInFaction($playerName)){
-							$sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to donate", false));
+						if(!$this->isInFaction($playerName)){
+							$sender->sendMessage($this->formatMessage("$prefix §cYou must be in a faction to donate", false));
 							return true;
 						}
 						if( ( ($e->myMoney($sender)) - ($args[1]) ) < 0 ){
-							$sender->sendMessage($this->plugin->formatMessage("$prefix §cYou dont have enough money!", false));
+							$sender->sendMessage($this->formatMessage("$prefix §cYou dont have enough money!", false));
 							return true;
 						}
-						$faction = $this->plugin->getPlayerFaction($sender->getName());
+						$faction = $this->getPlayerFaction($sender->getName());
 						if($e->reduceMoney($sender, $args[1], false, "faction bank account") === \onebone\economyapi\EconomyAPI::RET_SUCCESS){
-							$this->plugin->addToBalance($faction, $args[1]);
-							$sender->sendMessage($this->plugin->formatMessage("$prefix §a$".$args[1]." §bdonated to your faction"));
+							$this->addToBalance($faction, $args[1]);
+							$sender->sendMessage($this->formatMessage("$prefix §a$".$args[1]." §bdonated to your faction"));
 							return true;
 						}
 					}
@@ -1737,20 +1737,20 @@ class Main extends PluginBase implements Listener {
                 /////////////////////////////// WHO ///////////////////////////////
                 if (strtolower($args[0]) == "who" or strtolower($args[0]) == "facinfo") {
                     if (isset($args[1])) {
-                        if (!(ctype_alnum($args[1])) or !($this->plugin->factionExists($args[1]))) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoes not exist"));
+                        if (!(ctype_alnum($args[1])) or !($this->factionExists($args[1]))) {
+                            $sender->sendMessage($this->formatMessage("$prefix §cThe faction named §4$args[1] §cdoes not exist"));
                             return true;
                         }
                         $faction = $args[1];
-                        $result = $this->plugin->db->query("SELECT * FROM motd WHERE faction='$faction';");
+                        $result = $this->db->query("SELECT * FROM motd WHERE faction='$faction';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
-                        $power = $this->plugin->getFactionPower($faction);
+                        $power = $this->getFactionPower($faction);
                         $message = $array["message"];
-                        $leader = $this->plugin->getLeader($faction);
-                        $numPlayers = $this->plugin->getNumberOfPlayers($faction);
-			$maxPlayers = $this->plugin->prefs->get("MaxPlayersPerFaction");
-			$balance = $this->plugin->getBalance($faction);
-			$factioninfo = $this->plugin->prefs->get("FactionInfo");
+                        $leader = $this->getLeader($faction);
+                        $numPlayers = $this->getNumberOfPlayers($faction);
+			$maxPlayers = $this->getConfig()->get("MaxPlayersPerFaction");
+			$balance = $this->getBalance($faction);
+			$factioninfo = $this->getConfig()->get("FactionInfo");
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::RESET . "$factioninfo" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§cLeader Name: " . TextFormat::YELLOW . "§5$leader" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§dPlayers: " . TextFormat::LIGHT_PURPLE . "§5$numPlayers/$maxPlayers" . TextFormat::RESET);
@@ -1759,20 +1759,20 @@ class Main extends PluginBase implements Listener {
 			$sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Balance: " . TextFormat::AQUA . "§5$" . TextFormat::DARK_PURPLE . "$balance" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::RESET . "$factioninfo" . TextFormat::RESET);
 		    } else {
-                        if (!$this->plugin->isInFaction($playerName)) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this!"));
+                        if (!$this->isInFaction($playerName)) {
+                            $sender->sendMessage($this->formatMessage("$prefix §cYou must be in a faction to use this!"));
                             return true;
                         }
-                        $faction = $this->plugin->getPlayerFaction(($sender->getName()));
+                        $faction = $this->getPlayerFaction(($sender->getName()));
                         $result = $this->plugin->db->query("SELECT * FROM motd WHERE faction='$faction';");
                         $array = $result->fetchArray(SQLITE3_ASSOC);
-                        $power = $this->plugin->getFactionPower($faction);
+                        $power = $this->getFactionPower($faction);
                         $message = $array["message"];
-                        $leader = $this->plugin->getLeader($faction);
-                        $numPlayers = $this->plugin->getNumberOfPlayers($faction);
-			$maxPlayers = $this->plugin->prefs->get("MaxPlayersPerFaction");
-			$balance = $this->plugin->getBalance($faction);
-			$myfacmessage = $this->plugin->prefs->get("MyFactionMessage");
+                        $leader = $this->getLeader($faction);
+                        $numPlayers = $this->getNumberOfPlayers($faction);
+			$maxPlayers = $this->getConfig()->get("MaxPlayersPerFaction");
+			$balance = $this->getBalance($faction);
+			$myfacmessage = $this->getConfig()->get("MyFactionMessage");
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::RESET . "$myfacmessage" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§bFaction Name: " . TextFormat::GREEN . "§5$faction" . TextFormat::RESET);
                         $sender->sendMessage(TextFormat::GOLD . TextFormat::ITALIC . "§cLeader Name: " . TextFormat::YELLOW . "§5$leader" . TextFormat::RESET);
@@ -1789,7 +1789,7 @@ class Main extends PluginBase implements Listener {
 			   $sender->sendMessage(TextFormat::BLUE . "$prefix §aPlease use §b/f help <page> §afor a list of pages. (1-7]");
 			   	return true;
 			}
-			$serverName = $this->plugin->prefs->get("ServerName");
+			$serverName = $this->getConfig()->get("ServerName");
 			if($args[1] == 1){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§51/7§2]");
 				$sender->sendMessage(TextFormat::RED . "§a/f about|info - §7Shows Plugin information");
@@ -1801,7 +1801,7 @@ class Main extends PluginBase implements Listener {
 				$sender->sendMessage(TextFormat::GREEN . "§a/f deny|no - §7Denies a player's invitation.");
 				return true;
 			}
-			$serverName = $this->plugin->prefs->get("ServerName");
+			$serverName = $this->getConfig()->get("ServerName");
 			if($args[1] == 2){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§52/7§2]");
 				$sender->sendMessage(TextFormat::RED . "§a/f home|base - §7Teleports to your faction home.");
@@ -1814,7 +1814,7 @@ class Main extends PluginBase implements Listener {
 				$sender->sendMessage(TextFormat::GREEN . "§a/f leave|quit - §7Leaves a faction.");
 				return true;
 			}
-			$serverName = $this->plugin->prefs->get("ServerName");
+			$serverName = $this->getConfig()->get("ServerName");
 			if($args[1] == 3){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§53/7§2]");
 				$sender->sendMessage(TextFormat::GREEN . "§a/f motd|desc - §7Set your faction Message of the day.");
@@ -1822,7 +1822,7 @@ class Main extends PluginBase implements Listener {
 				$sender->sendMessage(TextFormat::GREEN . "§a/f sethome|shome - §7Set a faction home.\n§a/f unclaim|uncl - §7Unclaims a faction plot.\n§a/f unsethome|delhome - §7Deletes a faction home.\n§a/f top|lb - §7Checks top 10 BEST Factions on the server.\n§a/f war|wr <factionname|tp> - §7Starts a faction war / Requests a faction war.");
 				return true;
 			}
-			$serverName = $this->plugin->prefs->get("ServerName");
+			$serverName = $this->getConfig()->get("ServerName");
 			if($args[1] == 4){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§54/7§2]");
 				$sender->sendMessage(TextFormat::RED . "§a/f enemy|e <faction> - §7Enemy with a faction");
@@ -1834,7 +1834,7 @@ class Main extends PluginBase implements Listener {
 				$sender->sendMessage(TextFormat::RED . "§a/f say|bc <MESSAGE> - §7Broadcast a faction measage.");
 				return true;
 			}
-			$serverName = $this->plugin->prefs->get("ServerName");
+			$serverName = $this->getConfig()->get("ServerName");
 			if($args[1] == 5){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§55/7§2]");
 				$sender->sendMessage(TextFormat::RED . "§a/f chat|c - §7Toggles faction chat.");
@@ -1844,7 +1844,7 @@ class Main extends PluginBase implements Listener {
 				$sender->sendMessage(TextFormat::RED . "§a/f seepower|sp <faction> - §7Sees power of another faction.");
 				return true;
 			}
-			$serverName = $this->plugin->prefs->get("ServerName");
+			$serverName = $this->getConfig()->get("ServerName");
 			if($args[1] == 6){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§56/7§2]");
 				$sender->sendMessage(TextFormat::RED . "§a/f listleader|ll <faction> - §7Checks who the leader is in a faction.");
@@ -1855,7 +1855,7 @@ class Main extends PluginBase implements Listener {
 				$sender->sendMessage(TextFormat::RED . "§a/f ourleader|leaders - §7Checks to see who your leader is.");
 				return true;
                         }
-			$serverName = $this->plugin->prefs->get("ServerName");
+			$serverName = $this->getConfig()->get("ServerName");
 			if($args[1] == 7){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§57/7§2]");
 				$sender->sendMessage(TextFormat::RED . "§a/f donate|pay <amount> - §7Donate to a faction from your Eco Bank.");
@@ -1869,7 +1869,7 @@ class Main extends PluginBase implements Listener {
 				$sender->sendMessage(TextFormat::RED . "§4§lUse /f help 8 to see OP Commands.");
 				return true;
 			}
-			$serverName = $this->plugin->prefs->get("ServerName");
+			$serverName = $this->getConfig()->get("ServerName");
 			if($args[1] == 8){    
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp (OP Commands) §2[§51/1§2]");
 				$sender->sendMessage(TextFormat::RED. "§4/f addstrto|addpower <faction> <STR> - §cAdds Strength to a faction.");
@@ -1882,8 +1882,8 @@ class Main extends PluginBase implements Listener {
 			}
 		   }
        } else {
-	    $prefix = $this->plugin->prefs->get("pluginprefix");
-            $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage($this->plugin->prefs->get("pluginprefix "). $this->plugin->messages->get("consolemessage")));
+	    $prefix = $this->getConfig()->get("pluginprefix");
+            $this->getServer()->getLogger()->info($this->formatMessage($this->getConfig()->get("pluginprefix "). $this->getConfig()->get("consolemessage")));
        }
         return true;
     }
@@ -1926,9 +1926,9 @@ class Main extends PluginBase implements Listener {
 					$row .= "§b". "-";
 					continue;
 				}
-				if (!$overflown && $chrIdx >= strlen($this->plugin->getMapBlock())) $overflown = true;
+				if (!$overflown && $chrIdx >= strlen($this->getMapBlock())) $overflown = true;
 				$herePs = $topLeftPs->add($dx, 0, $dz);
-				$hereFaction = $this->plugin->factionFromPoint($herePs->x << $to, $herePs->z << $to);
+				$hereFaction = $this->factionFromPoint($herePs->x << $to, $herePs->z << $to);
 				$contains = in_array($hereFaction, $fList, true);
 				if ($hereFaction === NULL) {
                     $SemClaim = "§7". "-";
@@ -1958,7 +1958,7 @@ class Main extends PluginBase implements Listener {
 		}
 		$fRow = "";
 		foreach ($fList as $char => $faction) {
-			$fRow .= $this->getColorForTo($observer, $faction) . $this->plugin->getMapBlock() . ": " . $faction . " ";
+			$fRow .= $this->getColorForTo($observer, $faction) . $this->getMapBlock() . ": " . $faction . " ";
 		}
         if ($overflown) $fRow .= self::MAP_OVERFLOW_MESSAGE;
 		$fRow = trim($fRow);
@@ -1966,7 +1966,7 @@ class Main extends PluginBase implements Listener {
 		return $map;
 	}
 	public function getColorForTo(Player $player, $faction) {
-		if($this->plugin->getPlayerFaction($player->getName()) === $faction) {
+		if($this->getPlayerFaction($player->getName()) === $faction) {
 			return "§6";
 		}
 		return "§c";
