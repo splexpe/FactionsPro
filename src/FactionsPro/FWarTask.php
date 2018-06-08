@@ -4,7 +4,7 @@ namespace FactionsPro;
 
 use pocketmine\scheduler\PluginTask;
 
-class FactionWar extends PluginTask {
+class FWarTask extends PluginTask {
 	
 	public $plugin;
 	public $requester;
