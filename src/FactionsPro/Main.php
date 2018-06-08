@@ -803,7 +803,7 @@ class Main extends PluginBase implements Listener {
 			   $sender->sendMessage($this->formatMessage("$prefix §cYou must be in a faction."));
 			   return true;
 			}
-                        if (!in_array($sender->getPlayer()->getLevel()->getName(), $this->getConfig()->->get("ClaimWorlds"))) {
+                        if (!in_array($sender->getPlayer()->getLevel()->getName(), $this->getConfig()->get("ClaimWorlds"))) {
                             $sender->sendMessage($this->formatMessage("$prefix §cYou can only claim in Faction Worlds: " . implode(" ", $this->plugin->prefs->get("ClaimWorlds"))));
                             return true;
                         }
