@@ -9,7 +9,7 @@ class FactionWar extends PluginTask {
 	public $plugin;
 	public $requester;
 	
-	public function __construct(FactionMain $pl, $requester) {
+	public function __construct(Main $pl, $requester) {
         parent::__construct($pl);
         $this->plugin = $pl;
 		$this->requester = $requester;
