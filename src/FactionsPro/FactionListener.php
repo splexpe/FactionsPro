@@ -24,8 +24,8 @@ class FactionListener implements Listener {
 		$playerName = $PCE->getPlayer()->getName();
 		//MOTD Check
 		if($this->plugin->motdWaiting($playerName)) {
-			$motdtime = $this->plugin->prefs->get("MOTDTime");
-			$prefix = $this->plugin->prefs->get("pluginprefix");
+			$motdtime = $this->plugin->getConfig()->get("MOTDTime");
+			$prefix = $this->plugin->getConfig()->get("pluginprefix");
 			if(time() - $this->plugin->getMOTDTime($playerName) > $motdtime) {
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("$prefix §cTimed out. §bPlease use: §3/f desc again."));
 				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$playerName';");
@@ -36,7 +36,7 @@ class FactionListener implements Listener {
 				$faction = $this->plugin->getPlayerFaction($playerName);
 				$this->plugin->setMOTD($faction, $playerName, $motd);
 				$PCE->setCancelled(true);
-				$prefix = $this->plugin->prefs->get("pluginprefix");
+				$prefix = $this->plugin->getConfig()->get("pluginprefix");
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("$prefix §dSuccessfully updated the faction description. Type §5/f who", true));
 			}
 		}
@@ -84,7 +84,7 @@ class FactionListener implements Listener {
 				$player2 = $factionDamage->getDamager()->getPlayer()->getName();
                 		$f1 = $this->plugin->getPlayerFaction($player1);
 				$f2 = $this->plugin->getPlayerFaction($player2);
-				if((!$this->plugin->prefs->get("AllowFactionPvp") && $this->plugin->sameFaction($player1, $player2) == true) or (!$this->plugin->prefs->get("AllowAlliedPvp") && $this->plugin->areAllies($f1,$f2))) {
+				if((!$this->plugin->getConfig()->get("AllowFactionPvp") && $this->plugin->sameFaction($player1, $player2) == true) or (!$this->plugin->getConfig()->get("AllowAlliedPvp") && $this->plugin->areAllies($f1,$f2))) {
 					$factionDamage->setCancelled(true);
 				}
 			}
@@ -148,7 +148,7 @@ class FactionListener implements Listener {
                 $p = $killer->getPlayer()->getName();
                 if($this->plugin->isInFaction($p)){
                     $f = $this->plugin->getPlayerFaction($p);
-                    $e = $this->plugin->prefs->get("PowerGainedPerKillingAnEnemy");
+                    $e = $this->plugin->getConfig()->get("PowerGainedPerKillingAnEnemy");
                     if($ent instanceof Player){
                         if($this->plugin->isInFaction($ent->getPlayer()->getName())){
                            $this->plugin->addFactionPower($f,$e);
@@ -163,7 +163,7 @@ class FactionListener implements Listener {
             $e = $ent->getPlayer()->getName();
             if($this->plugin->isInFaction($e)){
                 $f = $this->plugin->getPlayerFaction($e);
-                $e = $this->plugin->prefs->get("PowerGainedPerKillingAnEnemy");
+                $e = $this->plugin->getConfig()->get("PowerGainedPerKillingAnEnemy");
                 if($ent->getLastDamageCause() instanceof EntityDamageByEntityEvent && $ent->getLastDamageCause()->getDamager() instanceof Player){
                     if($this->plugin->isInFaction($ent->getLastDamageCause()->getDamager()->getPlayer()->getName())){      
                         $this->plugin->subtractFactionPower($f,$e*2);
