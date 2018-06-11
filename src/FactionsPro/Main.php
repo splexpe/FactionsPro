@@ -155,7 +155,7 @@ class Main extends PluginBase implements Listener {
         return (int) $resultArr["count"];
     }
     public function getAlliesLimit() {
-        return (int) $this->prefs->get("AllyLimitPerFaction");
+        return (int) $this->getConfig()->get("AllyLimitPerFaction");
     }
     public function deleteAllies($faction1, $faction2) {
         $stmt = $this->db->prepare("DELETE FROM allies WHERE faction1 = '$faction1' AND faction2 = '$faction2';");
@@ -231,7 +231,7 @@ class Main extends PluginBase implements Listener {
             $team .= TextFormat::ITALIC . TextFormat::GREEN . $row[$i]['faction2'] . TextFormat::RESET . TextFormat::WHITE . "§2,§a " . TextFormat::RESET;
             $i = $i + 1;
         }
-	$allies = $this->prefs->get("OurAllies");
+	$allies = $this->getConfig()->get("OurAllies");
         $s->sendMessage($this->formatMessage("$allies", true));
         $s->sendMessage($team);
     }
@@ -414,7 +414,7 @@ class Main extends PluginBase implements Listener {
         	var_dump($resultArr);
             $j = $i + 1;
             $cf = $resultArr['faction'];
-            $pf = $resultArr["cash"];
+            $pf = $resultArr['cash'];
             $s->sendMessage(TextFormat::BOLD.TextFormat::GOLD.$j.". ".TextFormat::RESET.TextFormat::AQUA.$cf.TextFormat::RED.TextFormat::BOLD." §c- ".TextFormat::LIGHT_PURPLE."§d$".$pf);
             $i = $i + 1;
         } 
@@ -475,7 +475,7 @@ class Main extends PluginBase implements Listener {
                     if(strtolower($args[0]) == "war" or strtolower($args[0]) == "wr"){
                         if (!isset($args[1])) {
 			    $warusage = $this->getConfig()->get("warcommand");
-                            $sender->sendMessage($this->formatMessage($this->getConfig()->get("pluginprefix "), str_replace("{ALIAS}", $args[0], $this->getConfig()->get("warcommand"))));
+                            $sender->sendMessage($this->formatMessage($this->getConfig()->get("pluginprefix "). $this->getConfig()->get("warcommand")));
                             return true;
                         }
                         if (strtolower($args[1]) == "tp" or strtolower($args[1]) == "teleport") {
@@ -627,7 +627,7 @@ class Main extends PluginBase implements Listener {
                         $factionName = $this->getPlayerFaction($playerName);
                         $invitedName = $invited->getName();
                         $rank = "Member";
-                        $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO confirm (player, faction, invitedby, timestamp) VALUES (:player, :faction, :invitedby, :timestamp);");
+                        $stmt = $this->db->prepare("INSERT OR REPLACE INTO confirm (player, faction, invitedby, timestamp) VALUES (:player, :faction, :invitedby, :timestamp);");
                         $stmt->bindValue(":player", $invitedName);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":invitedby", $sender->getName());
@@ -654,7 +654,7 @@ class Main extends PluginBase implements Listener {
                             $sender->sendMessage($this->formatMessage("$prefix §cYou need to add the player: §4$args[1] §cto faction first"));
                             return true;
                         }
-                        if (!($this->plugin->getServer()->getPlayer($args[1]) instanceof Player)) {
+                        if (!($this->getServer()->getPlayer($args[1]) instanceof Player)) {
                             $sender->sendMessage($this->formatMessage("$prefix §cThe player named §4$args[1] §cis currently not online"));
                             return true;
                         }
@@ -663,12 +663,12 @@ class Main extends PluginBase implements Listener {
                             return true;
                         }
                         $factionName = $this->getPlayerFaction($playerName);
-                        $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
+                        $stmt = $this->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $playerName);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
-                        $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
+                        $stmt = $this->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $args[1]);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Leader");
@@ -703,7 +703,7 @@ class Main extends PluginBase implements Listener {
                             return true;
                         }
                         $factionName = $this->getPlayerFaction($playerName);
-                        $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
+                        $stmt = $this->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $args[1]);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Officer");
@@ -733,7 +733,7 @@ class Main extends PluginBase implements Listener {
                             $sender->sendMessage($this->formatMessage("$prefix §cThe player named: §4$args[1] §cis not in this faction"));
                             return true;
                         }
-                        if ($args[1] == $sender->getName()) {
+                        if ($args[1] == $playerName) {
                             $sender->sendMessage($this->formatMessage("$prefix §cYou can't demote yourself"));
                             return true;
                         }
@@ -772,7 +772,7 @@ class Main extends PluginBase implements Listener {
                             $sender->sendMessage($this->formatMessage("$prefix §cThe Player named §4$args[1] §cis not in this faction"));
                             return true;
                         }
-                        if ($playerName == $sender->getName()) {
+                        if ($playerName == $args[1]) {
                             $sender->sendMessage($this->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
                         }
@@ -789,7 +789,7 @@ class Main extends PluginBase implements Listener {
                         $this->subtractFactionPower($factionName, $this->getConfig()->get("PowerGainedPerPlayerInFaction"));
 			$this->takeFromBalance($factionName, $this->getConfig()->get("MoneyGainedPerPlayerInFaction"));
                         if ($kicked instanceof Player) {
-                            $kicked->sendMessage($this->plugin->formatMessage("$prefix §bYou have been kicked from \n §a$factionName", true));
+                            $kicked->sendMessage($this->formatMessage("$prefix §bYou have been kicked from \n §a$factionName", true));
                             return true;
                         }
                     }
@@ -863,11 +863,11 @@ class Main extends PluginBase implements Listener {
                     }
                     if(strtolower($args[0]) == "forcedelete" or strtolower($args[0]) == "fdisband"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction>\n§aDescription: §dForce deletes a faction. For Operators only."));
+                            $sender->sendMessage($this->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction>\n§aDescription: §dForce deletes a faction. For Operators only."));
                             return true;
                         }
                         if (!$this->factionExists($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoesn't exist."));
+                            $sender->sendMessage($this->formatMessage("$prefix §cThe faction named §4$args[1] §cdoesn't exist."));
                             return true;
                         }
                         if (!($sender->isOp())) {
@@ -965,7 +965,7 @@ class Main extends PluginBase implements Listener {
                         }
                         $faction = $this->getPlayerFaction($args[1]);
 			$playerName = $this->getServer()->getPlayer($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a-$playerName §bis in the faction: §a$faction-", true));
+                        $sender->sendMessage($this->formatMessage("$prefix §a-$playerName §bis in the faction: §a$faction-", true));
                     }
                     
                     if (strtolower($args[0]) == "overclaim" or strtolower($args[0]) == "oc"){
@@ -1009,8 +1009,8 @@ class Main extends PluginBase implements Listener {
                                         $sender->sendMessage($this->formatMessage("$prefix §cYou can't overclaim the plot of §4$faction_victim §cbecause your STR is lower than theirs."));
                                         return true;
                                     } else {
-                                        $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_ours';");
-                                        $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_victim';");
+                                        $this->db->query("DELETE FROM plots WHERE faction='$faction_ours';");
+                                        $this->db->query("DELETE FROM plots WHERE faction='$faction_victim';");
                                         $arm = (($this->getConfig()->get("PlotSize")) - 1) / 2;
                                         $this->newPlot($faction_ours, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
 			                $this->getServer()->broadcastMessage("§aPlayer §2$playerName §afrom §b$faction_ours §ahave overclaimed §b$faction_victim");
@@ -1390,7 +1390,7 @@ class Main extends PluginBase implements Listener {
                             return true;
                         }
                         $fac = $this->getPlayerFaction($playerName);
-                        $leader = $this->getServer()->getPlayer($this->plugin->getLeader($args[1]));
+                        $leader = $this->getServer()->getPlayer($this->getLeader($args[1]));
                         if (!($leader instanceof Player)) {
                             $sender->sendMessage($this->formatMessage("$prefix §cThe leader of the faction named §4$args[1] §cis not online"));
                             return true;
@@ -1420,7 +1420,7 @@ class Main extends PluginBase implements Listener {
                             $sender->sendMessage($this->formatMessage("$prefix §cYour faction can not ally with itself"));
                             return true;
                         }
-                        if ($this->plugin->areAllies($this->getPlayerFaction($playerName), $args[1])) {
+                        if ($this->areAllies($this->getPlayerFaction($playerName), $args[1])) {
                             $sender->sendMessage($this->formatMessage("$prefix §cYour faction is already allied with §4$args[1]"));
                             return true;
                         }
@@ -1461,7 +1461,7 @@ class Main extends PluginBase implements Listener {
                             $sender->sendMessage($this->formatMessage("$prefix §cYou must be the leader to do this"));
                             return true;
                         }
-                        if (!$this->plugin->factionExists($args[1])) {
+                        if (!$this->factionExists($args[1])) {
                             $sender->sendMessage($this->formatMessage("$prefix §cThe faction named §4$args[1] §cdoesn't exist"));
                             return true;
                         }
@@ -1670,7 +1670,7 @@ class Main extends PluginBase implements Listener {
 							$sender->sendMessage($this->formatMessage("$prefix §bPlease use: §3/f $args[0] <amount>\n§aDescription: §dWithdraw money from your faction bank."));
 							return true;
                                                 }
-                        if(($e = $this->plugin->getEconomy()) == null){
+                        if(($e = $this->getEconomy()) == null){
 						}
 						if(!is_numeric($args[1])){
 							$sender->sendMessage($this->formatMessage("$prefix §cAmount must be numeric value. You put §4$args[1]", false));
@@ -1699,7 +1699,7 @@ class Main extends PluginBase implements Listener {
 						       $sender->sendMessage($this->formatMessage("$prefix §bPlease use: §3/f $args[0] <amount>\n§aDescription: §dDonate money to your/the faction you're in."));
 						       return true;
                                                 }
-                        if(($e = $this->plugin->getEconomy()) === null){
+                        if(($e = $this->getEconomy()) === null){
 						}
 						if(!is_numeric($args[1])){
 							$sender->sendMessage($this->formatMessage("$prefix §cAmount must be numeric value. You put: §4$args[1]", false));
