@@ -304,7 +304,7 @@ class Main extends PluginBase implements Listener {
             $power_claimedBy = $this->getFactionPower($claimedBy);
             $power_sender = $this->getFactionPower($faction);
            
-	    if ($this->prefs->get("EnableOverClaim")) {
+	    if ($this->getConfig()->get("EnableOverClaim")) {
                 if ($power_sender < $power_claimedBy) {
 	            $prefix = $this->getConfig()->get("pluginprefix");
 		    $noclaim = $this->getConfig()->get("NotEnoughToOC");
@@ -385,7 +385,7 @@ class Main extends PluginBase implements Listener {
 		$stmt = $this->db->query("SELECT * FROM balance WHERE `faction` LIKE '$faction';");
 		$array = $stmt->fetchArray(SQLITE3_ASSOC);
 		if(!$array){
-			$this->setBalance($faction, $this->prefs->get("defaultFactionBalance", 0));
+			$this->setBalance($faction, $this->getConfig()->get("defaultFactionBalance", 0));
 			$this->getBalance($faction);
 		}
 		return $array["cash"];
@@ -522,7 +522,7 @@ class Main extends PluginBase implements Listener {
                             foreach ($this->war_req as $r => $f) {
                                 if ($r == $args[1] && $f == $sFaction) {
                                     foreach ($this->getServer()->getOnlinePlayers() as $p) {
-                                        $task = new FactionWar($this->plugin, $r);
+                                        $task = new FWarTask($this->plugin, $r);
                                         $handler = $this->getServer()->getScheduler()->scheduleDelayedTask($task, 20 * 60 * 2);
                                         $task->setHandler($handler);
                                         $p->sendMessage("§bThe war against §a$factionName §band §a$sFaction §bhas started!");
