@@ -603,7 +603,7 @@ class Main extends PluginBase implements Listener {
                     /////////////////////////////// INVITE ///////////////////////////////
                     if(strtolower($args[0]) == "invite" or strtolower($args[0]) == "inv"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <player>\n§aDescription: §dInvites a player to your faction."));
+                            $sender->sendMessage($this->formatMessage("$prefix §bPlease use: §3/f $args[0] <player>\n§aDescription: §dInvites a player to your faction."));
                             return true;
                         }
                         if ($this->isFactionFull($this->getPlayerFaction($playerName))) {
@@ -747,7 +747,7 @@ class Main extends PluginBase implements Listener {
                             return true;
                         }
                         $factionName = $this->getPlayerFaction($playerName);
-                        $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
+                        $stmt = $this->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $args[1]);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Member");
@@ -809,7 +809,7 @@ class Main extends PluginBase implements Listener {
 			   return true;
 			}
                         if (!in_array($sender->getPlayer()->getLevel()->getName(), $this->getConfig()->get("ClaimWorlds"))) {
-                            $sender->sendMessage($this->formatMessage("$prefix §cYou can only claim in Faction Worlds: " . implode(" ", $this->plugin->prefs->get("ClaimWorlds"))));
+                            $sender->sendMessage($this->formatMessage("$prefix §cYou can only claim in Faction Worlds: " . implode(" ", $this->getConfig()->get("ClaimWorlds"))));
                             return true;
                         }
                         if ($this->inOwnPlot($sender)) {
@@ -819,8 +819,8 @@ class Main extends PluginBase implements Listener {
                         $faction = $this->getPlayerFaction($sender->getPlayer()->getName());
                         if ($this->getNumberOfPlayers($faction) < $this->getConfig()->get("PlayersNeededInFactionToClaimAPlot")) {
                             $needed_players = $this->getConfig()->get("PlayersNeededInFactionToClaimAPlot") -
-                                    $this->etNumberOfPlayers($faction);
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou need §4$needed_players §cmore players in your faction to claim a faction plot"));
+                                    $this->getNumberOfPlayers($faction);
+                            $sender->sendMessage($this->formatMessage("$prefix §cYou need §4$needed_players §cmore players in your faction to claim a faction plot"));
                             return true;
                         }
                         if ($this->getFactionPower($faction) < $this->getConfig()->get("PowerNeededToClaimAPlot")) {
@@ -1157,11 +1157,11 @@ class Main extends PluginBase implements Listener {
 			        $this->db->query("DELETE FROM balance WHERE faction='$faction';");
 		                $this->getServer()->broadcastMessage("§aThe player: §2$playerName §awho owned §3$faction §bhas been disbanded!");
                                 $sender->sendMessage($this->formatMessage("$prefix §bThe Faction named: §a$faction §bhas been successfully disbanded and the faction plot, and Overclaims are unclaimed.", true));
-                            } else {
+                            } elseif(!$this->isLeader($playerName)) {
                                 $sender->sendMessage($this->formatMessage("$prefix §cYou are not leader!"));
 				return true;
                             }
-                        } else {
+                        } elseif(!$this->isInFaction($playerName)) {
                             $sender->sendMessage($this->formatMessage("$prefix §cYou are not in a faction!"));
 			    return true;
                         }
@@ -1187,7 +1187,7 @@ class Main extends PluginBase implements Listener {
                             $this->subtractFactionPower($faction, $this->getConfig()->get("PowerGainedPerPlayerInFaction"));
 			    $this->takeFromBalance($faction, $this->getConfig()->get("MoneyGainedPerPlayerInFaction"));
                         } else {
-                            $sender->sendMessage($this->getConfig()->formatMessage("$prefix §cYou must delete the faction or give\nleadership to someone else first"));
+                            $sender->sendMessage($this->formatMessage("$prefix §cYou must delete the faction or give\nleadership to someone else first"));
 			    return true;
                         }
                     }
@@ -1605,7 +1605,7 @@ class Main extends PluginBase implements Listener {
 			$sender->sendMessage(TextFormat::GREEN . "§aAuthor: §5VMPE Development Team");
 			$sender->sendMessage(TextFormat::GREEN . "§aOriginal Author: §5Tethered");
 			$sender->sendMessage(TextFormat::GREEN . "§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.");
-			$sender->sendMessage(TextFormat::GREEN . "§aVersion: §5v2.0.0-implement-1");
+			$sender->sendMessage(TextFormat::GREEN . "§aVersion: §5v3.0.0-ALPHA");
 			$sender->sendMessage(TextFormat::GREEN . "§aPlugin Version: §5v3.0.0-DEVc");
 			$sender->sendMessage(TextFormat::GREEN . "§aSupported PMMP API's: §53.0.0-ALPHA10 - ALPHA15.");
                     }
@@ -1624,7 +1624,7 @@ class Main extends PluginBase implements Listener {
                                 $this->factionChatActive[$playerName] = 1;
                                 $sender->sendMessage($this->formatMessage("$prefix §aFaction chat enabled", true));
                             }
-                        } else {
+                        } elseif(!$this->isInFaction($playerName)) {
                             $sender->sendMessage($this->formatMessage("$prefix §cYou are not in a faction"));
                             return true;
                         }
@@ -1904,7 +1904,7 @@ class Main extends PluginBase implements Listener {
 		$to = (int)sqrt($size);
 		$centerPs = new Vector3($observer->x >> $to, 0, $observer->z >> $to);
 		$map = [];
-		$centerFaction = $this->plugin->factionFromPoint($observer->getFloorX(), $observer->getFloorZ());
+		$centerFaction = $this->factionFromPoint($observer->getFloorX(), $observer->getFloorZ());
 		$centerFaction = $centerFaction ? $centerFaction : "Wilderness";
 		$head = TextFormat::DARK_GREEN . "§3________________." . TextFormat::DARK_GRAY . "[" .TextFormat::GREEN . " (" . $centerPs->getX() . "," . $centerPs->getZ() . ") " . $centerFaction . TextFormat::DARK_GRAY . "]" . TextFormat::DARK_GREEN . "§3.________________";
 		$map[] = $head;
