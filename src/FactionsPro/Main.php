@@ -1079,7 +1079,7 @@ class Main extends PluginBase implements Listener {
 					          }else{
 					          if(isset($args[1]) && $args[1] == "str"){
                               $this->sendListOfTop10FactionsTo($sender);
-						           //$this->plugin->sendListOfTop10RichestFactionsTo($sender);
+						           //$this->sendListOfTop10RichestFactionsTo($sender);
 			                          }
 			                          return true;
 		                          }
