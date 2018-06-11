@@ -32,7 +32,13 @@ class Main extends PluginBase implements Listener {
     
     const HEX_SYMBOL = "e29688";
     
+    const CONFIG_VER = "1.0";
+	
     public function onLoad(): void{
+	    if($this->getConfig()->get("version", null) !== self::CONFIG_VER){
+				$this->getLogger()->info("Outdated config version detected, updating config...");
+				$this->saveResource("config.yml", true);
+	    }
 	    $this->getLogger()->info("FactionsPro is being enabled - Please wait whilst our Loading system becomes visible.");
     }
     public function onEnable(): void{
