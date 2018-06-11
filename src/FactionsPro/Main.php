@@ -35,6 +35,7 @@ class Main extends PluginBase implements Listener {
     const CONFIG_VER = "1.0";
 	
     public function onLoad(): void{
+	    $this->saveDefaultConfig();
 	    if($this->getConfig()->get("version", null) !== self::CONFIG_VER){
 				$this->getLogger()->info("Outdated config version detected, updating config...");
 				$this->saveResource("config.yml", true);
@@ -66,8 +67,6 @@ class Main extends PluginBase implements Listener {
 	if (!$this->economyapi) {
 	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
 	}
-	@mkdir($this->getDataFolder());
-        $this->saveDefaultConfig();
 		$this->prefix = $this->getConfig()->get("pluginprefix", $this->prefix);
 		if(sqrt($size = $this->getConfig()->get("PlotSize")) % 2 !== 0){
 			$this->getLogger()->notice("Square Root Of Plot Size ($size) Must Not Be An unknown Number in the plugin! (The size was Currently: ".(sqrt($size = $this->prefs->get("PlotSize"))).")");
@@ -1249,11 +1248,11 @@ class Main extends PluginBase implements Listener {
 				       			        return true;
 			       				}
 			       				if(Server::getInstance()->loadLevel($array['world']) === false){
-+								$sender->sendMessage($this->formatMessage("$prefix The world '" . $array['world'] .  "'' could not be found"));
+								$sender->sendMessage($this->formatMessage("$prefix The world '" . $array['world'] .  "'' could not be found"));
 				       				return true;
 			      				 }
                               				 $level = Server::getInstance()->getLevelByName($array['world']);
-+                           $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
+                         $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
                             $sender->sendMessage($this->formatMessage("$prefix §bTeleported to your faction home succesfully!", true));
                         } else {
                             $sender->sendMessage($this->formatMessage("$prefix §cFaction Home is not set. You can set it with: §4/f sethome"));
