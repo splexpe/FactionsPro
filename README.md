@@ -2,6 +2,9 @@
 
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
+## What is this branch?
+This branch is called "features/implement". What we do, is we try and implement any features / implementations to the plugin to make it more alive and a good plugin to use. If you want anything implemented, please open a new issue. Thanks.
+
 ## NOTICE
 ## There may be some broken features implemented in this branch, so don't expect it to work. If it does work, then great, but if any features / implementations do not work, please feel free to open a new issue. We'll always be glad to help solve the issue.
 
