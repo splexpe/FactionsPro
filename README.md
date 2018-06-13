@@ -3,7 +3,7 @@
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
 ## What branch is this on?
-# This branch, is called "new-methods". What this does, is when a new API, Method, or any code changes, we update it, right here. The other branches are meant for lower API's based on 3.0.0-ALPHA12 and below. This new method - branch will allow us to update more quicker than the other branches, only if a new API, method, or Code changes are implemented, we will update it right here, quicker than ever.
+This branch, is called "new-methods". What this does, is when a new API, Method, or any code changes, we update it, right here. The other branches are meant for lower API's based on 3.0.0-ALPHA12 and below. This new method - branch will allow us to update more quicker than the other branches, only if a new API, method, or Code changes are implemented, we will update it right here, quicker than ever.
 
 ## Features
 * All the features from the good 'ol' days are now back, and working with PMMP Latest APi's.
