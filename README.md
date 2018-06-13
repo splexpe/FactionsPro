@@ -2,8 +2,11 @@
 
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
+## What is this branch?
+This branch is called configurations-v2. It's where we implement a more-customised Factions plugin for MCPE, bringing: Customising messages, making settings your own, and more. Soon, we plan on allowing you all to make your own commands, so for example, instead of /f aqs the main command, you could make it into /clans. Which we do plan on adding this in the near future of this plugin. Thanks for reading.
+
 ## NOTICE
-## There may be some broken features implemented in this branch, so don't expect it to work. If it does work, then great, but if any features / implementations do not work, please feel free to open a new issue. We'll always be glad to help solve the issue.
+## This branch could potentially be buggy, and unstabled. So do not expect it to work. If you have found any bugs or issues within this plugin, please open a new iissue on the issues tab. Thanks.
 
 ## Features
 * All the features from the good 'ol' days are now back, and working with PMMP Latest APi's.
