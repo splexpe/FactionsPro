@@ -2,9 +2,9 @@
 
 namespace FactionsPro;
 
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
-class FactionWar extends PluginTask {
+class FactionWar extends Task {
 	
 	public $plugin;
 	public $requester;
@@ -17,7 +17,7 @@ class FactionWar extends PluginTask {
 	
 	public function onRun(int $currentTick): void {
 		unset($this->plugin->wars[$this->requester]);
-		$this->plugin->getServer()->getScheduler()->cancelTask($this->getTaskId());
+		$this->plugin->getScheduler()->cancelTask($this->getTaskId());
 	}
 	
 }
