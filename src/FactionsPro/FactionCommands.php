@@ -5,6 +5,8 @@ use pocketmine\{Server, Player};
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\level\{Level, Position};
+use onebone\economyapi\EconomyAPI;
+
 class FactionCommands {
 	
     public $plugin;
@@ -26,6 +28,13 @@ class FactionCommands {
         if ($sender instanceof Player) {
             $playerName = $sender->getPlayer()->getName(); //Sender who executes the command.
 	    $prefix = $this->plugin->prefs->get("prefix"); //Prefix configurations.
+		//ECONOMY RELATED CONFIGURATIONS
+	    $create = $this->plugin->prefs->get("CreateCost");
+	    $claim = $this->plugin->prefs->get("ClaimCost");
+	    $oclaim = $this->plugin->prefs->get("OverClaimCost");
+	    $allyr = $this->plugin->prefs->get("AllyCost");
+	    $allya = $this->plugin->prefs->get("AllyPrice");
+	    $home = $this->plugin->prefs->get("SetHomeCost");
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
                     $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use §3/f help §6for a list of commands"));
@@ -137,7 +146,8 @@ class FactionCommands {
                         if ($this->plugin->isInFaction($sender->getName())) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must leave the faction first"));
                             return true;
-                        } else {
+		         } elseif($r = EconomyAPI::getInstance()->reduceMoney($player, $create)) {
+				$playerName = strtolower($playerName);
                             $factionName = $args[1];
                             $rank = "Leader";
                             $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
@@ -150,10 +160,25 @@ class FactionCommands {
 			    $this->plugin->setBalance($factionName, $this->plugin->prefs->get("defaultFactionBalance"));
 			    $this->plugin->updateTag($playerName);
                             $this->plugin->getServer()->broadcastMessage("§a$playerName §bhas created a faction named §c$factionName");
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour Faction named §a$factionName §bhas been created. §6Next, use /f desc to make a faction description.", true));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour Faction named §a$factionName §bhas been created for §5$$create. §6Next, use /f desc to make a faction description.", true));
 			    var_dump($this->plugin->db->query("SELECT * FROM balance;")->fetchArray(SQLITE3_ASSOC));
                             return true;
-                        }
+			  } else {
+						
+						switch($r){
+							case EconomyAPI::RET_INVALID:
+							
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cCan't Create faction. You Must Have §2$$create §cmoney To Create A faction."));
+								break;
+							case EconomyAPI::RET_CANCELLED:
+						
+								$sender->sendMessage($this->plugin->formatMessage("§cError - Cancelled."));
+								break;
+							case EconomyAPI::RET_NO_ACCOUNT:
+								$sender->sendMessage($this->plugin->formatMessage("§cError - Not in account"));
+								break;
+						}
+					  }
                     }
                     /////////////////////////////// INVITE ///////////////////////////////
                     if(strtolower($args[0]) == "invite" or strtolower($args[0]) == "inv"){
@@ -383,6 +408,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §4$needed_money §cMoney is required but your faction has only §4$balance §cMoney."));
                             return true;
                         }
+			elseif($r = EconomyAPI::getInstance()->reduceMoney($player, $claim)){
                         $x = floor($sender->getX());
 			$y = floor($sender->getY());
 			$z = floor($sender->getZ());
@@ -398,6 +424,23 @@ class FactionCommands {
                         $this->plugin->getServer()->broadcastMessage("§aThe player §b$playerName §afrom §b$faction §3has claimed their land");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour Faction plot has been claimed.", true));
 		    }
+			    else {
+						// $r is an error code
+						switch($r){
+							case EconomyAPI::RET_INVALID:
+								# Invalid $amount
+								$sender->sendMessage($this->plugin->formatMessage("§cYou do not have enough Money to Claim! You Need §6$$claim money to claim!"));
+								break;
+							case EconomyAPI::RET_CANCELLED:
+								# Transaction was cancelled for some reason :/
+								$sender->sendMessage($this->plugin->formatMessage("§cThis transaction was cancelled!"));
+								break;
+							case EconomyAPI::RET_NO_ACCOUNT:
+								$sender->sendMessage($this->plugin->formatMessage("§cUnknown error! If you have issues with this, please contact us."));
+								break;
+						}
+					}
+				        }
                     if(strtolower($args[0]) == "plotinfo" or strtolower($args[0]) == "pinfo"){
                         $x = floor($sender->getX());
 			$y = floor($sender->getY());
@@ -503,9 +546,9 @@ class FactionCommands {
                         $this->plugin->subtractFactionPower($args[1], $args[2]);
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bSuccessfully removed §a$args[2] §bPower from §a$args[1]", true));
                     }
-                    if(strtolower($args[0]) == "playerfaction" or strtolower($args[0]) == "pf"){
+                    if(strtolower($args[0]) == "search"){
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <player>\n§aDescription: §dCheck to see what faction a player's in."));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <player>\n§aDescription: §dStalks a player."));
                             return true;
                         }
                         if ($this->plugin->isInFaction($args[1]) == false) {
@@ -563,9 +606,26 @@ class FactionCommands {
                                         $arm = (($this->plugin->prefs->get("PlotSize")) - 1) / 2;
                                         $this->plugin->newPlot($faction_ours, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
 			                $this->plugin->getServer()->broadcastMessage("§aPlayer §2$playerName §afrom §b$faction_ours §ahave overclaimed §b$faction_victim");
-                                        $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe faction plot of §3$faction_victim §bhas been over claimed! It is now yours.", true));
+                                        $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe faction plot of §3$faction_victim §bhas been over claimed for §3$$claim! §bIt is now yours.", true));
                                         return true;
                                     }
+					else {
+						// $r is an error code
+						    switch($r){
+							case EconomyAPI::RET_INVALID:
+								# Invalid $amount
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cYou do not have enough Money to Overclaim! You Need §2$$oclaim §cto overclaim."));
+								break;
+							case EconomyAPI::RET_CANCELLED:
+								# Transaction was cancelled for some reason :/
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cTransaction was cancelled."));
+								break;
+							case EconomyAPI::RET_NO_ACCOUNT:
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cUnknown error. If you have any issues, please contact us."));
+								break;
+						}
+					}
+                                    
                                 }
                             } else {
                                 $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction plot."));
@@ -744,6 +804,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §4$needed_power §cpower is required to set a home. Your faction has §4$faction_power §cpower."));
 			    return true;
 			}
+			elseif($r = EconomyAPI::getInstance()->reduceMoney($player, $home)){
                         $factionName = $this->plugin->getPlayerFaction($sender->getName());
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO home (faction, x, y, z, world) VALUES (:faction, :x, :y, :z, :world);");
                         $stmt->bindValue(":faction", $factionName);
@@ -752,8 +813,22 @@ class FactionCommands {
                         $stmt->bindValue(":z", $sender->getZ());
 			$stmt->bindValue(":world", $sender->getLevel()->getName());
                         $result = $stmt->execute();
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §bHome set succesfully for §a$factionName. §bNow, you can use: §3/f home", true));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §bHome set succesfully for §a$factionName §bwith §a$$home §bmoney. §bNow, you can use: §3/f home", true));
                     }
+			    else {
+						    switch($r){
+							case EconomyAPI::RET_INVALID:
+								$sender->sendMessage($this->plugin->formatMessage("Error! You Need $home Coins To Set A Home!"));
+								break;
+							case EconomyAPI::RET_CANCELLED:
+								$sender->sendMessage($this->plugin->formatMessage("Error!"));
+								break;
+							case EconomyAPI::RET_NO_ACCOUNT:
+								$sender->sendMessage($this->plugin->formatMessage("Error!"));
+								break;
+			   }
+		    }
+		    }
                     /////////////////////////////// UNSETHOME ///////////////////////////////
                     if(strtolower($args[0]) == "unsethome" or strtolower($args[0]) == "delhome"){
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
@@ -1170,6 +1245,91 @@ class FactionCommands {
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
                         }
                     }
+		    ///////////////////////////////////////
+                    ///////////////EFFFECTS?//////////////////////////
+                    $amp = 0;
+                    $strengthperkill = $this->plugin->prefs->get("PowerGainedPerKillingAnEnemy");
+                    $lvl = array($strengthperkill*100,$strengthperkill*500,$strengthperkill*1000,$strengthperkill*5000);
+                    if(strtolower($args[0]) == "setef"){
+                        if(!isset($args[1])){
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §a/f setef <fast:str:jump:haste:res:life>"));
+							return true;
+                        }
+                        if(!$this->plugin->isInFaction($playerName)){
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this!"));
+							return true;
+                        }
+                        if(!$this->plugin->isLeader($playerName)) {
+							$sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this."));
+							return true;
+						}
+                        $factionName = $this->plugin->getPlayerFaction($playerName);
+                        $factionstrength = $this->plugin->getFactionPower($factionName);
+                        $strengthperkill = $this->plugin->prefs->get("PowerGainedPerKillingAnEnemy");
+                        if($factionstrength < $lvl[0]){
+                            $needed_power = $lvl[0];
+							$sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction doesn't have enough Strength to select an effect."));
+							$sender->sendMessage($this->plugin->formatMessage("$prefix §2$needed_power §cFaction Power is required but your faction has only $factionstrength Faction power."));
+							return true;
+                        }
+                        if(!(in_array(strtolower($args[1]),array("fast","str","jump","haste","res","life")))){
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe §2'$args[1]' §cmode is not available."));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §6/f setef <fast:str:jump:haste:res:life>"));
+							return true;
+                        }
+                        $this->plugin->addEffectTo($this->plugin->getPlayerFaction($playerName),strtolower($args[1]));
+                        $this->plugin->updateTagsAndEffectsOf($factionName);
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §dSuccessfully updated your faction's effect.",true));
+                        return true;
+                    }
+                    if(strtolower($args[0]) == "efinfo"){
+                        for($i=0;$i<4;$i++){
+                            $s = $i + 1;
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cLvl §2$s §ceffects unlock at §2$lvl[$i] §cFaction strength.",true));
+                        }
+                        return true;
+                    }
+                    if(strtolower($args[0]) == 'getef'){
+                        if(!$this->plugin->isInFaction($playerName)){
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this!"));
+							return true;
+                        }
+                        $factionName = $this->plugin->getPlayerFaction($playerName);
+                        $factionstrength = $this->plugin->getFactionPower($factionName);
+                        if($this->plugin->getEffectOf($factionName) == "none"){
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction's effect is not set. Set it by typing §6/f setef <effect>"));
+                            return true;
+                        }
+                        $sender->removeAllEffects();
+                        for($i=0;$i<4;$i++){
+                            if($factionstrength >= $lvl[$i]){
+                                $amp = $i;
+                            }
+                        }
+                        switch($this->plugin->getEffectOf($factionName)){
+                            case "fast":
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(1), INT32_MAX, $amp, false));
+                                break;
+                            case "str":
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(5), INT32_MAX, $amp, false));
+                                break;
+                            case "jump":
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(8), INT32_MAX, $amp, false));
+                                break;
+                            case "haste":
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(3), INT32_MAX, $amp, false));
+                                break;
+                            case "res":
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(11), INT32_MAX, $amp, false));
+                                break;
+                            case "life":
+                                $sender->addEffect(new EffectInstance(Effect::getEffect(21), INT32_MAX, $amp, false));
+                                break;
+                        }  
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §dEnjoy your effect!", true));
+                        return true;
+                        }
+
                     /////////////////////////////// ABOUT ///////////////////////////////
                     if(strtolower($args[0]) == "about" or strtolower($args[0]) == "info"){
                         $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
