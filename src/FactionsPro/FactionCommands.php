@@ -1,5 +1,7 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\{Server, Player};
 use pocketmine\utils\TextFormat;
@@ -600,14 +602,15 @@ class FactionCommands {
                                     if ($faction_ours_power < $faction_victim_power) {
                                         $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't overclaim the plot of §4$faction_victim §cbecause your STR is lower than theirs."));
                                         return true;
-                                    } else {
+                                    } elseif($r = EconomyAPI::getInstance()->reduceMoney($player, $oclaim))
+									   {
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_ours';");
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_victim';");
                                         $arm = (($this->plugin->prefs->get("PlotSize")) - 1) / 2;
                                         $this->plugin->newPlot($faction_ours, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
 			                $this->plugin->getServer()->broadcastMessage("§aPlayer §2$playerName §afrom §b$faction_ours §ahave overclaimed §b$faction_victim");
                                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe faction plot of §3$faction_victim §bhas been over claimed for §3$$claim! §bIt is now yours.", true));
-                                        return true;
+return true;
                                     }
 					else {
 						// $r is an error code
