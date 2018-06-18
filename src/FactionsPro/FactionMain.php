@@ -109,6 +109,7 @@ class FactionMain extends PluginBase implements Listener {
           "###GuildsMoneys###",
           "GuildsMoneyGainPerKill" => 10,
           "GuildsMoneyLostPerDeath" => 10,
+	],
         ));
 		$this->prefix = $this->prefs->get("prefix", $this->prefix);
 		if(sqrt($size = $this->prefs->get("PlotSize")) % 2 !== 0){
