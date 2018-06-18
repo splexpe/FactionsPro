@@ -13,6 +13,8 @@ use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
 use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
 use pocketmine\level\{Position, Level};
+use onebone\economyapi\EconomyAPI;
+
 class FactionMain extends PluginBase implements Listener {
     
     public $db;
@@ -96,9 +98,18 @@ class FactionMain extends PluginBase implements Listener {
                 	"magma" => 10000,
                 	"ghast" => 10000,
                 	"blaze" => 15000,
-			"empty" => 100
-                ],
-		));
+			"empty" => 100,
+            "###Economys###",
+            "CreateCost" => 3000,
+		    "ClaimCost" => 100000,
+	    	"OverClaimCost" => 25000,
+	    	"AllyCost" => 5000,
+	    	"AllyPrice" => 5000,
+	    	"SetHomeCost" => 150,
+          "###GuildsMoneys###",
+          "GuildsMoneyGainPerKill" => 10,
+          "GuildsMoneyLostPerDeath" => 10,
+        ));
 		$this->prefix = $this->prefs->get("prefix", $this->prefix);
 		if(sqrt($size = $this->prefs->get("PlotSize")) % 2 !== 0){
 			$this->getLogger()->notice("Square Root Of Plot Size ($size) Must Not Be An unknown Number in the plugin! (The size was Currently: ".(sqrt($size = $this->prefs->get("PlotSize"))).")");
@@ -128,6 +139,20 @@ class FactionMain extends PluginBase implements Listener {
     }
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
+    }
+    public function addEffectTo($faction,$effect){
+        $stmt = $this->db->prepare("INSERT OR REPLACE INTO effects (faction, effect) VALUES (:faction, :effect);");  
+        $stmt->bindValue(":faction", $faction);
+		$stmt->bindValue(":effect", $effect);
+		$result = $stmt->execute();
+    }
+    public function getEffectOf($faction){
+        $result = $this->db->query("SELECT * FROM effects WHERE faction = '$faction';");
+        $resultArr = $result->fetchArray(SQLITE3_ASSOC);
+        if(empty($resultArr)){
+            return "none";
+        }
+        return $resultArr['effect'];
     }
     public function setEnemies($faction1, $faction2) {
         $stmt = $this->db->prepare("INSERT INTO enemies (faction1, faction2) VALUES (:faction1, :faction2);");
@@ -424,21 +449,21 @@ class FactionMain extends PluginBase implements Listener {
 		}
 		return $array["cash"];
 	}
-	public function setBalance($faction, int $money){
+	public function setBalance($faction, $money){
 		$stmt = $this->db->prepare("INSERT OR REPLACE INTO balance (faction, cash) VALUES (:faction, :cash);");
 		$stmt->bindValue(":faction", $faction);
 		$stmt->bindValue(":cash", $money);
 		return $stmt->execute();
 	}
-	public function addToBalance($faction, int $money){
+	public function addToBalance($faction, $money){
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) + $money);
 	}
-	public function takeFromBalance($faction, int $money){
+	public function takeFromBalance($faction, $money){
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) - $money);
 	}
-	public function sendListOfTop10RichestFactionsTo(Player $s){
+	public function sendListOfTop10RichestFactionsTo($s){
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
         $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§5§lTop 10 Richest Factions".TextFormat::RESET);
@@ -451,7 +476,7 @@ class FactionMain extends PluginBase implements Listener {
             $i = $i + 1;
         } 
     }
-	public function getSpawnerPrice(string $type) : int {
+	public function getSpawnerPrice($type) {
 		$sp = $this->prefs->get("spawnerPrices");
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
@@ -463,7 +488,7 @@ class FactionMain extends PluginBase implements Listener {
 		return $pl;
 	}
     public function updateTag($playername) {
-        $p = $this->getServer()->getPlayer($playername);
+        $p = $this->getServer()->getPlayerExact($playername);
         $f = $this->getPlayerFaction($playername);
         if (!$this->isInFaction($playername)) {
             if(isset($this->purechat)){
