@@ -5,6 +5,7 @@ description: Lets Bring Back FactionsPro The Better Way! [old branch]
 version: 1.0.0-old
 main: FactionsPro\FactionMain
 api: [3.0.0-ALPHA11, 3.0.0-ALPHA12, 3.0.0-ALPHA13, 3.0.0-ALPHA14, 3.0.0-ALPHA15]
+softdepend: [AllAPILoader] #To load this plugin, you must have AllAPILoader plugin.
 commands:
   f:
     permission: f.command
