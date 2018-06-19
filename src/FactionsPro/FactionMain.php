@@ -23,9 +23,20 @@ class FactionMain extends PluginBase implements Listener{
 	public $wars = [];
 	public $war_players = [];
 	private $prefix = "§l§f[§bFactions§f] §r";
-
+	public static function checkSpoon(){
+		return (
+			Server::getInstance()->getName() !== "PocketMine-MP" ||
+			class_exists("pocketmine\\network\\protocol\\Info")
+		);
+	}
+	public function onLoad(){
+		if(FactionMain::checkSpoon()){
+			$this->getLogger()->error("This plugin is for PMMP only. We do not support spoons.");
+			$this->getLogger()->error("The plugin will disable itself after being later enabled by the server.");
+			$this->disable = true;
+		}
+	}
 	public function onEnable(){
-		
 		@mkdir($this->getDataFolder());
 		
 		if(!file_exists($this->getDataFolder() . "BannedNames.txt")){
@@ -34,6 +45,13 @@ class FactionMain extends PluginBase implements Listener{
 			fwrite($file, $txt);
 		}
 		$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
+		$this->allapiloader = $this->getServer()->getPluginManager()->getPlugin("AllAPILoader");
+        	if (!$this->allapiloader) {
+            	$this->getLogger()->info("AllAPILoader is required to load this plugin. You can get the plugin here: https://poggit.pmmp.io/ci/TheFixerDevelopment/AllAPILoader/AllAPILoader. Plugin disabled.");
+		if($this->disable){
+		$this->setEnabled(false);
+		return;
+        	}
 		$this->fCommand = new FactionCommands($this);
 		
 		$this->prefs = new Config($this->getDataFolder() . "Prefs.yml", Config::YAML, array(
@@ -91,7 +109,7 @@ class FactionMain extends PluginBase implements Listener{
 		$this->db->exec("CREATE TABLE IF NOT EXISTS balance(faction TEXT PRIMARY KEY, cash INT)");
 		
 	}
-		
+	}	
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
 		$this->fCommand->onCommand($sender, $command, $label, $args);
 		return true;
