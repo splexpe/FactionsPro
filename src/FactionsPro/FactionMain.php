@@ -80,7 +80,7 @@ class FactionMain extends PluginBase implements Listener {
 	    "ClaimCost" => 1000,
 	    "OverClaimCost" => 1000,
 	    "AllyCost" => 1000,
-	    "AllyPrice" -> 1000,
+	    "AllyPrice" => 1000,
 	    "SetHomeCost" => 1000,
             "BroadcastFactionCreation" => true,
             "FactionCreationBroadcast" => "%PLAYER% created a faction named %FACTION%",
