@@ -45,7 +45,19 @@ ClaimWorlds:
 # - ender
 # - nether
 # And what not.
-AllowChat: true
+CreateCost: 1000
+## Cost to create a faction. Set this to 0 to disable.
+ClaimCost: 1000
+## Cost to claim a land. Set this to 0 to disable.
+OverClaimCost: 1000
+## Cost to over claim a land. Set this to 0 to disable.
+AllyCost: 1000
+## Cost to Ally a faction. Set this to 0 to disable.
+AllyPrice: 1000
+## Cost to accept an alliance. Set this to 0 to disable.
+SetHomeCost: 1000
+## Cost to set a faction home - Set this to 0 to disable.
+AllowChat: true 
 # Allow Faction chat. Option: false | true - Default: True.
 AllowFactionPvp: false
 # Allow faction members to PvP each other. Options: false | true - Default: false
