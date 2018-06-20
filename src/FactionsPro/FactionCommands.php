@@ -1101,6 +1101,7 @@ return true;
                         if ($this->plugin->getAlliesCount($fac) >= $this->plugin->getAlliesLimit()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction has the maximum amount of allies", true));
                         }
+			elseif($r = EconomyAPI::getInstance()->reduceMoney($player, $allyr)){
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO alliance (player, faction, requestedby, timestamp) VALUES (:player, :faction, :requestedby, :timestamp);");
                         $stmt->bindValue(":player", $leader->getName());
                         $stmt->bindValue(":faction", $args[1]);
@@ -1110,6 +1111,19 @@ return true;
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bYou requested to ally with §a$args[1]!\n§bWait for the leader's response...", true));
                         $leader->sendMessage($this->plugin->formatMessage("$prefix §bThe leader of §a$fac §brequested an alliance.\nType §3/f allyok §bto accept or §3/f allyno §bto deny.", true));
                     }
+			    else {
+						    switch($r){
+							case EconomyAPI::RET_INVALID:
+								$sender->sendMessage($this->plugin->formatMessage("Error! You Need $allyr Money To ally a faction!"));
+								break;
+							case EconomyAPI::RET_CANCELLED:
+								$sender->sendMessage($this->plugin->formatMessage("Error!"));
+								break;
+							case EconomyAPI::RET_NO_ACCOUNT:
+								$sender->sendMessage($this->plugin->formatMessage("Error!"));
+								break;
+			   }
+		    }
                     if(strtolower($args[0]) == "unally" or strtolower($args[0]) == "una"){
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction>\n§aDescription: §dUn allies a faction."));
@@ -1198,6 +1212,7 @@ return true;
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction has not been requested to ally with any factions"));
                             return true;
                         }
+			elseif($r = EconomyAPI::getInstance()->reduceMoney($player, $allya)){
                         $allyTime = $array["timestamp"];
                         $currentTime = time();
                         if (($currentTime - $allyTime) <= 60) { //This should be configurable -> Use Beta branch to get this feature.
@@ -1218,6 +1233,20 @@ return true;
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cRequest has timed out"));
                             $this->plugin->db->query("DELETE FROM alliance WHERE player='$lowercaseName';");
                         }
+			}
+			else {
+						    switch($r){
+							case EconomyAPI::RET_INVALID:
+								$sender->sendMessage($this->plugin->formatMessage("Error! You Need $allya Money To accept an alliance from a faction!"));
+								break;
+							case EconomyAPI::RET_CANCELLED:
+								$sender->sendMessage($this->plugin->formatMessage("Error!"));
+								break;
+							case EconomyAPI::RET_NO_ACCOUNT:
+								$sender->sendMessage($this->plugin->formatMessage("Error!"));
+								break;
+						    }
+			}
                     }
                     if(strtolower($args[0]) == "allyno" or strtolower($args[0]) == "allydeny"){
                         if ($this->plugin->isInFaction($playerName) == false) {
@@ -1554,12 +1583,20 @@ return true;
                         }
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 7){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§57/7§2]" . TextFormat::RED . "\n§a/f donate|pay <amount> - §7Donate to a faction from your Eco Bank.\n§a/f withdraw|wd <amount> - §7With draw from your faction bank\n§a/f balance|bal - §7Checks your faction balance\n§a/f map|compass - §7Faction Map command\n§a/f overclaim|oc - §7Overclaims a plot.\n§a/f seebalance|sb - §7Checks other faction balances.\n§4§ldo /f help 8 to see OP Commands.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§57/7§2]" . TextFormat::RED . "\n§a/f donate|pay <amount> - §7Donate to a faction from your Eco Bank.\n§a/f withdraw|wd <amount> - §7With draw from your faction bank\n§a/f balance|bal - §7Checks your faction balance\n§a/f map|compass - §7Faction Map command\n§a/f overclaim|oc - §7Overclaims a plot.\n§a/f seebalance|sb - §7Checks other faction balances");
+				if($sender->isOp()){
+				$sender->sendMessaqge("\n§4§ldo /f help 8 to see OP Commands.");
 				return true;
-			}else{
+				}
+			}
+			if($args[1] == 8){
+				$sender->isOP();
 				$serverName = $this->plugin->prefs->get("ServerName");
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp (OP Commands) §2[§51/1§2]" . TextFormat::RED . "\n§4/f addstrto <faction> <STR> - §cAdds Strength to a faction.\n§4/f addbalto <faction> <money> - §cAdds Money to a faction.\n§4/f forcedelete|fdisband <faction> - §cForce deletes a faction.\n§4/f forceunclaim|func <faction> - §cForce unclaims a plot / land.");
 				return true;
+				}else{
+                            $sender->sendMessage("§cError.");
+                            return true;
 		        }
                      }
                 }
@@ -1568,6 +1605,7 @@ return true;
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("$prefix Please run this command in game"));
         }
         return true;
+    }
     }
     public function alphanum($string){
         if(function_exists('ctype_alnum')){
