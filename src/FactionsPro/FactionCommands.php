@@ -64,11 +64,11 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Faction named §4$args[1] §cdoes not exist"));
                             return true;
                         }
-                        if (!$this->plugin->isInFaction($sender->getName()) == false) {
+                        if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
                             return true;
                         }
-                        if (!$this->plugin->isLeader($playerName) == false) {
+                        if ($this->plugin->isLeader($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cOnly your faction leader may start wars"));
                             return true;
                         }
@@ -335,7 +335,7 @@ class FactionCommands {
                         $kicked = $this->plugin->getServer()->getPlayer($args[1]);
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $this->plugin->db->query("DELETE FROM master WHERE player='$playerName';");
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$kicked", true));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$args[1]", true));
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			$this->plugin->takeFromBalance($factionName, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
                         if ($kicked instanceof Player) {
@@ -1307,7 +1307,7 @@ class FactionCommands {
                     }
                
                 /////////////////////////////// WHO ///////////////////////////////
-                if (strtolower($args[0]) == 'who') {
+                if (strtolower($args[0]) == "who") {
                     if (isset($args[1])) {
                         if (!(ctype_alnum($args[1])) or !($this->plugin->factionExists($args[1]))) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoes not exist"));
