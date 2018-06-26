@@ -2,7 +2,7 @@
 
 namespace FactionsPro;
 
-use pocketmine\scheduler\PLuginTask;
+use pocketmine\scheduler\PluginTask;
 
 class FactionWar extends PluginTask {
 	

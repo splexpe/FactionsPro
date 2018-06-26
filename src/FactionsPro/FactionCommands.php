@@ -1,10 +1,13 @@
 <?php
 namespace FactionsPro;
-use pocketmine\command\{Command, CommandSender};
-use pocketmine\{Server, Player};
+use pocketmine\command\Command;
+use pocketmine\command\CommandSender;
+use pocketmine\Server;
+use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
-use pocketmine\level\{Level, Position};
+use pocketmine\level\Level;
+use pocketmine\level\Position;
 class FactionCommands {
 	
     public $plugin;
@@ -67,11 +70,11 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Faction named §4$args[1] §cdoes not exist"));
                             return true;
                         }
-                        if (!$this->plugin->isInFaction($sender->getName()) == false) {
+                        if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
                             return true;
                         }
-                        if (!$this->plugin->isLeader($playerName) == false) {
+                        if ($this->plugin->isLeader($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cOnly your faction leader may start wars"));
                             return true;
                         }
@@ -205,11 +208,11 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f leader <player>\n§aDescription: §dMake someone else leader of the faction."));
                             return true;
                         }
-                        if (!$this->plugin->isInFaction($sender->getName()) == false) {
+                        if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this"));
                             return true;
                         }
-                        if (!$this->plugin->isLeader($playerName) == false) {
+                        if ($this->plugin->isLeader($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this"));
                             return true;
                         }
@@ -247,11 +250,11 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f promote <player>\n§aDescription: §dPromote a player from your faction."));
                             return true;
                         }
-                        if (!$this->plugin->isInFaction($sender->getName()) == false) {
+                        if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this"));
                             return true;
                         }
-                        if (!$this->plugin->isLeader($playerName) == false) {
+                        if ($this->plugin->isLeader($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this"));
                             return true;
                         }
@@ -278,7 +281,7 @@ class FactionCommands {
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
                         $promotee = $this->plugin->getServer()->getPlayer($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a$promotee §bhas been promoted to Officer", true));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a$args[1] §bhas been promoted to Officer", true));
                         if ($promotee instanceof Player) {
                             $promotee->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
 		            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
@@ -322,7 +325,7 @@ class FactionCommands {
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
                         $demotee = $this->plugin->getServer()->getPlayer($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §5$demotee §2has been demoted to Member", true));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §args[1] §2has been demoted to Member", true));
                         if ($demotee instanceof Player) {
                             $demotee->sendMessage($this->plugin->formatMessage("$prefix §2You were demoted to member of §5$factionName!", true));
 		            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
@@ -1517,7 +1520,7 @@ class FactionCommands {
     const SW = '/';
     const W = 'W';
     const NW = '\\';
-    public static function getASCIICompass($degrees, $colorActive, $colorDefault) : array
+    public static function getASCIICompass($degrees, $colorActive, $colorDefault)
     {
         $ret = [];
         $point = self::getCompassPointForDirection($degrees);
