@@ -22,7 +22,7 @@ class FactionCommands {
     public function __construct(FactionMain $pg) {
         $this->plugin = $pg;
     }
-    public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
+    public function onCommand(CommandSender $sender, Command $command, $label, array $args){
         if ($sender instanceof Player) {
             $playerName = $sender->getPlayer()->getName(); //Sender who executes the command.
 	    $prefix = $this->plugin->prefs->get("prefix"); //Prefix configurations.
@@ -30,6 +30,9 @@ class FactionCommands {
                 if (empty($args)) {
                     $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use §3/f help §6for a list of commands"));
                     return true;
+                }
+                if(count($args == 2)) {
+                    
                 }
                     ///////////////////////////////// WAR /////////////////////////////////
                     if(strtolower($args[0]) == "war" or strtolower($args[0]) == "wr"){
@@ -202,11 +205,11 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f leader <player>\n§aDescription: §dMake someone else leader of the faction."));
                             return true;
                         }
-                        if ($this->plugin->isInFaction($sender->getName()) == false) {
+                        if (!$this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this"));
                             return true;
                         }
-                        if ($this->plugin->isLeader($playerName) == false) {
+                        if (!$this->plugin->isLeader($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this"));
                             return true;
                         }
@@ -244,11 +247,11 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f promote <player>\n§aDescription: §dPromote a player from your faction."));
                             return true;
                         }
-                        if ($this->plugin->isInFaction($sender->getName()) == false) {
+                        if (!$this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this"));
                             return true;
                         }
-                        if ($this->plugin->isLeader($playerName) == false) {
+                        if (!$this->plugin->isLeader($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this"));
                             return true;
                         }
@@ -259,7 +262,15 @@ class FactionCommands {
                         if ($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
-			}
+                        }
+			 if ($this->plugin->isOfficer($args[1]) == false) {
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis already an Officer of this faction"));
+                            return true;
+			 }
+                          if ($this->plugin->isLeader($args[1]) == false) {
+                              $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get promoted because you're the leader of this faction.")); //This checks if the player is a leader, which fixes promoting yourself to Officer when you're leader.
+                              return true;
+                        }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $playerName);
@@ -267,7 +278,7 @@ class FactionCommands {
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
                         $promotee = $this->plugin->getServer()->getPlayer($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a$args[1] §bhas been promoted to Officer", true));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a$promotee §bhas been promoted to Officer", true));
                         if ($promotee instanceof Player) {
                             $promotee->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
 		            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
@@ -296,6 +307,14 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't demote yourself"));
                             return true;
                         }
+                        if (!$this->plugin->isOfficer($args[1])) {
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis already a Officer of this faction"));
+                            return true;
+                        }
+			if ($this->plugin->isLeader($args[1]) == false) {
+                              $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get demoted because you're the leader of this faction.")); //This checks if the player is a leader, which fixes demoting yourself to Officer when you're leader.
+                              return true;
+                        }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $playerName);
@@ -303,7 +322,7 @@ class FactionCommands {
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
                         $demotee = $this->plugin->getServer()->getPlayer($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §5$args[1] §2has been demoted to Member", true));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §5$demotee §2has been demoted to Member", true));
                         if ($demotee instanceof Player) {
                             $demotee->sendMessage($this->plugin->formatMessage("$prefix §2You were demoted to member of §5$factionName!", true));
 		            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
@@ -561,7 +580,7 @@ class FactionCommands {
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_ours';");
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_victim';");
                                         $arm = (($this->plugin->prefs->get("PlotSize")) - 1) / 2;
-                                        $this->plugin->newPlot($faction_ours, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
+                                        $this->plugin->newPlot($faction_ours,$x+$arm,$z+$arm,$x-$arm,$z-$arm);
 			                $this->plugin->getServer()->broadcastMessage("§aPlayer §2$playerName §afrom §b$faction_ours §ahave overclaimed §b$faction_victim");
                                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe faction plot of §3$faction_victim §bhas been over claimed! It is now yours.", true));
                                         return true;

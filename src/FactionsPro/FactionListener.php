@@ -70,7 +70,60 @@ class FactionListener implements Listener {
 				}
 			}
 		}
-	}
+        //Member
+		if($this->plugin->isInFaction($PCE->getPlayer()->getName()) && $this->plugin->isMember($PCE->getPlayer()->getName())) {
+			$message = $PCE->getMessage();
+			$player = $PCE->getPlayer()->getName();
+			$faction = $this->plugin->getPlayerFaction($player);
+			$number_of_players = $this->plugin->getNumberOfPlayers($faction);
+            $PCE->setFormat(TextFormat::ITALIC.TextFormat::AQUA."<$number_of_players> ".
+                            TextFormat::ITALIC.TextFormat::DARK_AQUA."<M> ".
+                           
+                            TextFormat::ITALIC.TextFormat::BLUE."<$faction> ".
+                            
+                            TextFormat::ITALIC.TextFormat::GREEN."<$player> ".
+                            
+                            TextFormat::ITALIC.TEXTFormat::WHITE.$message);
+			return true;
+		}
+		//Officer
+		elseif($this->plugin->isInFaction($PCE->getPlayer()->getName()) && $this->plugin->isOfficer($PCE->getPlayer()->getName())) {
+			$message = $PCE->getMessage();
+			$player = $PCE->getPlayer()->getName();
+			$faction = $this->plugin->getPlayerFaction($player);
+			$number_of_players = $this->plugin->getNumberOfPlayers($faction);
+			$PCE->setFormat(TextFormat::ITALIC.TextFormat::AQUA."<$number_of_players> ".
+                            TextFormat::ITALIC.TextFormat::DARK_AQUA."<O> ".
+                            
+                            TextFormat::ITALIC.TextFormat::BLUE."<$faction> ".
+                            
+                            TextFormat::ITALIC.TextFormat::GREEN."<$player> ".
+                            
+                            TextFormat::ITALIC.TEXTFormat::WHITE.$message);
+			return true;
+		}
+		//Leader
+		elseif($this->plugin->isInFaction($PCE->getPlayer()->getName()) && $this->plugin->isLeader($PCE->getPlayer()->getName())) {
+			$message = $PCE->getMessage();
+			$player = $PCE->getPlayer()->getName();
+			$faction = $this->plugin->getPlayerFaction($player);
+			$number_of_players = $this->plugin->getNumberOfPlayers($faction);
+			$PCE->setFormat(TextFormat::ITALIC.TextFormat::AQUA."<$number_of_players> ".
+                            TextFormat::ITALIC.TextFormat::DARK_AQUA."<L> ".
+                            
+                            TextFormat::ITALIC.TextFormat::BLUE."<$faction> ".
+                            
+                            TextFormat::ITALIC.TextFormat::GREEN."<$player> ".
+                            
+                            TextFormat::ITALIC.TEXTFormat::WHITE.$message);
+			return true;
+		//Not in faction
+		}else {
+			$message = $PCE->getMessage();
+			$player = $PCE->getPlayer()->getName();
+			$PCE->setFormat(TextFormat::ITALIC.TextFormat::GREEN."<$player> ".TextFormat::WHITE."$message");
+		}
+}
 	
 	public function factionPVP(EntityDamageEvent $factionDamage) {
 		if($factionDamage instanceof EntityDamageByEntityEvent) {

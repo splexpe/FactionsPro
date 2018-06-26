@@ -1,9 +1,9 @@
 name: FactionsPro
 author: Tethered_, edited by VMPE Development Team
-description: A Extended Factions plugin. [Beta Branch]
-version: 2.0.0-beta
+description: A Extended Factions plugin. [old-methods Branch]
+version: 2.0.0-OLDMETHOD
 main: FactionsPro\FactionMain
-api: [3.0.0, 3.0.0-ALPHA12]
+api: [1.2.0, 2.0.0] ##1.2.0 is mainly for SteadFast, and 2.0.0 API is meant to be for GenisysPro (More old API's coming soon.
 softdepend: ["PureChat", "AntiSpamPro", "EssentialsPE", "EconomyAPI"]
 commands:
   f:

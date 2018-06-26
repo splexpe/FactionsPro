@@ -29,7 +29,7 @@ class FactionMain extends PluginBase implements Listener {
     
     const HEX_SYMBOL = "e29688";
     
-    public function onEnable(): void{
+    public function onEnable(){
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
@@ -106,6 +106,14 @@ class FactionMain extends PluginBase implements Listener {
 			$this->getLogger()->notice("Plot Size Set To 16 automatically");
 			$this->prefs->set("PlotSize", 16);
 		}
+                $this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
+		$this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
+		$this->db->exec("CREATE TABLE IF NOT EXISTS confirm (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, invitedby TEXT, timestamp INT);");
+		$this->db->exec("CREATE TABLE IF NOT EXISTS motdrcv (player TEXT PRIMARY KEY, timestamp INT);");
+		$this->db->exec("CREATE TABLE IF NOT EXISTS motd (faction TEXT PRIMARY KEY, message TEXT);");
+		$this->db->exec("CREATE TABLE IF NOT EXISTS plots(faction TEXT PRIMARY KEY, x1 INT, z1 INT, x2 INT, z2 INT);");
+		$this->db->exec("CREATE TABLE IF NOT EXISTS home(faction TEXT PRIMARY KEY, x INT, y INT, z INT, world VARCHAR);");
+                
         $this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
         $this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS confirm (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, invitedby TEXT, timestamp INT);");
@@ -118,15 +126,15 @@ class FactionMain extends PluginBase implements Listener {
         $this->db->exec("CREATE TABLE IF NOT EXISTS allies(ID INT PRIMARY KEY,faction1 TEXT, faction2 TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS enemies(ID INT PRIMARY KEY,faction1 TEXT, faction2 TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS alliescountlimit(faction TEXT PRIMARY KEY, count INT);");
-        
         $this->db->exec("CREATE TABLE IF NOT EXISTS balance(faction TEXT PRIMARY KEY, cash INT)");
+        
         try{
             $this->db->exec("ALTER TABLE plots ADD COLUMN world TEXT default null");
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
         }catch(\ErrorException $ex){
         }
     }
-    public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
+    public function onCommand(CommandSender $sender, Command $command, $label, array $args) {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
     }
     public function setEnemies($faction1, $faction2) {
@@ -366,7 +374,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
-    public function factionFromPoint($x, $z) {
+    public function factionFromPoint($x,$z) {
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
@@ -377,7 +385,7 @@ class FactionMain extends PluginBase implements Listener {
         $z = $player->getFloorZ();
         return $this->getPlayerFaction($playerName) == $this->factionFromPoint($x, $z);
     }
-    public function pointIsInPlot($x, $z) {
+    public function pointIsInPlot($x,$z) {
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
@@ -424,21 +432,21 @@ class FactionMain extends PluginBase implements Listener {
 		}
 		return $array["cash"];
 	}
-	public function setBalance($faction, int $money){
+	public function setBalance($faction, $money){
 		$stmt = $this->db->prepare("INSERT OR REPLACE INTO balance (faction, cash) VALUES (:faction, :cash);");
 		$stmt->bindValue(":faction", $faction);
 		$stmt->bindValue(":cash", $money);
 		return $stmt->execute();
 	}
-	public function addToBalance($faction, int $money){
+	public function addToBalance($faction, $money){
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) + $money);
 	}
-	public function takeFromBalance($faction, int $money){
+	public function takeFromBalance($faction, $money){
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) - $money);
 	}
-	public function sendListOfTop10RichestFactionsTo(Player $s){
+	public function sendListOfTop10RichestFactionsTo($s){
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
         $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§5§lTop 10 Richest Factions".TextFormat::RESET);
@@ -446,12 +454,12 @@ class FactionMain extends PluginBase implements Listener {
         	var_dump($resultArr);
             $j = $i + 1;
             $cf = $resultArr['faction'];
-            $pf = $resultArr["cash"];
+            $pf = $resultArr['cash'];
             $s->sendMessage(TextFormat::BOLD.TextFormat::GOLD.$j.". ".TextFormat::RESET.TextFormat::AQUA.$cf.TextFormat::RED.TextFormat::BOLD." §c- ".TextFormat::LIGHT_PURPLE."§d$".$pf);
             $i = $i + 1;
         } 
     }
-	public function getSpawnerPrice(string $type) : int {
+	public function getSpawnerPrice($type) {
 		$sp = $this->prefs->get("spawnerPrices");
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
@@ -481,7 +489,7 @@ class FactionMain extends PluginBase implements Listener {
             $p->setNameTag("§b§lPlayer: §r§c$p \n§b§lhasFaction: §r§ctrue \n§b§lFaction: §r§c$f");
         }
     }
-    public function onDisable(): void {
-         if (isset($this->db)) $this->db->close();
+    public function onDisable(){
+         $this->db->close();
     }
 }
