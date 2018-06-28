@@ -50,7 +50,7 @@ class Main extends PluginBase implements Listener {
             fwrite($file, $txt);
 	    $this->getLogger()->info("FactionsPro has been enabled with success. If any errors popup after enabled, then let us know.");
         }
-        $this->getServer()->getPluginManager()->registerEvents(new Listener($this), $this);
+        $this->getServer()->getPluginManager()->registerEvents(new Listen($this), $this);
         $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
         if (!$this->antispam) {
             $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system.");
