@@ -11,7 +11,7 @@ use pocketmine\block\{MonsterSpawner, Block};
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
 
-class FactionListener implements Listener {
+class Listener implements Listener {
 	
 	public $plugin;
 	
