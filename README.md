@@ -3,10 +3,10 @@
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
 ## What is this branch?
-This branch is called configurations-v2. It's where we implement a more-customised Factions plugin for MCPE, bringing: Customising messages, making settings your own, and more. Soon, we plan on allowing you all to make your own commands, so for example, instead of /f aqs the main command, you could make it into /clans. Which we do plan on adding this in the near future of this plugin. Thanks for reading.
+This branch is called configurations-v2. It's where we implement a more-customised Factions plugin for MCPE, bringing: Customising messages, making settings your own, and more. Soon, we plan on allowing you all to make your own commands, so for example, instead of /f as the main command, you could make it into /clans. Which we do plan on adding this in the near future of this plugin. Thanks for reading.
 
 ## NOTICE
-## This branch could potentially be buggy, and unstabled. So do not expect it to work. If you have found any bugs or issues within this plugin, please open a new iissue on the issues tab. Thanks.
+## This branch could potentially be buggy, and unstabled. So do not expect it to work. If you have found any bugs or issues within this plugin, please open a new issue on the issues tab. Thanks.
 
 ## Features
 * All the features from the good 'ol' days are now back, and working with PMMP Latest APi's.
@@ -132,7 +132,7 @@ Thank you.
 
 
 ## Copyright Notice
-If you're using this plugin, please do not edit the plugin to credit yourself only. If you do, we will mark it as copy right, and take down your server. What we mean by Not being able to edit the plugin, is for example: DOn't edit /f about to make it say "Author The LOOOL Team", as they never orinated it. What we did, is Edit the /f about to make us credit for something we did, but also credited the original author within the plugin (plugin.yml as well as the FactionCommands.php file), and made sure the original author got credited, as if it wasn't for him, we wouldn't have what we got today. One of the best factions plugins out there in MCPE. What is allowed, is allowing yourself to have its own help page, and what's in configurations, is allowed. Thank you.
+If you're using this plugin, please do not edit the plugin to credit yourself only. If you do, we will mark it as copy right, and take down your server. What we mean by Not being able to edit the plugin, is for example: Don't edit /f about to make it say "Author The LOOOL Team", as they never originated it. What we did, is Edit the /f about to make us credit for something we did, but also credited the original author within the plugin (plugin.yml as well as the FactionCommands.php file), and made sure the original author got credited, as if it wasn't for him, we wouldn't have what we got today. One of the best factions plugins out there in MCPE. What is allowed, is allowing yourself to have its own help page, and what's in configurations, is allowed. Thank you.
 
 
 ## What do we plan in the future of this plugin?
