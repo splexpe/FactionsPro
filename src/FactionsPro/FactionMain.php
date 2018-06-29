@@ -9,8 +9,10 @@ use pocketmine\{Server, Player};
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\command\PluginCommand;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
+use pocketmine\permission\Permission;
 use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
 use pocketmine\level\{Position, Level};
 class FactionMain extends PluginBase implements Listener {
@@ -31,6 +33,7 @@ class FactionMain extends PluginBase implements Listener {
     
     public function onEnable(): void{
         if (!$this->isSpoon()) {
+	$this->commands = new FactionCommands($this);
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
@@ -209,6 +212,21 @@ class FactionMain extends PluginBase implements Listener {
         }
         return false;
     }
+    public function registerCommand($name, $fallback, $permission, $description = "", $usage = "") {
+		$commandMap = $this->getServer()->getCommandMap();
+		$command = new PluginCommand($name, $this);
+		$command->setDescription ($description);
+		$command->setPermission ($permission);
+		$command->setUsage ($usage);
+		$commandMap->register ($fallback, $command);
+	}
+	
+	
+	
+	private function commands() {
+		$this->registerCommand($this->prefs->get("main-command"), "F", "f");
+		$this->permission = new Permission("f.command", "Faction command", Permission::DEFAULT_NOT_OP);
+	}
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
     }
