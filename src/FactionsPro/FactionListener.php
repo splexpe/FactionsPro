@@ -2,8 +2,6 @@
 
 namespace FactionsPro;
 
-use pocketmine\plugin\PluginBase;
-use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
 use pocketmine\event\block\{BlockPlaceEvent, BlockBreakEvent};
 use pocketmine\Player;
@@ -11,7 +9,6 @@ use pocketmine\event\entity\{EntityDamageEvent, EntityDamageByEntityEvent};
 use EssentialsPE\BaseFiles\BaseAPI;
 use pocketmine\tile\MobSpawner;
 use pocketmine\utils\{Config, TextFormat};
-use pocketmine\scheduler\PluginTask;
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
 use pocketmine\block\Block;
 
