@@ -873,7 +873,7 @@ return true;
                         }
                     }
 		    /////////////////////////////// F WARP ///////////////////////////////
-		    /*if (strtolower($args[0] == "setwarp")) {
+		    if (strtolower($args[0] == "setwarp")) {
 			    if(!isset($args[1])){
                             $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f setwarp <warp_name>"));
                             return true;
@@ -887,12 +887,13 @@ return true;
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be leader to set warp"));
                             return true;
 			    }
+			$array = $result->fetchArray(SQLITE3_ASSOC);
 			$stmt->faction_cords = array('x' => (int) $sender->getX(),'y' => (int) $sender->getY(),'z' => (int) $sender->getZ());
                         $stmt->world = $sender->getLevel()->getName();
                         $stmt->faction_warp = $args[1];
 			$stm->faction = $factionName;
                         $stmt->prepare = $this->plugin->db->prepare("SELECT faction,title,x,y,z,world FROM faction warp WHERE title = :title");
-                        $stmt->prepare->bindValue(":title", $this->faction_warp, SQLITE3_TEXT);
+                        $stmt->prepare->bindValue(":title", $this->faction_warp, SQLITE3_ASOC);
                         $result = $stm->execute();
                         $sql          = $stm->fetchall();
                         if( count($sql) > 1 )
@@ -905,13 +906,32 @@ return true;
                         $stmt->bindValue(":z", $sender->getZ());
                         $result = $stmt->execute();
                         $sender->sendMessage($this->plugin->formatMessage("§aFaction Warp set succesfully as $args[1]. §bNow, you can use: §3/f warp $args[1]", true));
-	    	    }TODO*/
-		    /////////////////////////////// F TITLES ///////////////////////////////
-		    /*TODO LIST*/
-		    
-		    /////////////////////////////// F Titles upon entering / leaving a claim ///////////////////////////////
-		    /*TODO LIST*/
-		    
+		    }
+		    if (strtolower($args[0] == "warp")) {
+			    if(!isset($args[1])){
+                            $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f warp <warp_name>"));
+                            return true;
+			    }
+			    if (!$this->plugin->isInFaction($playerName)) {
+				    $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to use this command"));
+				    return true;
+			    }
+			    $faction = $this->plugin->getPlayerFaction($sender->getName());
+                        $result = $this->plugin->db->query("SELECT * FROM WARP WHERE faction = '$faction';");
+                        $array = $result->fetchArray(SQLITE3_ASSOC);
+                        if (!empty($array)) {
+			        if ($array['world'] === null || $array['world'] === ""){
+				                                $sender->sendMessage($this->plugin->formatMessage("$prefix §cWarp is missing world name, please delete and make it again"));
+				       			        return true;
+			       				}
+			       				if(Server::getInstance()->loadLevel($array['world']) === false){
+								$sender->sendMessage($this->plugin->formatMessage("$prefix The world '" . $array['world'] .  "'' could not be found"));
+				       				return true;
+			      				 }
+                              				 $level = Server::getInstance()->getLevelByName($array['world']);
+                           $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
+			}
+		    }
 		    /////////////////////////////// F RENAME ///////////////////////////////
 		    /*TODO LIST*/
 		    
