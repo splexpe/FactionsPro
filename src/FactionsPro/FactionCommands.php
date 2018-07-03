@@ -1,5 +1,7 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\Server;
@@ -8,6 +10,7 @@ use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
+
 class FactionCommands {
 	
     public $plugin;
@@ -806,18 +809,18 @@ class FactionCommands {
 				       			        return true;
 			       				}
 			       				if(Server::getInstance()->loadLevel($array['world']) === false){
-+								$sender->sendMessage($this->plugin->formatMessage("$prefix The world '" . $array['world'] .  "'' could not be found"));
+								$sender->sendMessage($this->plugin->formatMessage("$prefix The world '" . $array['world'] .  "'' could not be found"));
 				       				return true;
 			      				 }
                               				 $level = Server::getInstance()->getLevelByName($array['world']);
-+                           $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
+                           $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bTeleported to your faction home succesfully!", true));
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cFaction Home is not set. You can set it with: §4/f sethome"));
                         }
                     }
 		    /////////////////////////////// F WARP ///////////////////////////////
-		    /*if (strtolower($args[0] == "setwarp")) {
+		    if (strtolower($args[0] == "setwarp")) {
 			    if(!isset($args[1])){
                             $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f setwarp <warp_name>"));
                             return true;
@@ -831,12 +834,13 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("§cYou must be leader to set warp"));
                             return true;
 			    }
+			$array = $result->fetchArray(SQLITE3_ASSOC);
 			$stmt->faction_cords = array('x' => (int) $sender->getX(),'y' => (int) $sender->getY(),'z' => (int) $sender->getZ());
                         $stmt->world = $sender->getLevel()->getName();
                         $stmt->faction_warp = $args[1];
 			$stm->faction = $factionName;
                         $stmt->prepare = $this->plugin->db->prepare("SELECT faction,title,x,y,z,world FROM faction warp WHERE title = :title");
-                        $stmt->prepare->bindValue(":title", $this->faction_warp, SQLITE3_TEXT);
+                        $stmt->prepare->bindValue(":title", $this->faction_warp, SQLITE3_ASOC);
                         $result = $stm->execute();
                         $sql          = $stm->fetchall();
                         if( count($sql) > 1 )
@@ -849,13 +853,32 @@ class FactionCommands {
                         $stmt->bindValue(":z", $sender->getZ());
                         $result = $stmt->execute();
                         $sender->sendMessage($this->plugin->formatMessage("§aFaction Warp set succesfully as $args[1]. §bNow, you can use: §3/f warp $args[1]", true));
-	    	    }TODO*/
-		    /////////////////////////////// F TITLES ///////////////////////////////
-		    /*TODO LIST*/
-		    
-		    /////////////////////////////// F Titles upon entering / leaving a claim ///////////////////////////////
-		    /*TODO LIST*/
-		    
+		    }
+		    if (strtolower($args[0] == "warp")) {
+			    if(!isset($args[1])){
+                            $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f warp <warp_name>"));
+                            return true;
+			    }
+			    if (!$this->plugin->isInFaction($playerName)) {
+				    $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to use this command"));
+				    return true;
+			    }
+			    $faction = $this->plugin->getPlayerFaction($sender->getName());
+                        $result = $this->plugin->db->query("SELECT * FROM WARP WHERE faction = '$faction';");
+                        $array = $result->fetchArray(SQLITE3_ASSOC);
+                        if (!empty($array)) {
+			        if ($array['world'] === null || $array['world'] === ""){
+				                                $sender->sendMessage($this->plugin->formatMessage("$prefix §cWarp is missing world name, please delete and make it again"));
+				       			        return true;
+			       				}
+			       				if(Server::getInstance()->loadLevel($array['world']) === false){
+								$sender->sendMessage($this->plugin->formatMessage("$prefix The world '" . $array['world'] .  "'' could not be found"));
+				       				return true;
+			      				 }
+                              				 $level = Server::getInstance()->getLevelByName($array['world']);
+                           $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
+			}
+		    }
 		    /////////////////////////////// F RENAME ///////////////////////////////
 		    /*TODO LIST*/
 		    
@@ -1436,7 +1459,7 @@ class FactionCommands {
         }
         return $return;
     }
-    public function getMap(Player $observer, int $width, int $height, int $inDegrees, int $size) { // No compass
+    public function getMap($observer, $width, $height, $inDegrees, $size) { // No compass
 		$to = (int)sqrt($size);
 		$centerPs = new Vector3($observer->x >> $to, 0, $observer->z >> $to);
 		$map = [];
@@ -1506,7 +1529,7 @@ class FactionCommands {
 		$map[] = $fRow;
 		return $map;
 	}
-	public function getColorForTo(Player $player, $faction) {
+	public function getColorForTo($player, $faction) {
 		if($this->plugin->getPlayerFaction($player->getName()) === $faction) {
 			return "§6";
 		}
