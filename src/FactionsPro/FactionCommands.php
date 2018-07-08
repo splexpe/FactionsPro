@@ -1188,9 +1188,18 @@ class FactionCommands {
                     }
                     /////////////////////////////// ABOUT ///////////////////////////////
                     if(strtolower($args[0]) == "about" or strtolower($args[0]) == "info"){
-                        $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
-                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b");
-			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:\n§aFaction Build release: §5381\n§aBuild Tested and works on: §5377-381\n§aPlugin Link: §5Not showing due to self-leak information\n§aPlugin download: §5Not showing due to self-leak information.\n§aAuthor: §5VMPE Development Team\n§aOriginal Author: §5Tethered\n§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.\n§aVersion: §5v2.0.6\n§aPlugin Version: §5v2.0.0");
+                        $sender->sendMessage("§7[§6Void§bFactions§cPE§dINFO§7]");
+                        $sender->sendMessage("§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE");
+			$sender->sendMessage("§bPlugin Information:");
+			$sender->sendMessage("§aFaction Build release: §5381"); //Needs updating.
+			$sender->sendMessage("§aBuild Tested and works on: §5377-381"); //NEEDS updating.
+			$sender->sendMessage("§aPlugin Link: §5Not showing due to self-leak information");
+			$sender->sendMessage("§aPlugin download: §5Not showing due to self-leak information.");
+			$sender->sendMessage("§aAuthor: §5VMPE Development Team");
+			$sender->sendMessage("§aOriginal Author: §5Tethered");
+			$sender->sendMessage("§aDescription: §5A factions plugin which came back to life and re-coded features like the good 'ol' versions of FactionsPro.");
+			$sender->sendMessage("§aVersion: §5v2.1.1-BETA");
+			$sender->sendMessage("§aPlugin Version: §5v2.1.1-BETA");
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
 		    
