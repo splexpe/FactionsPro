@@ -20,7 +20,7 @@ class FactionListener implements Listener {
 		$this->plugin = $pg;
 	}
 	
-	public function factionChat(PlayerChatEvent $PCE) {
+	public function onChat(PlayerChatEvent $PCE) {
 		
 		$playerName = $PCE->getPlayer()->getName();
 		//MOTD Check
@@ -69,7 +69,7 @@ class FactionListener implements Listener {
 		}
 	}
 	
-	public function factionPVP(EntityDamageEvent $factionDamage) {
+	public function onPvP(EntityDamageEvent $factionDamage) {
 		if($factionDamage instanceof EntityDamageByEntityEvent) {
 			if(!($factionDamage->getEntity() instanceof Player) or !($factionDamage->getDamager() instanceof Player)) {
 				return true;
@@ -106,7 +106,7 @@ class FactionListener implements Listener {
 		}
 	}
 	
-	public function factionBlockBreakProtect(BlockBreakEvent $event) {
+	public function onBlockBreakProtection(BlockBreakEvent $event) {
 		$x = $event->getBlock()->getX();
 		$y = $event->getBlock()->getY();
 		$z = $event->getBlock()->getZ();
@@ -121,7 +121,7 @@ class FactionListener implements Listener {
 		}
 	}
 	
-	public function factionBlockPlaceProtect(BlockPlaceEvent $event) {
+	public function onBlockPlaceProtection(BlockPlaceEvent $event) {
       		$x = $event->getBlock()->getX();
 		$y = $event->getBlock()->getY();
      		$z = $event->getBlock()->getZ();
@@ -181,7 +181,7 @@ class FactionListener implements Listener {
 		      if($fHere !== $playerF and !$player->isOp()){ $event->setCancelled(true); return true; };
 	      }
     }
-    public function broadcastTeamJoin(PlayerJoinEvent $event){
+    public function onBCTJoin(PlayerJoinEvent $event){ //BCT stands for BroadCast Team
        $player = $event->getPlayer();
         
             if($this->plugin->isInFaction($player->getName()) == true) {
@@ -196,7 +196,7 @@ class FactionListener implements Listener {
                     }
             }
     }
-    public function broadcastTeamQuit(PlayerQuitEvent $event){
+    public function onBCTQuit(PlayerQuitEvent $event){ //BCT stands for BroadCast Team
        $player = $event->getPlayer();
        $name = $player->getName();
         
@@ -254,8 +254,7 @@ class FactionListener implements Listener {
     const SW = '/';
     const W = 'W';
     const NW = '\\';
-    public static function getASCIICompass($degrees, $colorActive, $colorDefault) : array
-    {
+    public static function getASCIICompass($degrees, $colorActive, $colorDefault): array{
         $ret = [];
         $point = self::getCompassPointForDirection($degrees);
         $row = "";
@@ -275,8 +274,7 @@ class FactionListener implements Listener {
         $ret[] = $row;
         return $ret;
     }
-    public static function getCompassPointForDirection($degrees)
-    {
+    public static function getCompassPointForDirection($degrees){
         $degrees = ($degrees - 180) % 360;
         if ($degrees < 0)
             $degrees += 360;
