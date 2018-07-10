@@ -176,6 +176,7 @@ class FactionMain extends PluginBase implements Listener {
         }catch(\ErrorException $ex){
         }
     }
+    }
      /**
      * Checks if server is using a spoon.
      *
