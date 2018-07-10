@@ -244,8 +244,7 @@ class FactionMain extends PluginBase implements Listener {
      *
      * @return bool
      */
-    public function isSpoon()
-    {
+    public function isSpoon(){
         if ($this->getServer()->getName() !== "PocketMine-MP") {
             $this->getLogger()->error("You're running on a spoon. We only support Pocketmine-MP. Please upgrade to PMMP and try again. The plugin will most likely not be functional until you update to PMMP.");
             return true;
