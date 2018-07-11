@@ -1,10 +1,13 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\{Server, Player};
 use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\level\{Level, Position};
+
 class FactionCommands {
 	
     public $plugin;
@@ -186,15 +189,16 @@ class FactionCommands {
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $invitedName = $invited->getName();
+			$senderName = $this->plugin->getServer()->getPlayerExact($playerName);
                         $rank = "Member";
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO confirm (player, faction, invitedby, timestamp) VALUES (:player, :faction, :invitedby, :timestamp);");
                         $stmt->bindValue(":player", $invitedName);
                         $stmt->bindValue(":faction", $factionName);
-                        $stmt->bindValue(":invitedby", $sender->getName());
+                        $stmt->bindValue(":invitedby", $senderName);
                         $stmt->bindValue(":timestamp", time());
                         $result = $stmt->execute();
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §a$invitedName §bhas been invited succesfully! §5Wait for $invitedName 's response.", true));
-                        $invited->sendMessage($this->plugin->formatMessage("$prefix §bYou have been invited to §a$factionName. §bType §3'/f accept / yes' or '/f deny / no' §binto chat to accept or deny!", true));
+                        $invited->sendMessage($this->plugin->formatMessage("$prefix §bYou have been invited to §a$factionName by §3$senderName . §bType §3'/f accept / yes' or '/f deny / no' §binto chat to accept or deny!", true));
                     }
                     /////////////////////////////// LEADER ///////////////////////////////
                     if ($args[0] == "leader"){
@@ -202,11 +206,11 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f leader <player>\n§aDescription: §dMake someone else leader of the faction."));
                             return true;
                         }
-                        if (!$this->plugin->isInFaction($sender->getName()) == false) {
+                        if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this"));
                             return true;
                         }
-                        if (!$this->plugin->isLeader($playerName) == false) {
+                        if ($this->plugin->isLeader($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this"));
                             return true;
                         }
@@ -218,7 +222,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis currently not online"));
                             return true;
                         }
-                        if ($args[1] == $sender->getName()) {
+                        if ($args[1]) == $playerName) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't transfer the leadership to yourself"));
                             return true;
                         }
@@ -244,12 +248,12 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f promote <player>\n§aDescription: §dPromote a player from your faction."));
                             return true;
                         }
-                        if (!$this->plugin->isInFaction($sender->getName()) == false) {
+                        if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this"));
                             return true;
                         }
-                        if (!$this->plugin->isLeader($playerName) == false) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this"));
+                        if ($this->plugin->isLeader($playerName) == false) {
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this")); //Old check - Removing soon.
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
@@ -260,27 +264,39 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
                         }
-			 if ($this->plugin->isOfficer($args[1]) == false) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis already an Officer of this faction"));
+			$promoted = $this->plugin->getServer()->getPlayerExact($args[1]);
+                        if (!($promoted instanceof Player)) {
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$promoted §cis currently not online"));
+                            return true;
+                        }
+		        if ($this->plugin->isOfficer($promoted) == false) {
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$promoted §cis already an Officer of this faction"));
                             return true;
 			 }
-                          if ($this->plugin->isLeader($args[1]) == false) {
-                              $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get promoted because you're the leader of this faction.")); //This checks if the player is a leader, which fixes promoting yourself to Officer when you're leader.
-                              return true;
-                        }
+			 $leaderName = $this->plugin->getLeader($factionName);
+                         if ($this->plugin->isLeader($leaderName) == true) {
+                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get promoted because you're the leader of this faction.")); //This checks if the player is a leader, which fixes promoting yourself to Officer when you're leader.
+                             return true;
+                         }
+			$promotedName = $promoted->getName();
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
-                        $stmt->bindValue(":player", $playerName);
+                        $stmt->bindValue(":player", $promotedName);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
-                        $promotee = $this->plugin->getServer()->getPlayer($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a$promotee §bhas been promoted to Officer", true));
-                        if ($promotee instanceof Player) {
-                            $promotee->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
-		            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
+                        $promotedName = $this->plugin->getServer()->getPlayerExact($args[1]);
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a$promotedName §bhas been promoted to Officer", true));
+                        if ($promotedName instanceof Player) {
+                            $promotedName->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
+		            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($promotedName);
                             return true;
-                        }
+			      }
+			 }elseif($this->plugin->isLeader($sender->getName() == true) { //This fixes the sender name being promoted to officer even though, you're a leader. We have two checks for this. This is the latest check we have found. But don't expect it to work.
+							 $sender->sendMessage("$prefix §cYou have already made yourself leader");
+			 } elseif($this->plugin->isOfficer($sender->getName() == true) {
+							 $sender->sendMessage("$prefix §cYou have already made yourself officer. You can't get nay higher than officer role."); //This does the same / similar to the above check, but just to make sure there's no more bugs relating to this issue, I thought I'd add it.
+			        }
                     }
                     /////////////////////////////// DEMOTE ///////////////////////////////
                     if ($args[0] == "demote") {
@@ -308,7 +324,8 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis already a Officer of this faction"));
                             return true;
                         }
-			if ($this->plugin->isLeader($args[1]) == false) {
+			$leaderName = $this->plugin->getLeader($factionName); //New check for the fix of Being able to demote yourself even though you're a leader. This checks that the player executing this command is a leader.
+			if ($this->plugin->isLeader($leaderName) == false) {
                               $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get demoted because you're the leader of this faction.")); //This checks if the player is a leader, which fixes demoting yourself to Officer when you're leader.
                               return true;
                         }
@@ -318,11 +335,11 @@ class FactionCommands {
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
-                        $demotee = $this->plugin->getServer()->getPlayer($args[1]);
+                        $demotee = $this->plugin->getServer()->getPlayerExact($args[1]);
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §5$demotee §2has been demoted to Member", true));
                         if ($demotee instanceof Player) {
                             $demotee->sendMessage($this->plugin->formatMessage("$prefix §2You were demoted to member of §5$factionName!", true));
-		            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
+		            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($demotee->getName());
                             return true;
                         }
                     }
