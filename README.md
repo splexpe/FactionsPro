@@ -3,7 +3,7 @@
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
 ## What is this branch?
-This branch is called "beta-testing" branch. This branch, is where we beta test new features that could possibly be implemented into FactionsPro.
+This branch is called "full-updates" branch. This branch, is where if a commit is released, we will make a full on update, so for example, the title of that commit would be FactionsPro v2.1.2-BETA, and the description would have a full change log in that one commitment message. Also, we'd need to update the plugin.yml a lot for the update to occurr as that full update.
 
 ## Features
 * All the features from the good 'ol' days are now back, and working with PMMP Latest APi's.
