@@ -222,7 +222,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis currently not online"));
                             return true;
                         }
-                        if ($args[1]) == $playerName) {
+                        if ($args[1] == $playerName) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't transfer the leadership to yourself"));
                             return true;
                         }
@@ -289,13 +289,12 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §a$promotedName §bhas been promoted to Officer", true));
                         if ($promotedName instanceof Player) {
                             $promotedName->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
-		            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($promotedName);
+		            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($promotedName));
                             return true;
-			      }
-			 }elseif($this->plugin->isLeader($sender->getName() == true) { //This fixes the sender name being promoted to officer even though, you're a leader. We have two checks for this. This is the latest check we have found. But don't expect it to work.
-							 $sender->sendMessage("$prefix §cYou have already made yourself leader");
-			 } elseif($this->plugin->isOfficer($sender->getName() == true) {
-							 $sender->sendMessage("$prefix §cYou have already made yourself officer. You can't get nay higher than officer role."); //This does the same / similar to the above check, but just to make sure there's no more bugs relating to this issue, I thought I'd add it.
+			 }elseif($this->plugin->isLeader($sender->getName()) == true) { //This fixes the sender name being promoted to officer even though, you're a leader. We have two checks for this. This is the latest check we have found. But don't expect it to work.
+							 $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou have already made yourself leader", true));
+			 } elseif($this->plugin->isOfficer($sender->getName()) == true) {
+							 $sender->sendMessage("$prefix §cYou have already made yourself officer. You can't get any higher than officer role.");//This does the same / similar to the above check, but just to make sure there's no more bugs relating to this issue, I thought I'd add it.
 			        }
                     }
                     /////////////////////////////// DEMOTE ///////////////////////////////
@@ -339,7 +338,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §5$demotee §2has been demoted to Member", true));
                         if ($demotee instanceof Player) {
                             $demotee->sendMessage($this->plugin->formatMessage("$prefix §2You were demoted to member of §5$factionName!", true));
-		            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($demotee->getName());
+		            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($demotee->getName()));
                             return true;
                         }
                     }
