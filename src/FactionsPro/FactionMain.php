@@ -6,7 +6,7 @@ use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\player\{PlayerJoinEvent, PlayerChatEvent};
-use pocketmine\Player;
+use pocketmine\{Server, Player};
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\utils\{TextFormat as TF, Config};
 use pocketmine\event\entity\EntityDamageEvent;
@@ -30,7 +30,7 @@ class FactionMain extends PluginBase implements Listener{
 		);
 	}
 	public function onLoad(){
-		if(FactionMain::checkSpoon()){
+		if($this->checkSpoon()){
 			$this->getLogger()->error("This plugin is for PMMP only. We do not support spoons.");
 			$this->getLogger()->error("The plugin will disable itself after being later enabled by the server.");
 			$this->disable = true;
