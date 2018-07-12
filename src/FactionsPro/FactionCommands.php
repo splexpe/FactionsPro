@@ -888,7 +888,6 @@ return true;
                                 $sender->sendMessage($this->plugin->formatMessage("$prefix §cOnly your faction leader/officers can set warp"));
                                 return true;
                             }
-                        }
 			$array = $result->fetchArray(SQLITE3_ASSOC);
 			$stmt->faction_cords = array('x' => (int) $sender->getX(),'y' => (int) $sender->getY(),'z' => (int) $sender->getZ());
                         $stmt->world = $sender->getLevel()->getName();
@@ -951,11 +950,9 @@ return true;
                         $stmt->bindValue(":y", $sender->getY());
                         $stmt->bindValue(":z", $sender->getZ());
                         $result = $stmt->execute();
-								  $sender->sendMessage("§bYou have teleported to the warp §3$args[1] §bsuccesfully.");
-								  return true;
+								  $sender->sendMessage("§bYou have teleported to the warp §3$args[1] §bsuccesfully.", true);
 			}
 		    }
-			
 		    /////////////////////////////// F RENAME ///////////////////////////////
 		    //TODO LIST
 			    
@@ -1407,7 +1404,6 @@ return true;
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §dEnjoy your effect!", true));
                         return true;
                         }
-
                     /////////////////////////////// ABOUT ///////////////////////////////
                     if(strtolower($args[0]) == "about" or strtolower($args[0]) == "info"){
                         $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
@@ -1652,6 +1648,8 @@ return true;
         }
         return true;
     }
+            }
+        }
     }
     public function alphanum($string){
         if(function_exists('ctype_alnum')){
