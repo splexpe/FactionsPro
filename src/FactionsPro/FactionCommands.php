@@ -879,14 +879,16 @@ return true;
                             return true;
 			    }
 			    
-			    if (!$this->plugin->isInFaction($playerName)) {
+			    if (!$this->plugin->isInFaction($playerName)){
 				    $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to use this command"));
 				    return true;
 			    }
-			    if (!$this->plugin->isLeader($playerName)) {
-                            $sender->sendMessage($this->plugin->formatMessage("§cYou must be leader to set warp"));
-                            return true;
-			    }
+			    if ($this->plugin->prefs->get("OnlyLeadersAndOfficersCanSetWarp")) {
+                            if (!($this->plugin->isOfficer($playerName) || $this->plugin->isLeader($playerName))) {
+                                $sender->sendMessage($this->plugin->formatMessage("$prefix §cOnly your faction leader/officers can set warp"));
+                                return true;
+                            }
+                        }
 			$array = $result->fetchArray(SQLITE3_ASSOC);
 			$stmt->faction_cords = array('x' => (int) $sender->getX(),'y' => (int) $sender->getY(),'z' => (int) $sender->getZ());
                         $stmt->world = $sender->getLevel()->getName();
@@ -928,13 +930,37 @@ return true;
 								$sender->sendMessage($this->plugin->formatMessage("$prefix The world '" . $array['world'] .  "'' could not be found"));
 				       				return true;
 			      				 }
+							  if($sender->hasPermission("f.warp")){
                               				 $level = Server::getInstance()->getLevelByName($array['world']);
                            $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
+			$array = $result->fetchArray(SQLITE3_ASSOC);
+			$stmt->faction_cords = array('x' => (int) $sender->getX(),'y' => (int) $sender->getY(),'z' => (int) $sender->getZ());
+                        $stmt->world = $sender->getLevel()->getName();
+                        $stmt->faction_warp = $args[1];
+			$stm->faction = $factionName;
+                        $stmt->prepare = $this->plugin->db->prepare("SELECT faction,title,x,y,z,world FROM faction warp WHERE title = :title");
+                        $stmt->prepare->bindValue(":title", $this->faction_warp, SQLITE3_ASOC);
+                        $result = $stm->execute();
+                        $sql          = $stm->fetchall();
+                        if( count($sql) > 1 )
+			$stmt->prepare = $this->plugin->db->prepare("WARP TO faction = :faction, world = :world, title = :title, x = :x, y = :y, z = :z WHERE title = :title");
+                        $stmt->bindValue(":faction", $factionName);
+			$stmt->bindValue(":world", $sender->getLevel()->getName());
+			$stm->bindValue(":title", $args[1]);
+                        $stmt->bindValue(":x", $sender->getX());
+                        $stmt->bindValue(":y", $sender->getY());
+                        $stmt->bindValue(":z", $sender->getZ());
+                        $result = $stmt->execute();
+								  $sender->sendMessage("§bYou have teleported to the warp §3$args[1] §bsuccesfully.");
+								  return true;
 			}
 		    }
+			
 		    /////////////////////////////// F RENAME ///////////////////////////////
-		    /*TODO LIST*/
-		    
+		    //TODO LIST
+			    
+		    /////////////////////////////// F WARP LIST ///////////////////////////////
+			    //To-Do list
 		    /////////////////////////////// POWER ///////////////////////////////
                     if(strtolower($args[0]) == "power" or strtolower($args[0]) == "pw"){
                         if($this->plugin->isInFaction($playerName) == false) {
