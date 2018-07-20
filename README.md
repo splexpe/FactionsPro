@@ -1,5 +1,7 @@
 # FactionsPro
 
+## FactionsPro plugin compatible with MCPE v1.2.x - v1.4.x & is made for beta testers - Use Beta branch for a more stabled release, and builds.
+
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
 ## What is this branch?
