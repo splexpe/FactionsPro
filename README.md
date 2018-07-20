@@ -1,5 +1,7 @@
 # FactionsPro
 
+### FactionsPro plugin compatible with MCPE v1.2.x - v1.5.x & Pocketmine's latest versions
+
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
 ## What branch is this on?
@@ -27,6 +29,8 @@ This branch, is called "new-methods". What this does, is when a new API, Method,
 * Made configurations so much easier!
 
 * You can now: Forcefully remove someone's power, and balance with a simple command.
+
+* We support from MCPE v1.2.x - MCPE v1.5.x!
 
 * And still updating as we speak!
 
