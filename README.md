@@ -1,11 +1,11 @@
 # FactionsPro
 
-## FactionsPro plugin compatible with MCPE v1.2.x - v1.4.x & is made for beta testers - Use Beta branch for a more stabled release, and builds.
+## FactionsPro plugin compatible with MCPE v1.2.x - v1.4.x
 
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
 ## What is this branch?
-This branch is called "beta-testing" branch. This branch, is where we beta test new features that could possibly be implemented into FactionsPro.
+This branch is called "factions_pc" branch. This branch, is where we make things a more like Factions from PC, including: its name, color codes within the plugin, and more. We also may import similar features from the pc plugin "MassiveCore Factions" to this plugin in the future.
 
 ## Features
 * All the features from the good 'ol' days are now back, and working with PMMP Latest APi's.
