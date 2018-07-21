@@ -14,9 +14,9 @@ class FactionCommands {
 	CONST MAP_HEIGHT = 11;
 	CONST MAP_HEIGHT_FULL = 17;
 	CONST MAP_KEY_CHARS = "\\/#?ç¬£$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZÄÖÜÆØÅ1234567890abcdeghjmnopqrsuvwxyÿzäöüæøåâêîûô";
-	CONST MAP_KEY_WILDERNESS = TextFormat::GRAY . "-"; /*Del*/
+	CONST MAP_KEY_WILDERNESS = TextFormat::YELLOW . "-"; /*Del*/
 	CONST MAP_KEY_SEPARATOR = TextFormat::AQUA . "*"; /*Del*/
-	CONST MAP_KEY_OVERFLOW = TextFormat::WHITE . "-" . TextFormat::WHITE; # ::MAGIC?
+	CONST MAP_KEY_OVERFLOW = TextFormat::YELLOW . "-" . TextFormat::WHITE; # ::MAGIC?
 	CONST MAP_OVERFLOW_MESSAGE = self::MAP_KEY_OVERFLOW . ": Too Many Factions (>" . 107 . ") on this Map.";
         
     public function __construct(FactionMain $pg) {
@@ -24,8 +24,8 @@ class FactionCommands {
     }
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if ($sender instanceof Player) {
-            $main = $this->plugin->prefs->get("main-command");
-            $help = $this->plugin->prefs->get("help-command");
+           $main = $this->plugin->prefs->get("main-command"); 
+           $help = $this->plugin->prefs->get("help-command");
             $playerName = $sender->getPlayer()->getName(); //Sender who executes the command.
 	    $prefix = $this->plugin->prefs->get("prefix"); //Prefix configurations.
 	    switch($args[0]) {
@@ -1698,7 +1698,7 @@ switch(strtolower($args[0])) {
 	case $this->plugin->prefs->get("about-alias"):
                         $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
                         $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b");
-			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:\n§aFaction Build release: §5381\n§aBuild Tested and works on: §5377-381\n§aPlugin Link: §5Not showing due to self-leak information\n§aPlugin download: §5Not showing due to self-leak information.\n§aAuthor: §5VMPE Development Team\n§aOriginal Author: §5Tethered\n§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.\n§aVersion: §5v2.0.6\n§aPlugin Version: §5v2.0.0");
+			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:\n§aFaction Build release: §5381\n§aBuild Tested and works on: §5377-381\n§aPlugin Link: §5Not showing due to self-leak information\n§aPlugin download: §5Not showing due to self-leak information.\n§aAuthor: §5VMPE Development Team\n§aOriginal Author: §5Tethered\n§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.\n§aVersion: §5v5.7.10\n§aPlugin Version: §5v5.7.10");
                         return true;
 break;
 default;
