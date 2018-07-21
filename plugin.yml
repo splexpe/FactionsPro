@@ -7,5 +7,5 @@ api: [3.0.0-ALPHA11, 3.0.0-ALPHA12]
 softdepend: ["PureChat", "AntiSpamPro", "EssentialsPE", "EconomyAPI"]
 permissions:
   f.command:
+    description: "Factions command"
     default: true
-    description: "Allow use of all faction commands"
