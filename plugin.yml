@@ -1,7 +1,7 @@
-name: FactionsPro
+name: Factions
 author: Tethered_, edited by VMPE Development Team
-description: A Extended Factions plugin. [beta-testing Branch]
-version: 2.0.0-beta
+description: An imported factions plugin from the PC version of the game to pocket edition. [factions_pc]
+version: 5.7.10
 main: FactionsPro\FactionMain
 api: [3.0.0-ALPHA11, 3.0.0-ALPHA12]
 softdepend: ["PureChat", "AntiSpamPro", "EssentialsPE", "EconomyAPI"]
