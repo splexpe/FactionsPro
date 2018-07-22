@@ -1629,7 +1629,7 @@ return true;
 			if($args[1] == 7){
 				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§57/7§2]" . TextFormat::RED . "\n§a/f donate|pay <amount> - §7Donate to a faction from your Eco Bank.\n§a/f withdraw|wd <amount> - §7With draw from your faction bank\n§a/f balance|bal - §7Checks your faction balance\n§a/f map|compass - §7Faction Map command\n§a/f overclaim|oc - §7Overclaims a plot.\n§a/f seebalance|sb - §7Checks other faction balances");
 				if($sender->isOp()){
-				$sender->sendMessaqge("\n§4§ldo /f help 8 to see OP Commands.");
+				$sender->sendMessage("\n§4§ldo /f help 8 to see OP Commands.");
 				return true;
 				}
 			}
