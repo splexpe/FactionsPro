@@ -8,6 +8,8 @@ use pocketmine\utils\TextFormat;
 use pocketmine\math\Vector3;
 use pocketmine\level\{Level, Position};
 use onebone\economyapi\EconomyAPI;
+use pocketmine\effect\EffectInstance;
+use pocketmine\effect\Effect;
 
 class FactionCommands {
 	
