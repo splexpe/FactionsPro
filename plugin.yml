@@ -1,6 +1,6 @@
 name: Factions
 author: Tethered_, edited by VMPE Development Team
-description: An imported factions plugin from the PC version of the game to pocket edition. [factions_pc]
+description: An imported factions plugin from the PC version of the game to pocket edition. [factions_pc branch]
 version: 5.7.10
 main: FactionsPro\FactionMain
 api: [3.0.0-ALPHA11, 3.0.0-ALPHA12]
