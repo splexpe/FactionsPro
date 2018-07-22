@@ -94,7 +94,7 @@ class FactionCommands {
                                 if ($r == $args[1] && $f == $sFaction) {
                                     foreach ($this->plugin->getServer()->getOnlinePlayers() as $p) {
                                         $task = new FactionWar($this->plugin, $r);
-                                        $handler = $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 20 * 60 * 2);
+                                        $handler = $this->plugin->getScheduler()->scheduleDelayedTask($task, 20 * 60 * 2);
                                         $task->setHandler($handler);
                                         $p->sendMessage("$prefix §bThe war against §a$factionName §band §a$sFaction §bhas started!");
                                         if ($this->plugin->getPlayerFaction($p->getName()) == $sFaction) {
@@ -170,14 +170,14 @@ class FactionCommands {
 						switch($r){
 							case EconomyAPI::RET_INVALID:
 							
-								$sender->sendMessage($this->plugin->formatMessage("$prefix §cCan't Create faction. You Must Have §2$$create §cmoney To Create A faction."));
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cCan't create faction. You Must have §2$$create §cmoney to create a faction."));
 								break;
 							case EconomyAPI::RET_CANCELLED:
 						
-								$sender->sendMessage($this->plugin->formatMessage("§cError - Cancelled."));
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cError - Cancelled."));
 								break;
 							case EconomyAPI::RET_NO_ACCOUNT:
-								$sender->sendMessage($this->plugin->formatMessage("§cError - Not in account"));
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cError - Not in account"));
 								break;
 						}
 					  }
@@ -432,14 +432,14 @@ class FactionCommands {
 						switch($r){
 							case EconomyAPI::RET_INVALID:
 								# Invalid $amount
-								$sender->sendMessage($this->plugin->formatMessage("§cYou do not have enough Money to Claim! You Need §6$$claim money to claim!"));
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cYou do not have enough Money to Claim! You need §6$$claim money to claim!"));
 								break;
 							case EconomyAPI::RET_CANCELLED:
 								# Transaction was cancelled for some reason :/
-								$sender->sendMessage($this->plugin->formatMessage("§cThis transaction was cancelled!"));
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cThis transaction was cancelled!"));
 								break;
 							case EconomyAPI::RET_NO_ACCOUNT:
-								$sender->sendMessage($this->plugin->formatMessage("§cUnknown error! If you have issues with this, please contact us."));
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cUnknown error! If you have issues with this, please contact us."));
 								break;
 						}
 					}
@@ -618,7 +618,7 @@ class FactionCommands {
 						    switch($r){
 							case EconomyAPI::RET_INVALID:
 								# Invalid $amount
-								$sender->sendMessage($this->plugin->formatMessage("$prefix §cYou do not have enough Money to Overclaim! You Need §2$$oclaim §cto overclaim."));
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cYou do not have enough money to overclaim! You need §2$$oclaim §cto overclaim."));
 								break;
 							case EconomyAPI::RET_CANCELLED:
 								# Transaction was cancelled for some reason :/
@@ -821,13 +821,13 @@ class FactionCommands {
 			    else {
 						    switch($r){
 							case EconomyAPI::RET_INVALID:
-								$sender->sendMessage($this->plugin->formatMessage("Error! You Need $home Coins To Set A Home!"));
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cError - You need §4$home §cmoney to set a home!"));
 								break;
 							case EconomyAPI::RET_CANCELLED:
-								$sender->sendMessage($this->plugin->formatMessage("Error!"));
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cError - Cancelled!"));
 								break;
 							case EconomyAPI::RET_NO_ACCOUNT:
-								$sender->sendMessage($this->plugin->formatMessage("Error!"));
+								$sender->sendMessage($this->plugin->formatMessage("$prefix §cError - Not in account."));
 								break;
 			   }
 		    }
@@ -1114,13 +1114,13 @@ class FactionCommands {
 			     else {
 						    switch($r){
 							case EconomyAPI::RET_INVALID:
-								$sender->sendMessage($this->plugin->formatMessage("Error! You Need $allyr Money To ally a faction!"));
+								$sender->sendMessage($this->plugin->formatMessage("§cError - You need §4$allyr §cmoney to ally a faction!"));
 								break;
 							case EconomyAPI::RET_CANCELLED:
-								$sender->sendMessage($this->plugin->formatMessage("Error!"));
+								$sender->sendMessage($this->plugin->formatMessage("§cError - Transaction cancelled!"));
 								break;
 							case EconomyAPI::RET_NO_ACCOUNT:
-								$sender->sendMessage($this->plugin->formatMessage("Error!"));
+								$sender->sendMessage($this->plugin->formatMessage("§cError - Not in account."));
 								break;
 			   }
 		    }
@@ -1237,13 +1237,13 @@ class FactionCommands {
 		    else {
 						    switch($r){
 							case EconomyAPI::RET_INVALID:
-								$sender->sendMessage($this->plugin->formatMessage("Error! You Need $allya Money To accept an alliance from a faction!"));
+								$sender->sendMessage($this->plugin->formatMessage("§cError - You need §4$allya §cmoney to accept an alliance from a faction!"));
 								break;
 							case EconomyAPI::RET_CANCELLED:
-								$sender->sendMessage($this->plugin->formatMessage("Error!"));
+								$sender->sendMessage($this->plugin->formatMessage("§cError - Transaction cancelled!"));
 								break;
 							case EconomyAPI::RET_NO_ACCOUNT:
-								$sender->sendMessage($this->plugin->formatMessage("Error!"));
+								$sender->sendMessage($this->plugin->formatMessage("§cError - Not in account!"));
 								break;
 						    }
 			}
