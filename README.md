@@ -9,7 +9,7 @@ This branch is called configurations-v2. It's where we implement a more-customis
 ## This branch could potentially be buggy, and unstabled. So do not expect it to work. If you have found any bugs or issues within this plugin, please open a new issue on the issues tab. Thanks.
 
 ## Features
-* All the features from the good 'ol' days are now back, and working with PMMP Latest APi's.
+* All the features from the good 'ol' days are now back, and working with PMMP Latest API's.
 
 * /f map = Better than ever.
 
