@@ -3,7 +3,7 @@
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
 ## What is this branch?
-This branch is called "bug-fixing". It's where if a bug was in this plugin, we'd try and fix it ASAP (Before the other branches). it would be good, so we don't have to keep updating the same branch. Instead, we'd update some other branches to prevent spammy-same branches to be published.
+This branch is called "bug-fixing". It's where if a bug was in this plugin, we'd try and fix it ASAP (Before the other branches). It would be good, so we don't have to keep updating the same branch. Instead, we'd update some other branches to prevent spammy-same branches to be published.
 
 ## Features
 * All the features from the good 'ol' days are now back, and working with PMMP Latest APi's.
