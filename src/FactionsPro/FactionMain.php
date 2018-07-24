@@ -1,18 +1,18 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
-use pocketmine\event\block\BlockBreakEvent;
-use pocketmine\event\player\{PlayerJoinEvent, PlayerChatEvent};
 use pocketmine\{Server, Player};
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\utils\{Config, TextFormat};
-use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
 use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
 use pocketmine\level\{Position, Level};
+
 class FactionMain extends PluginBase implements Listener {
     
     public $db;
@@ -28,8 +28,7 @@ class FactionMain extends PluginBase implements Listener {
     private $prefix = "§7[§6Void§bFactions§cPE§7]";
     
     const HEX_SYMBOL = "e29688";
-	
-    ///////////////////////////////// PLUGIN CHECKS /////////////////////////////////
+     ///////////////////////////////// PLUGIN CHECKS /////////////////////////////////
 	/** @var bool */
 	private static $phared = null;
 	/** @var bool */
@@ -51,14 +50,8 @@ class FactionMain extends PluginBase implements Listener {
 	}
 	public static function getInstance(): FactionMain{
 		return self::$instance;
-	}
-	
-    	// self explanatory constants
-	public const CONFIG_VERSION = 2;
-	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'BASE_VERSION' constant)
-	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1201"; // The minimum build this was tested working
-	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1238"; // The current build this was actually tested
-	
+        }
+
     public function onLoad(): void{
 	    		// Phars Force Poggit Builds only //
 		if($this->isPhared()){ // unphared = dev
@@ -79,6 +72,7 @@ class FactionMain extends PluginBase implements Listener {
 		self::$instance = $this;
 	}
     public function onEnable(): void{
+        if (!$this->isSpoon()) {
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
@@ -123,10 +117,6 @@ class FactionMain extends PluginBase implements Listener {
             "AllowChat" => true,
             "AllowFactionPvp" => false,
             "AllowAlliedPvp" => false,
-            "BroadcastFactionCreation" => true,
-            "FactionCreationBroadcast" => "%PLAYER% created a faction named %FACTION%",
-            "BroadcastFactionDisband" => true,
-            "FactionDisbandBroadcast" => "The Faction named %FACTION% was disbaned by %PLAYER%",
             "defaultFactionBalance" => 0,
 	    "MoneyGainedPerPlayerInFaction" => 20,
 	    "MoneyGainedPerAlly" => 50,
@@ -162,7 +152,7 @@ class FactionMain extends PluginBase implements Listener {
 		$this->db->exec("CREATE TABLE IF NOT EXISTS motd (faction TEXT PRIMARY KEY, message TEXT);");
 		$this->db->exec("CREATE TABLE IF NOT EXISTS plots(faction TEXT PRIMARY KEY, x1 INT, z1 INT, x2 INT, z2 INT);");
 		$this->db->exec("CREATE TABLE IF NOT EXISTS home(faction TEXT PRIMARY KEY, x INT, y INT, z INT, world VARCHAR);");
-	    
+                
         $this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
         $this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS confirm (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, invitedby TEXT, timestamp INT);");
@@ -175,8 +165,8 @@ class FactionMain extends PluginBase implements Listener {
         $this->db->exec("CREATE TABLE IF NOT EXISTS allies(ID INT PRIMARY KEY,faction1 TEXT, faction2 TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS enemies(ID INT PRIMARY KEY,faction1 TEXT, faction2 TEXT);");
         $this->db->exec("CREATE TABLE IF NOT EXISTS alliescountlimit(faction TEXT PRIMARY KEY, count INT);");
-        
         $this->db->exec("CREATE TABLE IF NOT EXISTS balance(faction TEXT PRIMARY KEY, cash INT)");
+        
         try{
             $this->db->exec("ALTER TABLE plots ADD COLUMN world TEXT default null");
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
@@ -202,20 +192,6 @@ class FactionMain extends PluginBase implements Listener {
     }
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
-    }
-    public function addEffectTo($faction, $effect){
-        $stmt = $this->db->prepare("INSERT OR REPLACE INTO effects (faction, effect) VALUES (:faction, :effect);");  
-        $stmt->bindValue(":faction", $faction);
-		$stmt->bindValue(":effect", $effect);
-		$result = $stmt->execute();
-    }
-    public function getEffectOf($faction){
-        $result = $this->db->query("SELECT * FROM effects WHERE faction = '$faction';");
-        $resultArr = $result->fetchArray(SQLITE3_ASSOC);
-        if(empty($resultArr)){
-            return "none";
-        }
-        return $resultArr['effect'];
     }
     public function setEnemies($faction1, $faction2) {
         $stmt = $this->db->prepare("INSERT INTO enemies (faction1, faction2) VALUES (:faction1, :faction2);");
