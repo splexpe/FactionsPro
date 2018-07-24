@@ -193,6 +193,20 @@ class FactionMain extends PluginBase implements Listener {
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
     }
+    public function addEffectTo($faction, $effect){
+        $stmt = $this->db->prepare("INSERT OR REPLACE INTO effects (faction, effect) VALUES (:faction, :effect);");  
+        $stmt->bindValue(":faction", $faction);
+		$stmt->bindValue(":effect", $effect);
+		$result = $stmt->execute();
+    }
+    public function getEffectOf($faction){
+        $result = $this->db->query("SELECT * FROM effects WHERE faction = '$faction';");
+        $resultArr = $result->fetchArray(SQLITE3_ASSOC);
+        if(empty($resultArr)){
+            return "none";
+        }
+        return $resultArr['effect'];
+    }
     public function setEnemies($faction1, $faction2) {
         $stmt = $this->db->prepare("INSERT INTO enemies (faction1, faction2) VALUES (:faction1, :faction2);");
         $stmt->bindValue(":faction1", $faction1);
