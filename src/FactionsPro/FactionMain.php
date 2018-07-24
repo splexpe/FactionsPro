@@ -27,7 +27,7 @@ class FactionMain extends PluginBase implements Listener {
     public $allyChatActive = [];
     private $prefix = "§7[§6Void§bFactions§cPE§7]";
     
-    const HEX_SYMBOL = "e29688";
+    public const HEX_SYMBOL = "e29688";
      ///////////////////////////////// PLUGIN CHECKS /////////////////////////////////
 	/** @var bool */
 	private static $phared = null;
@@ -50,12 +50,16 @@ class FactionMain extends PluginBase implements Listener {
 	}
 	public static function getInstance(): FactionMain{
 		return self::$instance;
-        }
-    // self explanatory constants
-	const CONFIG_VERSION = 2;
-	const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'BASE_VERSION' constant)*/
-        const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1201"; // The minimum build this was tested working
-	const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1238"; // The current build this was actually tested
+	}
+	
+    	// self explanatory constants
+	public const CONFIG_VERSION = 2;
+        
+       
+	public const
+        BASE_POCKETMINE_VERSION = "1.7dev", // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
+        TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1014", // The minimum build this was tested working
+	    TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1034"; // The current build this was actually tested
 	
     public function onLoad(): void{
 	    		// Phars Force Poggit Builds only //
@@ -197,20 +201,6 @@ class FactionMain extends PluginBase implements Listener {
     }
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
-    }
-    public function addEffectTo($faction, $effect){
-        $stmt = $this->db->prepare("INSERT OR REPLACE INTO effects (faction, effect) VALUES (:faction, :effect);");  
-        $stmt->bindValue(":faction", $faction);
-		$stmt->bindValue(":effect", $effect);
-		$result = $stmt->execute();
-    }
-    public function getEffectOf($faction){
-        $result = $this->db->query("SELECT * FROM effects WHERE faction = '$faction';");
-        $resultArr = $result->fetchArray(SQLITE3_ASSOC);
-        if(empty($resultArr)){
-            return "none";
-        }
-        return $resultArr['effect'];
     }
     public function setEnemies($faction1, $faction2) {
         $stmt = $this->db->prepare("INSERT INTO enemies (faction1, faction2) VALUES (:faction1, :faction2);");
