@@ -246,14 +246,16 @@ class FactionListener implements Listener {
         }
     }
         }
-        const N = 'N';
-    const NE = '/';
-    const E = 'E';
-    const SE = '\\';
-    const S = 'S';
-    const SW = '/';
-    const W = 'W';
-    const NW = '\\';
+        public const
+    N = "N",
+    NE = "/",
+    E = "E",
+    SE = "\\",
+    S = "S",
+    SW = "/",
+    W = "W",
+    NW = "\\";
+	
     public static function getASCIICompass($degrees, $colorActive, $colorDefault): array{
         $ret = [];
         $point = self::getCompassPointForDirection($degrees);
