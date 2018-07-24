@@ -24,7 +24,7 @@ class FactionMain extends PluginBase implements Listener {
     public $allyChatActive = [];
     private $prefix = "§7[§6Void§bFactions§cPE§7]";
     
-    const HEX_SYMBOL = "e29688";
+    public const HEX_SYMBOL = "e29688";
      ///////////////////////////////// PLUGIN CHECKS /////////////////////////////////
 	/** @var bool */
 	private static $phared = null;
@@ -51,9 +51,12 @@ class FactionMain extends PluginBase implements Listener {
 	
     	// self explanatory constants
 	public const CONFIG_VERSION = 2;
-	public const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'BASE_VERSION' constant)
-	public const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1201"; // The minimum build this was tested working
-	public const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1238"; // The current build this was actually tested
+        
+       
+	public const
+        BASE_POCKETMINE_VERSION = "1.7dev", // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
+        TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1014", // The minimum build this was tested working
+	    TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1034"; // The current build this was actually tested
 	
     public function onLoad(): void{
 	    		// Phars Force Poggit Builds only //
