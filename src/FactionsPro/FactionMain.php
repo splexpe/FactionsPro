@@ -51,7 +51,12 @@ class FactionMain extends PluginBase implements Listener {
 	public static function getInstance(): FactionMain{
 		return self::$instance;
         }
-
+    // self explanatory constants
+	const CONFIG_VERSION = 2;
+	const BASE_POCKETMINE_VERSION = "1.7dev"; // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'BASE_VERSION' constant)*/
+        const TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1201"; // The minimum build this was tested working
+	const TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1238"; // The current build this was actually tested
+	
     public function onLoad(): void{
 	    		// Phars Force Poggit Builds only //
 		if($this->isPhared()){ // unphared = dev
