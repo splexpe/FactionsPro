@@ -61,20 +61,6 @@ class FactionMain extends PluginBase implements Listener {
         TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1014", // The minimum build this was tested working
 	    TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1034"; // The current build this was actually tested
 	
-    public function onLoad(): void{
-	    		// Phars Force Poggit Builds only //
-		if($this->isPhared()){ // unphared = dev
-			$thisPhar = new \Phar(\Phar::running(false));
-			$meta = $thisPhar->getMetadata(); // https://github.com/poggit/poggit/blob/beta/src/poggit/ci/builder/ProjectBuilder.php#L227-L236
-			if(!isset($meta["builderName"]) || !is_array($meta)){
-				$this->getLogger()->error("Only use FactionsPro Builds from Poggit: https://poggit.pmmp.io/ci/TheFixerDevelopment/FactionsPro/FactionsPro");
-				$this->disable = true;
-				return;
-			}
-			self::$sixCharCommitHash = substr($meta["fromCommit"], 0, 6);
-		} else {
-			$this->getLogger()->warning("You're using a developer's build of FactionsPro. For better performance and stability, please get a pre-packaged version here: https://poggit.pmmp.io/ci/TheFixerDevelopment/FactionsPro/FactionsPro");
-		}
 		if($this->isServerPhared() || $this->getServer()->getPocketMineVersion() == self::BASE_POCKETMINE_VERSION){
 			$this->getLogger()->warning("Non-Packaged / Unsupported PocketMine installation detected. Some of FactionPro's protective functions are now disabled.");
 		}
