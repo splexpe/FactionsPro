@@ -25,58 +25,7 @@ class FactionMain extends PluginBase implements Listener {
     private $prefix = "§7[§6Void§bFactions§cPE§7]";
     
     public const HEX_SYMBOL = "e29688";
-     ///////////////////////////////// PLUGIN CHECKS /////////////////////////////////
-	/** @var bool */
-	private static $phared = null;
-	/** @var bool */
-	private static $serverPhared = null;
-	public static function isPhared(): bool{
-		if(self::$phared == null){
-			self::$phared = strlen(\Phar::running()) > 0 ? true : false;
-			return self::$phared;
-		}
-		return self::$phared;
-	}
-	public static function isServerPhared() : bool {
-		if(self::$serverPhared == null){
-			$ref = new \ReflectionClass(Server::class);
-			self::$serverPhared = ((strpos($ref->getFileName(), "phar://") !== false) ? true : false);
-			return self::$serverPhared;
-		}
-		return self::$serverPhared;
-	}
-	public static function getInstance(): FactionMain{
-		return self::$instance;
-	}
 	
-    	// self explanatory constants
-	public const CONFIG_VERSION = 2;
-        
-       
-	public const
-        BASE_POCKETMINE_VERSION = "1.7dev", // The PocketMine version before Jenkins builds it... (Can be found on PocketMine.php as the 'VERSION' constant)
-        TESTED_MIN_POCKETMINE_VERSION = "1.7dev-1014", // The minimum build this was tested working
-	    TESTED_MAX_POCKETMINE_VERSION = "1.7dev-1034"; // The current build this was actually tested
-	
-    public function onLoad(): void{
-	    		// Phars Force Poggit Builds only //
-		if($this->isPhared()){ // unphared = dev
-			$thisPhar = new \Phar(\Phar::running(false));
-			$meta = $thisPhar->getMetadata(); // https://github.com/poggit/poggit/blob/beta/src/poggit/ci/builder/ProjectBuilder.php#L227-L236
-			if(!isset($meta["builderName"]) || !is_array($meta)){
-				$this->getLogger()->error("Only use FactionsPro Builds from Poggit: https://poggit.pmmp.io/ci/TheFixerDevelopment/FactionsPro/FactionsPro");
-				$this->disable = true;
-				return;
-			}
-			self::$sixCharCommitHash = substr($meta["fromCommit"], 0, 6);
-		} else {
-			$this->getLogger()->warning("You're using a developer's build of FactionsPro. For better performance and stability, please get a pre-packaged version here: https://poggit.pmmp.io/ci/TheFixerDevelopment/FactionsPro/FactionsPro");
-		}
-		if($this->isServerPhared() || $this->getServer()->getPocketMineVersion() == self::BASE_POCKETMINE_VERSION){
-			$this->getLogger()->warning("Non-Packaged / Unsupported PocketMine installation detected. Some of FactionPro's protective functions are now disabled.");
-		}
-		self::$instance = $this;
-	}
     public function onEnable(): void{
         if (!$this->isSpoon()) {
         @mkdir($this->getDataFolder());
@@ -533,7 +482,7 @@ class FactionMain extends PluginBase implements Listener {
 		return $pl;
 	}
     public function updateTag($playername) {
-        $p = $this->getServer()->getPlayer($playername);
+        $p = $this->getServer()->getPlayerExact($playername);
         $f = $this->getPlayerFaction($playername);
         if (!$this->isInFaction($playername)) {
             if(isset($this->purechat)){
