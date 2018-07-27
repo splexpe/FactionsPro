@@ -132,6 +132,12 @@ class FactionMain extends PluginBase implements Listener {
             "MoneyNeededToClaimAPlot" => 0,
 	    "ServerName" => "§6Void§bFactions§cPE",
                 "prefix" => "§7[§6Void§bFactions§cPE§7]",
+		"CreateCost" => 0,
+		"ClaimCost" => 0,
+		"OverClaimCost" => 0,
+		"AllyCost" => 0,
+		"AllyPrice" => 0,
+		"SetHomeCost" => 0,
                 "spawnerPrices" => [
                 	"skeleton" => 500,
                 	"pig" => 200,
