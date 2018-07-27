@@ -149,7 +149,7 @@ class FactionCommands {
                         if ($this->plugin->isInFaction($sender->getName())) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must leave the faction first"));
                             return true;
-                         } elseif($r = EconomyAPI::getInstance()->reduceMoney($player, $create)) {
+                         } elseif($r = EconomyAPI::getInstance()->reduceMoney($playerName, $create)) {
                             $factionName = $args[1];
                             $rank = "Leader";
                             $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
@@ -411,7 +411,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §4$needed_money §cMoney is required but your faction has only §4$balance §cMoney."));
                             return true;
                         }
-			elseif($r = EconomyAPI::getInstance()->reduceMoney($player, $claim)){
+			elseif($r = EconomyAPI::getInstance()->reduceMoney($playerName, $claim)){
                         $x = floor($sender->getX());
 			$y = floor($sender->getY());
 			$z = floor($sender->getZ());
@@ -603,7 +603,7 @@ class FactionCommands {
                                     if ($faction_ours_power < $faction_victim_power) {
                                         $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't overclaim the plot of §4$faction_victim §cbecause your STR is lower than theirs."));
                                         return true;
-                                   } elseif($r = EconomyAPI::getInstance()->reduceMoney($player, $oclaim)){
+                                   } elseif($r = EconomyAPI::getInstance()->reduceMoney($playerName, $oclaim)){
 					    
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_ours';");
                                         $this->plugin->db->query("DELETE FROM plots WHERE faction='$faction_victim';");
@@ -1101,7 +1101,7 @@ class FactionCommands {
                         if ($this->plugin->getAlliesCount($fac) >= $this->plugin->getAlliesLimit()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction has the maximum amount of allies", true));
                         }
-		        elseif($r = EconomyAPI::getInstance()->reduceMoney($player, $allyr)){
+		        elseif($r = EconomyAPI::getInstance()->reduceMoney($playerName, $allyr)){
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO alliance (player, faction, requestedby, timestamp) VALUES (:player, :faction, :requestedby, :timestamp);");
                         $stmt->bindValue(":player", $leader->getName());
                         $stmt->bindValue(":faction", $args[1]);
@@ -1212,7 +1212,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction has not been requested to ally with any factions"));
                             return true;
                         }
-			elseif($r = EconomyAPI::getInstance()->reduceMoney($player, $allya)){
+			elseif($r = EconomyAPI::getInstance()->reduceMoney($playerName, $allya)){
                         $allyTime = $array["timestamp"];
                         $currentTime = time();
                         if (($currentTime - $allyTime) <= 60) { //This should be configurable -> Use Beta branch to get this feature.
@@ -1281,9 +1281,9 @@ class FactionCommands {
                     ///////////////EFFFECTS?//////////////////////////
                     $amp = 0;
                     $strengthperkill = $this->plugin->prefs->get("PowerGainedPerKillingAnEnemy");
-                    $lvl = array($strengthperkill*100,$strengthperkill*500,$strengthperkill*1000,$strengthperkill*5000);
+                    $lvl = array($strengthperkill*100, $strengthperkill*500, $strengthperkill*1000, $strengthperkill*5000);
                     if(strtolower($args[0]) == "setef"){
-                        if(!isset($args[1])){
+                        if(!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §a/f setef <fast:str:jump:haste:res:life>"));
 							return true;
                         }
