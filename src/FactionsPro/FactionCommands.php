@@ -270,7 +270,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$promoted §cis currently not online"));
                             return true;
                         }
-		        if ($this->plugin->isOfficer($promoted) == false) {
+		        if ($this->plugin->isOfficer($promoted) == true) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$promoted §cis already an Officer of this faction"));
                             return true;
 			 }
@@ -325,7 +325,7 @@ class FactionCommands {
                             return true;
                         }
 			$leaderName = $this->plugin->getLeader($factionName); //New check for the fix of Being able to demote yourself even though you're a leader. This checks that the player executing this command is a leader.
-			if ($this->plugin->isLeader($leaderName) == false) {
+			if ($this->plugin->isLeader($leaderName) == true) {
                               $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get demoted because you're the leader of this faction.")); //This checks if the player is a leader, which fixes demoting yourself to Officer when you're leader.
                               return true;
                         }
