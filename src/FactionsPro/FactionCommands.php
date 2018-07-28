@@ -274,11 +274,6 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$promoted §cis already an Officer of this faction"));
                             return true;
 			 }
-			 $leaderName = $this->plugin->getLeader($factionName);
-                         if ($this->plugin->isLeader($leaderName) == true) {
-                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get promoted because you're the leader of this faction.")); //This checks if the player is a leader, which fixes promoting yourself to Officer when you're leader.
-                             return true;
-                         }
 			$promotedName = $promoted->getName();
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
@@ -320,15 +315,6 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't demote yourself"));
                             return true;
                         }
-                        if (!$this->plugin->isOfficer($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis already a Officer of this faction"));
-                            return true;
-                        }
-			$leaderName = $this->plugin->getLeader($factionName); //New check for the fix of Being able to demote yourself even though you're a leader. This checks that the player executing this command is a leader.
-			if ($this->plugin->isLeader($leaderName) == true) {
-                              $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't get demoted because you're the leader of this faction.")); //This checks if the player is a leader, which fixes demoting yourself to Officer when you're leader.
-                              return true;
-                        }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $playerName);
@@ -361,7 +347,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Player named §4$args[1] §cis not in this faction"));
                             return true;
                         }
-                        if ($playerName == $sender->getName()) {
+                        if ($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
                         }
