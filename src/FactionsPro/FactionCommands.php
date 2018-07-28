@@ -68,7 +68,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Faction named §4$args[1] §cdoes not exist"));
                             return true;
                         }
-                        if (!$this->plugin->isInFaction($sender->getName()) == false) {
+                        if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
                             return true;
                         }
@@ -152,7 +152,6 @@ class FactionCommands {
                             $this->plugin->updateAllies($factionName);
                             $this->plugin->setFactionPower($factionName, $this->plugin->prefs->get("TheDefaultPowerEveryFactionStartsWith"));
 			    $this->plugin->setBalance($factionName, $this->plugin->prefs->get("defaultFactionBalance"));
-			    $this->plugin->updateTag($playerName);
                             $this->plugin->getServer()->broadcastMessage("§a$playerName §bhas created a faction named §c$factionName");
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour Faction named §a$factionName §bhas been created. §6Next, use /f desc to make a faction description.", true));
 			    var_dump($this->plugin->db->query("SELECT * FROM balance;")->fetchArray(SQLITE3_ASSOC));
@@ -184,7 +183,7 @@ class FactionCommands {
                                 return true;
                             }
                         }
-                        if ($invited->getName() == $playerName) {
+                        if ($sender->getName() == $args[1]) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't invite yourself to your own faction"));
                             return true;
                         }
@@ -240,8 +239,6 @@ class FactionCommands {
                         $result = $stmt->execute();
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou are no longer leader. §bYou made §a$args[1] §bThe leader of this faction", true));
                         $this->plugin->getServer()->getPlayer($args[1])->sendMessage($this->plugin->formatMessage("§aYou are now leader \nof §3$factionName!", true));
-			$this->plugin->updateTag($sender->getName());
-                        $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
                     }
                     /////////////////////////////// PROMOTE ///////////////////////////////
                     if ($args[0] == "promote") {
@@ -261,7 +258,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named: §4$args[1] §cis not in this faction"));
                             return true;
                         }
-                        if ($args[1] == $sender->getName()) {
+                        if ($sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
                         }
@@ -270,7 +267,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis currently not online"));
                             return true;
                         }
-		        if ($this->plugin->isOfficer($promoted) == true) {
+		        if ($this->plugin->isOfficer($args[1]) == true) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis already an Officer of this faction"));
                             return true;
 			 }
@@ -285,13 +282,8 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §a$args[1] §bhas been promoted to Officer", true));
                         if ($promotedName instanceof Player) {
                             $promotedName->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
-		            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1]));
                             return true;
-			 }elseif($this->plugin->isLeader($sender->getName()) == true) { //This fixes the sender name being promoted to officer even though, you're a leader. We have two checks for this. This is the latest check we have found. But don't expect it to work.
-							 $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou have already made yourself leader", true));
-			 } elseif($this->plugin->isOfficer($sender->getName()) == true) {
-							 $sender->sendMessage("$prefix §cYou have already made yourself officer. You can't get any higher than officer role.");//This does the same / similar to the above check, but just to make sure there's no more bugs relating to this issue, I thought I'd add it.
-			        }
+			}
                     }
                     /////////////////////////////// DEMOTE ///////////////////////////////
                     if ($args[0] == "demote") {
@@ -311,7 +303,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named: §4$args[1] §cis not in this faction"));
                             return true;
                         }
-                        if ($args[1] == $sender->getName()) {
+                        if ($sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't demote yourself"));
                             return true;
                         }
@@ -325,7 +317,6 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §5$dargs[1] §2has been demoted to Member", true));
                         if ($demotee instanceof Player) {
                             $demotee->sendMessage($this->plugin->formatMessage("$prefix §2You were demoted to member of §5$factionName!", true));
-		            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($demotee->getName()));
                             return true;
                         }
                     }
@@ -347,7 +338,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Player named §4$args[1] §cis not in this faction"));
                             return true;
                         }
-                        if ($args[1] == $sender->getName()) {
+                        if ($sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
                         }
@@ -357,9 +348,8 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$args[1]", true));
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			$this->plugin->takeFromBalance($factionName, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
-                        if ($kicked instanceof Player) {
-                            $kicked->sendMessage($this->plugin->formatMessage("$prefix §bYou have been kicked from \n §a$factionName", true));
-			    $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
+                        if ($args[1] instanceof Player) {
+                            $args[1]->sendMessage($this->plugin->formatMessage("$prefix §bYou have been kicked from \n §a$factionName", true));
                             return true;
                         }
                     }
@@ -670,7 +660,6 @@ class FactionCommands {
                             $this->plugin->addFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			    $this->plugin->addToBalance($faction, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
                             $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("$prefix §2$playerName §ajoined the faction", true));
-			    $this->plugin->updateTag($sender->getName());
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cInvite has expired."));
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$playerName';");
@@ -711,7 +700,6 @@ class FactionCommands {
 			        $this->plugin->db->query("DELETE FROM balance WHERE faction='$faction';");
 		                $this->plugin->getServer()->broadcastMessage("§aThe player: §2$playerName §awho owned §3$faction §bhas been disbanded!");
                                 $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe Faction named: §a$faction §bhas been successfully disbanded and the faction plot, and Overclaims are unclaimed.", true));
-			        $this->plugin->updateTag($playerName);
 				    unset($this->plugin->factionChatActive[$playerName]);
 			            unset($this->plugin->allyChatActive[$playerName]);
                             } else {
@@ -731,17 +719,15 @@ class FactionCommands {
                         }
                         if ($this->plugin->isLeader($playerName) == false) {
                             $faction = $this->plugin->getPlayerFaction($playerName);
-			    $remove = $sender->getPlayer()->getNameTag();
                             $name = $sender->getName();
                             $this->plugin->db->query("DELETE FROM master WHERE player='$name';");
 			    $this->plugin->getServer()->broadcastMessage("§2$name §bhas left §2$faction");
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bYou successfully left §a$faction", true));
                             $this->plugin->subtractFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			    $this->plugin->takeFromBalance($faction, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
-		    	    $this->plugin->updateTag($sender->getName());
 							unset($this->plugin->factionChatActive[$playerName]);
 							unset($this->plugin->allyChatActive[$playerName]);
-                        } else {
+                        } elseif($this->plugin->isLeader($sender->getName()) == true){
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must delete the faction or give\nleadership to someone else first"));
 			    return true;
                         }
