@@ -223,11 +223,11 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis currently not online"));
                             return true;
                         }
-                        if ($args[1] == $playerName) {
+                        if ($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't transfer the leadership to yourself"));
                             return true;
                         }
-                        $factionName = $this->plugin->getPlayerFaction($playerName);
+                        $factionName = $this->plugin->getPlayerFaction($args[1]);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $playerName);
                         $stmt->bindValue(":faction", $factionName);
@@ -253,7 +253,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this"));
                             return true;
                         }
-                        if ($this->plugin->isLeader($playerName) == false) {
+                        if ($this->plugin->isLeader($args[1]) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this")); //Old check - Removing soon.
                             return true;
                         }
@@ -275,7 +275,7 @@ class FactionCommands {
                             return true;
 			 }
 			$promotedName = $promoted->getName();
-                        $factionName = $this->plugin->getPlayerFaction($playerName);
+                        $factionName = $this->plugin->getPlayerFaction($args[1]);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $promotedName);
                         $stmt->bindValue(":faction", $factionName);
@@ -352,8 +352,8 @@ class FactionCommands {
                             return true;
                         }
                         $kicked = $this->plugin->getServer()->getPlayer($args[1]);
-                        $factionName = $this->plugin->getPlayerFaction($playerName);
-                        $this->plugin->db->query("DELETE FROM master WHERE player='$playerName';");
+                        $factionName = $this->plugin->getPlayerFaction($args[1]);
+                        $this->plugin->db->query("DELETE FROM master WHERE player='$args[1]';");
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$args[1]", true));
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			$this->plugin->takeFromBalance($factionName, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
