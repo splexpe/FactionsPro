@@ -265,13 +265,13 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
                         }
-			$promoted = $this->plugin->getServer()->getPlayerExact($args[1]);
+			$promoted = $this->plugin->getServer()->getPlayer($args[1]);
                         if (!($promoted instanceof Player)) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$promoted §cis currently not online"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis currently not online"));
                             return true;
                         }
 		        if ($this->plugin->isOfficer($promoted) == true) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$promoted §cis already an Officer of this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis already an Officer of this faction"));
                             return true;
 			 }
 			$promotedName = $promoted->getName();
@@ -281,11 +281,11 @@ class FactionCommands {
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
-                        $promotedName = $this->plugin->getServer()->getPlayerExact($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a$promotedName §bhas been promoted to Officer", true));
+                        $promotedName = $this->plugin->getServer()->getPlayer($args[1]);
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a$args[1] §bhas been promoted to Officer", true));
                         if ($promotedName instanceof Player) {
                             $promotedName->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
-		            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($promotedName));
+		            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1]));
                             return true;
 			 }elseif($this->plugin->isLeader($sender->getName()) == true) { //This fixes the sender name being promoted to officer even though, you're a leader. We have two checks for this. This is the latest check we have found. But don't expect it to work.
 							 $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou have already made yourself leader", true));
@@ -321,8 +321,8 @@ class FactionCommands {
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
-                        $demotee = $this->plugin->getServer()->getPlayerExact($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §5$demotee §2has been demoted to Member", true));
+                        $demotee = $this->plugin->getServer()->getPlayer($args[1]);
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §5$dargs[1] §2has been demoted to Member", true));
                         if ($demotee instanceof Player) {
                             $demotee->sendMessage($this->plugin->formatMessage("$prefix §2You were demoted to member of §5$factionName!", true));
 		            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($demotee->getName()));
@@ -351,10 +351,10 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
                         }
-                        $kicked = $this->plugin->getServer()->getPlayerExact($args[1]);
+                        $kicked = $this->plugin->getServer()->getPlayer($args[1]);
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $this->plugin->db->query("DELETE FROM master WHERE player='$playerName';");
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$kicked", true));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$args[1]", true));
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			$this->plugin->takeFromBalance($factionName, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
                         if ($kicked instanceof Player) {
