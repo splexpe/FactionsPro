@@ -279,7 +279,9 @@ class FactionCommands {
                         if ($promotedName instanceof Player) {
                             $promotedName->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
                             return true;
-			}elseif($args[1] == $sender->getName()) {
+			}else {
+			    $promoteName = $this->plugin->getServer()->getPlayer($args[1]);
+			    if($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
 			}
@@ -313,8 +315,9 @@ class FactionCommands {
                         if ($demotee instanceof Player) {
                             $demotee->sendMessage($this->plugin->formatMessage("$prefix §2You were demoted to member of §5$factionName!", true));
                             return true;
-                        }
-			}elseif($args[1] == $sender->getName()) {
+                        }else {
+			    $demoteName = $this->plugin->getServer()->getPlayer($args[1]);
+			    if($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't demote yourself"));
                             return true;
                         }
@@ -346,8 +349,9 @@ class FactionCommands {
                         if ($args[1] instanceof Player) {
                             $args[1]->sendMessage($this->plugin->formatMessage("$prefix §bYou have been kicked from \n §a$factionName", true));
                             return true;
-                        }
-				}elseif($args[1] == $sender->getName()) {
+                        }else {
+			    $kickName = $this->plugin->getServer()->getPlayer($args[1]);
+			    if($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
                     }
@@ -1416,6 +1420,11 @@ class FactionCommands {
             $this->plugin->getServer()->getLogger()->info($this->plugin->formatMessage("$prefix Please run this command in game"));
         }
         return true;
+    }
+        }
+    }
+            }
+        }
     }
     public function alphanum($string){
         if(function_exists('ctype_alnum')){
