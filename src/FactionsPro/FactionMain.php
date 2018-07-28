@@ -481,7 +481,6 @@ class FactionMain extends PluginBase implements Listener {
 		if(!$pl->isEnabled()) return null;
 		return $pl;
 	}
-    }
     public function onDisable(): void {
          if (isset($this->db)) $this->db->close();
     }
