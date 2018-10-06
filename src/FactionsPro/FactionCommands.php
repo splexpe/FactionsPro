@@ -15,17 +15,18 @@ class FactionCommands {
     public $plugin;
     
     // ASCII Map
-	CONST MAP_WIDTH = 50;
-	CONST MAP_HEIGHT = 11;
-	CONST MAP_HEIGHT_FULL = 17;
-	CONST MAP_KEY_CHARS = "\\/#?ç¬£$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZÄÖÜÆØÅ1234567890abcdeghjmnopqrsuvwxyÿzäöüæøåâêîûô";
-	CONST MAP_KEY_WILDERNESS = TextFormat::GRAY . "-"; /*Del*/
-	CONST MAP_KEY_SEPARATOR = TextFormat::AQUA . "*"; /*Del*/
-	CONST MAP_KEY_OVERFLOW = TextFormat::WHITE . "-" . TextFormat::WHITE; # ::MAGIC?
-	CONST MAP_OVERFLOW_MESSAGE = self::MAP_KEY_OVERFLOW . ": Too Many Factions (>" . 107 . ") on this Map.";
+	PUBLIC CONST 
+	MAP_WIDTH = 50,
+	MAP_HEIGHT = 11,
+	MAP_HEIGHT_FULL = 17,
+	MAP_KEY_CHARS = "\\/#?ç¬£$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZÄÖÜÆØÅ1234567890abcdeghjmnopqrsuvwxyÿzäöüæøåâêîûô",
+	MAP_KEY_WILDERNESS = TextFormat::GRAY . "-", /*Del*/
+	MAP_KEY_SEPARATOR = TextFormat::AQUA . "*", /*Del*/
+	MAP_KEY_OVERFLOW = TextFormat::WHITE . "-" . TextFormat::WHITE, # ::MAGIC?
+	MAP_OVERFLOW_MESSAGE = self::MAP_KEY_OVERFLOW . ": Too Many Factions (>" . 107 . ") on this Map.";
         
-    public function __construct(FactionMain $pg) {
-        $this->plugin = $pg;
+    public function __construct(FactionMain $plugin) {
+        $this->plugin = $plugin;
     }
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if ($sender instanceof Player) {
@@ -54,7 +55,7 @@ class FactionCommands {
                                 if ($f == $fac) {
                                     $x = mt_rand(0, $this->plugin->getNumberOfPlayers($fac) - 1);
                                     $tper = $this->plugin->war_players[$r][$x];
-                                    $sender->teleport($this->plugin->getServer()->getPlayer($tper));
+                                    $sender->teleport($this->plugin->getServer()->getPlayerExact($tper));
                                     return true;
                                 }
                             }
@@ -1356,9 +1357,9 @@ class FactionCommands {
                     }
                     return true;
                 }
-		if(strtolower($args[0]) == "help"){ //Will add alias for /f help soon.
+		if(strtolower($args[0]) == "help" or strtolower($args[0]) == "?"){
 			if(!isset($args[1])) {
-			   $sender->sendMessage(TextFormat::BLUE . "$prefix §aPlease use §b/f help <page> §afor a list of pages. (1-7]");
+			   $sender->sendMessage(TextFormat::BLUE . "$prefix §aPlease use §b/f $args[0] <page> §afor a list of pages. (1-7]");
 			   	return true;
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
@@ -1368,7 +1369,7 @@ class FactionCommands {
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 2){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§52/7§2]" . TextFormat::RED . "\n§a/f home/h - §7Teleports to your faction home.\n§a/f help <page> - §7Factions help.\n§a/f who - §7Your Faction info.\n§a/f who <faction> - §7Other faction info.\n§a/f invite/inv <player> - §7Invite a player to your faction.\n§a/f kick/k <player> - §7Kicks a player from your faction.\n§a/f leader <player> - §7Transfers leadership.\n§a/f leave/lv - §7Leaves a faction.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§52/7§2]" . TextFormat::RED . "\n§a/f home/h - §7Teleports to your faction home.\n§a/f help/? <page> - §7Factions help.\n§a/f who - §7Your Faction info.\n§a/f who <faction> - §7Other faction info.\n§a/f invite/inv <player> - §7Invite a player to your faction.\n§a/f kick/k <player> - §7Kicks a player from your faction.\n§a/f leader <player> - §7Transfers leadership.\n§a/f leave/lv - §7Leaves a faction.");
 				return true;
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");

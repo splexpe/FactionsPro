@@ -11,7 +11,6 @@ use pocketmine\event\entity\{EntityDamageEvent, EntityDamageByEntityEvent};
 use EssentialsPE\BaseFiles\BaseAPI;
 use pocketmine\tile\MobSpawner;
 use pocketmine\utils\{Config, TextFormat};
-use pocketmine\scheduler\PluginTask;
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
 use pocketmine\block\Block;
 
@@ -19,8 +18,8 @@ class FactionListener implements Listener {
 	
 	public $plugin;
 	
-	public function __construct(FactionMain $pg) {
-		$this->plugin = $pg;
+	public function __construct(FactionMain $plugin) {
+		$this->plugin = $plugin;
 	}
 	
 	public function factionChat(PlayerChatEvent $PCE) {
@@ -61,9 +60,9 @@ class FactionListener implements Listener {
 				$faction = $this->plugin->getPlayerFaction($playerName);
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->areAllies($this->plugin->getPlayerFaction($fP->getName()), $faction)){
-						if($this->plugin->getServer()->getPlayer($fP->getName())){
+						if($this->plugin->getServer()->getPlayerExact($fP->getName())){
 							$PCE->setCancelled(true);
-							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
+							$this->plugin->getServer()->getPlayerExact($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
 							$PCE->getPlayer()->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
 						}
 					}
@@ -92,55 +91,63 @@ class FactionListener implements Listener {
 		}
 	}
 	
-	public function onInteract(PlayerInteractEvent $e){
-		if($this->plugin->isInPlot($e->getPlayer())){
-			if(!$this->plugin->inOwnPlot($e->getPlayer())){
+	public function onInteract(PlayerInteractEvent $PIE){ //PIE stands for PlayerInteractEvent, funny that.
+		if($this->plugin->isInPlot($PIE->getPlayer())){
+			if(!$this->plugin->inOwnPlot($PIE->getPlayer())){
 				if($e->getPlayer()->isCreative()){
-					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Switching to survival mode."));
-					$e->getPlayer()->setGamemode(0);
-					$e->setCancelled(true);
+					$PIE->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Switching to survival mode."));
+					$PIE->getPlayer()->setGamemode(0);
+					$PIE->setCancelled(true);
 				}
-				if($this->plugin->essentialspe->getAPI()->isGod($e->getPlayer())){
-					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Disabling god mode."));
-					 $this->plugin->essentialspe->getAPI()->getSession($e->getPlayer()->setGod($e->getPlayer()->getGodMode()));
-					$e->setCancelled(true);
+				if($this->plugin->essentialspe->getAPI()->isGod($PIE->getPlayer())){
+					$PIE->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Disabling god mode."));
+					 $this->plugin->essentialspe->getAPI()->getSession($e->getPlayer()->setGod($PIE->getPlayer()->getGodMode()));
+					$PIE->setCancelled(true);
 				}
 			}
 		}
 	}
 	
-	public function factionBlockBreakProtect(BlockBreakEvent $event) {
-		$x = $event->getBlock()->getX();
-		$y = $event->getBlock()->getY();
-		$z = $event->getBlock()->getZ();
+	public function factionBlockBreakProtect(BlockBreakEvent $BBE) { //BBE stands for BlockBreakEvent.
+		$x = $BBE->getBlock()->getX();
+		$y = $BBE->getBlock()->getY();
+		$z = $BBE->getBlock()->getZ();
 		if($this->plugin->pointIsInPlot($x, $z)){
-			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())){
+			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($BBE->getPlayer()->getName())){
 				return true;
 			}else{
-				$event->setCancelled(true);
-				$event->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot break blocks here. This is already a property of a faction. Type §2/f plotinfo §6for details."));
+				$BBE->setCancelled(true);
+				$BBE->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot break blocks here. This is already a property of a faction. Type §2/f plotinfo §6for details."));
 				return true;
 			}
+			if($BBE->isCancelled()) return true;
+	      $player = $BBE->getPlayer();
+	      if(!$this->plugin->isInFaction($player->getName())) return true;
+	      $block = $BBE->getBlock();
+	      if($block->getId() === Block::MONSTER_SPAWNER){
+		      $fHere = $this->plugin->factionFromPoint($block->x, $block->y);
+		      $playerF = $this->plugin->getPlayerFaction($player->getName());
+		      if($fHere !== $playerF and !$player->isOp()){ $BBE->setCancelled(true); return true; };
+	      }
+    }
 		}
-	}
-	
-	public function factionBlockPlaceProtect(BlockPlaceEvent $event) {
-      		$x = $event->getBlock()->getX();
-		$y = $event->getBlock()->getY();
-     		$z = $event->getBlock()->getZ();
+	public function factionBlockPlaceProtect(BlockPlaceEvent $BPE) { //BPE stands for BlockPlaceEvent
+      		$x = $BPE->getBlock()->getX();
+		$y = $BPE->getBlock()->getY();
+     		$z = $BPE->getBlock()->getZ();
 		if($this->plugin->pointIsInPlot($x, $z)) {
-			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())) {
+			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($BPE->getPlayer()->getName())) {
 				return true;
 			} else {
-				$event->setCancelled(true);
-				$event->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot place blocks here. This is already a property of a faction. Type §2/f plotinfo for details."));
+				$BPE->setCancelled(true);
+				$BPE->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot place blocks here. This is already a property of a faction. Type §2/f plotinfo for details."));
 				return true;
 			}
 		}
 	}
-	public function onKill(PlayerDeathEvent $event){
-        $ent = $event->getEntity();
-        $cause = $event->getEntity()->getLastDamageCause();
+	public function onKill(PlayerDeathEvent $PDE) { //PDE stands for PlayerDeathEvent.
+        $ent = $PDE->getEntity();
+        $cause = $PDE->getEntity()->getLastDamageCause();
         if($cause instanceof EntityDamageByEntityEvent){
             $killer = $cause->getDamager();
             if($killer instanceof Player){
@@ -173,19 +180,8 @@ class FactionListener implements Listener {
             }
         }
     }
-    public function onBlockBreak(BlockBreakEvent $event){
-	      if($event->isCancelled()) return true;
-	      $player = $event->getPlayer();
-	      if(!$this->plugin->isInFaction($player->getName())) return true;
-	      $block = $event->getBlock();
-	      if($block->getId() === Block::MONSTER_SPAWNER){
-		      $fHere = $this->plugin->factionFromPoint($block->x, $block->y);
-		      $playerF = $this->plugin->getPlayerFaction($player->getName());
-		      if($fHere !== $playerF and !$player->isOp()){ $event->setCancelled(true); return true; };
-	      }
-    }
-    public function broadcastTeamJoin(PlayerJoinEvent $event){
-       $player = $event->getPlayer();
+    public function PlayerJoinEvent(PlayerJoinEvent $PJE){ //PJE stands for PlayerJoinEvent
+       $player = $PJE->getPlayer();
         
             if($this->plugin->isInFaction($player->getName()) == true) {
                $faction = $this->plugin->getPlayerFaction($player->getName());
@@ -194,13 +190,14 @@ class FactionListener implements Listener {
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
 							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§a(!)§r§e " . $player->getName() . " §ais now online");
+							$this->plugin->updateTag($event->getPlayer()->getName());
                                }
                           }
                     }
             }
     }
-    public function broadcastTeamQuit(PlayerQuitEvent $event){
-       $player = $event->getPlayer();
+    public function broadcastTeamQuit(PlayerQuitEvent $PQE){ //PQE stands for PlayerQuitEvent.
+       $player = $PQE->getPlayer();
        $name = $player->getName();
         
                if($this->plugin->isInFaction($player->getName()) == true) {
@@ -214,9 +211,6 @@ class FactionListener implements Listener {
           }
         }
                }
-    }
-    public function onPlayerJoin(PlayerJoinEvent $event) {
-		$this->plugin->updateTag($event->getPlayer()->getName());
     }
     public function onMoveMAP(PlayerMoveEvent $event){
         
@@ -249,14 +243,14 @@ class FactionListener implements Listener {
         }
     }
         }
-        const N = 'N';
-    const NE = '/';
-    const E = 'E';
-    const SE = '\\';
-    const S = 'S';
-    const SW = '/';
-    const W = 'W';
-    const NW = '\\';
+        public const N = 'N',
+    NE = '/',
+    E = 'E',
+    SE = '\\',
+    S = 'S',
+    SW = '/',
+    W = 'W',
+    NW = '\\';
     public static function getASCIICompass($degrees, $colorActive, $colorDefault) : array
     {
         $ret = [];
