@@ -3,7 +3,7 @@
 A modified plugin, better than ever. Being updated frequently. Edited by the VMPE development team. We update this plugin most of the time, features, bug fixes, and more. If you have any issues, or suggestions on what we should fix / add to this plugin, please open a new issue. We will make sure to read them. Thank you.
 
 ## What is this branch?
-This branch is called the "beta" branch. It's nothing special, and the fact is; This branch is mostly stabled. It's called the beta branch because this branch can sometimes have some bugs. We plan on fixing some issues that could be there from a while ago, and some bugs, which have just been implemented into this branch. We do plan on fixing almost ALL BUGS. At this stage, this branch is bug free, but when we add stuff, or fix stuff, bugs may rise. This doesn't happen often though. But just a heads up anyways.
+This branch is called "4.0.0-API". This branch allows us to update the plugin to 4.0.0 before they release to the public. That way, if some people are using the development builds for Pocketmine 4.0.0 API, then this branch will be good for them. That way, they can now get the API 4.0.0. We're still looking into issues raised with 4.0.0 API so we can get them updated to the latest APi ASAP. If you have any issues regarding this branch and you're having issues with the PMMP 4.0.0 API, then you can open an issue.
 
 ## Features
 * All the features from the good 'ol' days are now back, and working with PMMP Latest APi's.
