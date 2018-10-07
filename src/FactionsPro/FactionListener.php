@@ -9,7 +9,7 @@ use pocketmine\event\block\{BlockPlaceEvent, BlockBreakEvent};
 use pocketmine\Player;
 use pocketmine\event\entity\{EntityDamageEvent, EntityDamageByEntityEvent};
 use EssentialsPE\BaseFiles\BaseAPI;
-use pocketmine\tile\MobSpawner;
+use pocketmine\tile\MobSpawner; //To-do - Fix bugs with MobSpawning and its compatibility with this plugin.
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
 use pocketmine\block\Block;
@@ -22,7 +22,7 @@ class FactionListener implements Listener {
 		$this->plugin = $plugin;
 	}
 	
-	public function factionChat(PlayerChatEvent $PCE) {
+	public function factionChat(PlayerChatEvent $PCE) : void {
 		
 		$playerName = $PCE->getPlayer()->getName();
 		//MOTD Check
@@ -71,7 +71,7 @@ class FactionListener implements Listener {
 		}
 	}
 	
-	public function factionPVP(EntityDamageEvent $factionDamage) {
+	public function factionPVP(EntityDamageEvent $factionDamage) : void {
 		if($factionDamage instanceof EntityDamageByEntityEvent) {
 			if(!($factionDamage->getEntity() instanceof Player) or !($factionDamage->getDamager() instanceof Player)) {
 				return true;
@@ -91,7 +91,7 @@ class FactionListener implements Listener {
 		}
 	}
 	
-	public function onInteract(PlayerInteractEvent $PIE){ //PIE stands for PlayerInteractEvent, funny that.
+	public function onInteract(PlayerInteractEvent $PIE) : void{ //PIE stands for PlayerInteractEvent, funny that.
 		if($this->plugin->isInPlot($PIE->getPlayer())){
 			if(!$this->plugin->inOwnPlot($PIE->getPlayer())){
 				if($e->getPlayer()->isCreative()){
@@ -108,7 +108,7 @@ class FactionListener implements Listener {
 		}
 	}
 	
-	public function factionBlockBreakProtect(BlockBreakEvent $BBE) { //BBE stands for BlockBreakEvent.
+	public function factionBlockBreakProtect(BlockBreakEvent $BBE) : void { //BBE stands for BlockBreakEvent.
 		$x = $BBE->getBlock()->getX();
 		$y = $BBE->getBlock()->getY();
 		$z = $BBE->getBlock()->getZ();
@@ -131,7 +131,7 @@ class FactionListener implements Listener {
 	      }
     }
 		}
-	public function factionBlockPlaceProtect(BlockPlaceEvent $BPE) { //BPE stands for BlockPlaceEvent
+	public function factionBlockPlaceProtect(BlockPlaceEvent $BPE) : void { //BPE stands for BlockPlaceEvent
       		$x = $BPE->getBlock()->getX();
 		$y = $BPE->getBlock()->getY();
      		$z = $BPE->getBlock()->getZ();
@@ -145,7 +145,7 @@ class FactionListener implements Listener {
 			}
 		}
 	}
-	public function onKill(PlayerDeathEvent $PDE) { //PDE stands for PlayerDeathEvent.
+	public function onKill(PlayerDeathEvent $PDE) : void { //PDE stands for PlayerDeathEvent.
         $ent = $PDE->getEntity();
         $cause = $PDE->getEntity()->getLastDamageCause();
         if($cause instanceof EntityDamageByEntityEvent){
@@ -180,7 +180,7 @@ class FactionListener implements Listener {
             }
         }
     }
-    public function PlayerJoinEvent(PlayerJoinEvent $PJE){ //PJE stands for PlayerJoinEvent
+    public function PlayerJoinEvent(PlayerJoinEvent $PJE) : void { //PJE stands for PlayerJoinEvent
        $player = $PJE->getPlayer();
         
             if($this->plugin->isInFaction($player->getName()) == true) {
@@ -196,7 +196,7 @@ class FactionListener implements Listener {
                     }
             }
     }
-    public function broadcastTeamQuit(PlayerQuitEvent $PQE){ //PQE stands for PlayerQuitEvent.
+    public function broadcastTeamQuit(PlayerQuitEvent $PQE) : void { //PQE stands for PlayerQuitEvent.
        $player = $PQE->getPlayer();
        $name = $player->getName();
         
@@ -212,33 +212,33 @@ class FactionListener implements Listener {
         }
                }
     }
-    public function onMoveMAP(PlayerMoveEvent $event){
+    public function onMoveMAP(PlayerMoveEvent $PME) : void{ //PME stands for PlayerMoveEvent
         
-    $x = floor($event->getPlayer()->getX());
-    $y = floor($event->getPlayer()->getY());
-    $z = floor($event->getPlayer()->getZ());
+    $x = floor($PME->getPlayer()->getX());
+    $y = floor($PME->getPlayer()->getY());
+    $z = floor($PME->getPlayer()->getZ());
        $Faction = $this->plugin->factionFromPoint($x,$z);
-           $asciiCompass = self::getASCIICompass($event->getPlayer()->getYaw(), TextFormat::RED, TextFormat::GREEN);
+           $asciiCompass = self::getASCIICompass($PME->getPlayer()->getYaw(), TextFormat::RED, TextFormat::GREEN);
              $compass = "     " . $asciiCompass[0] . "\n     " . $asciiCompass[1] . "\n     " . $asciiCompass[2] . "\n";
-          if(isset($this->plugin->factionMapActive[$event->getPlayer()->getName()])){
-          if($this->plugin->factionMapActive[$event->getPlayer()->getName()]){
+          if(isset($this->plugin->factionMapActive[$PME->getPlayer()->getName()])){
+          if($this->plugin->factionMapActive[$PME->getPlayer()->getName()]){
         
-          if($this->plugin->isInPlot($event->getPlayer())) {
-             if($this->plugin->inOwnPlot($event->getPlayer())) {
+          if($this->plugin->isInPlot($PME->getPlayer())) {
+             if($this->plugin->inOwnPlot($PME->getPlayer())) {
                 $tip = $compass . "§l§6Protected area§r";
-                $event->getPlayer()->sendTip($tip);
+                $PME->getPlayer()->sendTip($tip);
             } else {
                 $tip = $compass . "§l§c".$Faction;
-                $event->getPlayer()->sendTip($tip);
+                $PME->getPlayer()->sendTip($tip);
                 }
             }
-        if(!$this->plugin->ip->canGetHurt($event->getPlayer())) {
-               $tip = $compass . "§l§aPublic area§r";
-               $event->getPlayer()->sendTip($tip);
+        if(!$this->plugin->ip->canGetHurt($PME->getPlayer())) {
+               $tip = $compass . "§l§aPublic area§r"; //To-do translate this to the actual english spelling
+               $PME->getPlayer()->sendTip($tip);
             }
-        if(!$this->plugin->isInPlot($event->getPlayer())){
-               $tip = $compass . "§l§2Zona Book§r";
-               $event->getPlayer()->sendTip($tip);
+        if(!$this->plugin->isInPlot($PME->getPlayer())){
+               $tip = $compass . "§l§2Zona Book§r"; //To-do translate this to the actual english spelling
+               $PME->getPlayer()->sendTip($tip);
             }
         }
     }
@@ -251,7 +251,7 @@ class FactionListener implements Listener {
     SW = '/',
     W = 'W',
     NW = '\\';
-    public static function getASCIICompass($degrees, $colorActive, $colorDefault) : array
+    public static function getASCIICompass(int $degrees, $colorActive, $colorDefault) : array
     {
         $ret = [];
         $point = self::getCompassPointForDirection($degrees);
@@ -272,7 +272,7 @@ class FactionListener implements Listener {
         $ret[] = $row;
         return $ret;
     }
-    public static function getCompassPointForDirection($degrees)
+    public static function getCompassPointForDirection(int $degrees)
     {
         $degrees = ($degrees - 180) % 360;
         if ($degrees < 0)
