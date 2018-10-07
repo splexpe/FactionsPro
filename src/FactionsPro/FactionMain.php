@@ -9,6 +9,11 @@ use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
 use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
 use pocketmine\level\{Position, Level};
+
+use FactionsPro\{FactionListener, FactionCommands};
+
+use onebone\economyapi\EconomyAPI;
+
 class FactionMain extends PluginBase implements Listener {
     
     public $db;
@@ -389,7 +394,7 @@ class FactionMain extends PluginBase implements Listener {
     public function cornerIsInPlot(int $x1, int $z1, int $x2, int $z2) {
         return($this->pointIsInPlot($x1, $z1) || $this->pointIsInPlot($x1, $z2) || $this->pointIsInPlot($x2, $z1) || $this->pointIsInPlot($x2, $z2));
     }
-    public function formatMessage($string, $confirm = false) {
+    public function formatMessage(string $string, bool $confirm = false) {
         if ($confirm) {
             return TextFormat::GREEN . "$string";
         } else {
@@ -413,7 +418,7 @@ class FactionMain extends PluginBase implements Listener {
         $result = $stmt->execute();
         $this->db->query("DELETE FROM motdrcv WHERE player='$player';");
     }
-    public function getMapBlock(){
+    public function getMapBlock() : string{
         
     $symbol = hex2bin(self::HEX_SYMBOL);
         
