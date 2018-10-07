@@ -1,7 +1,5 @@
 <?php
-
 namespace FactionsPro;
-
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
@@ -13,7 +11,6 @@ use pocketmine\tile\MobSpawner; //To-do - Fix bugs with MobSpawning and its comp
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
 use pocketmine\block\Block;
-
 class FactionListener implements Listener {
 	
 	public $plugin;
@@ -31,7 +28,6 @@ class FactionListener implements Listener {
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§cTimed out. §bPlease use: §3/f desc again."));
 				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$playerName';");
 				$PCE->setCancelled(true);
-				return true;
 			} else {
 				$motd = $PCE->getMessage();
 				$faction = $this->plugin->getPlayerFaction($playerName);
@@ -74,10 +70,8 @@ class FactionListener implements Listener {
 	public function factionPVP(EntityDamageEvent $factionDamage) : void {
 		if($factionDamage instanceof EntityDamageByEntityEvent) {
 			if(!($factionDamage->getEntity() instanceof Player) or !($factionDamage->getDamager() instanceof Player)) {
-				return true;
 			}
 			if(($this->plugin->isInFaction($factionDamage->getEntity()->getPlayer()->getName()) == false) or ($this->plugin->isInFaction($factionDamage->getDamager()->getPlayer()->getName()) == false)) {
-				return true;
 			}
 			if(($factionDamage->getEntity() instanceof Player) and ($factionDamage->getDamager() instanceof Player)) {
 				$player1 = $factionDamage->getEntity()->getPlayer()->getName();
@@ -114,34 +108,31 @@ class FactionListener implements Listener {
 		$z = $BBE->getBlock()->getZ();
 		if($this->plugin->pointIsInPlot($x, $z)){
 			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($BBE->getPlayer()->getName())){
-				return true;
 			}else{
 				$BBE->setCancelled(true);
 				$BBE->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot break blocks here. This is already a property of a faction. Type §2/f plotinfo §6for details."));
-				return true;
 			}
-			if($BBE->isCancelled()) return true;
+			if($BBE->isCancelled()) return;
 	      $player = $BBE->getPlayer();
-	      if(!$this->plugin->isInFaction($player->getName())) return true;
+	      if(!$this->plugin->isInFaction($player->getName())) return;
 	      $block = $BBE->getBlock();
 	      if($block->getId() === Block::MONSTER_SPAWNER){
 		      $fHere = $this->plugin->factionFromPoint($block->x, $block->y);
 		      $playerF = $this->plugin->getPlayerFaction($player->getName());
-		      if($fHere !== $playerF and !$player->isOp()){ $BBE->setCancelled(true); return true; };
+		      if($fHere !== $playerF and !$player->isOp()){ $BBE->setCancelled(true);
 	      }
     }
 		}
+	}
 	public function factionBlockPlaceProtect(BlockPlaceEvent $BPE) : void { //BPE stands for BlockPlaceEvent
       		$x = $BPE->getBlock()->getX();
 		$y = $BPE->getBlock()->getY();
      		$z = $BPE->getBlock()->getZ();
 		if($this->plugin->pointIsInPlot($x, $z)) {
 			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($BPE->getPlayer()->getName())) {
-				return true;
 			} else {
 				$BPE->setCancelled(true);
 				$BPE->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot place blocks here. This is already a property of a faction. Type §2/f plotinfo for details."));
-				return true;
 			}
 		}
 	}
