@@ -25,7 +25,7 @@ class FactionMain extends PluginBase implements Listener {
     
     const HEX_SYMBOL = "e29688";
     
-    public function onEnable(): void{
+    protected function onEnable(): void{
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
@@ -485,7 +485,7 @@ class FactionMain extends PluginBase implements Listener {
             $p->setNameTag("§b§lPlayer: §r§c$p \n§b§lhasFaction: §r§ctrue \n§b§lFaction: §r§c$f");
         }
     }
-    public function onDisable(): void {
+    protected function onDisable(): void {
          if (isset($this->db)) $this->db->close();
     }
 }
