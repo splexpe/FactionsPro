@@ -3,12 +3,8 @@ namespace FactionsPro;
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
-use pocketmine\event\block\BlockBreakEvent;
-use pocketmine\event\player\{PlayerJoinEvent, PlayerChatEvent};
 use pocketmine\{Server, Player};
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\utils\{Config, TextFormat};
-use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
 use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
@@ -149,19 +145,19 @@ class FactionMain extends PluginBase implements Listener {
         }
     }
     
-    public function isInFaction($player) {
+    public function isInFaction(Player $player) {
         $result = $this->db->query("SELECT player FROM master WHERE player='$player';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
     
-    public function getFaction($player) {
+    public function getFaction(Player $player) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
     }
     
-    public function setFactionPower($faction, $power) {
+    public function setFactionPower($faction, int $power) {
         if ($power < 0) {
             $power = 0;
         }
@@ -194,24 +190,24 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":count", (int) $i);
         $stmt->execute();
     }
-    public function getAlliesCount($faction) {
+    public function getAlliesCount($faction) : int {
         $result = $this->db->query("SELECT count FROM alliescountlimit WHERE faction = '$faction';");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         return (int) $resultArr["count"];
     }
-    public function getAlliesLimit() {
+    public function getAlliesLimit() : int{
         return (int) $this->prefs->get("AllyLimitPerFaction");
     }
     public function deleteAllies($faction1, $faction2) {
         $stmt = $this->db->prepare("DELETE FROM allies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $stmt->execute();
     }
-    public function getFactionPower($faction) {
+    public function getFactionPower($faction) : int {
         $result = $this->db->query("SELECT power FROM strength WHERE faction = '$faction';");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         return (int) $resultArr["power"];
     }
-    public function addFactionPower($faction, $power) {
+    public function addFactionPower($faction, int $power) {
         if ($this->getFactionPower($faction) + $power < 0) {
             $power = $this->getFactionPower($faction);
         }
@@ -220,7 +216,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":power", $this->getFactionPower($faction) + $power);
         $stmt->execute();
     }
-    public function subtractFactionPower($faction, $power) {
+    public function subtractFactionPower($faction, int $power) {
         if ($this->getFactionPower($faction) - $power < 0) {
             $power = $this->getFactionPower($faction);
         }
@@ -229,22 +225,22 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":power", $this->getFactionPower($faction) - $power);
         $stmt->execute();
     }
-    public function isLeader($player) {
+    public function isLeader(Player $player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Leader";
     }
-    public function isOfficer($player) {
+    public function isOfficer(Player $player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Officer";
     }
-    public function isMember($player) {
+    public function isMember(Player $player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Member";
     }
-    public function getPlayersInFactionByRank($s, $faction, $rank) {
+    public function getPlayersInFactionByRank(Player $s, $faction, $rank) {
         if ($rank != "Leader") {
             $rankname = $rank . 's';
         } else {
@@ -256,7 +252,7 @@ class FactionMain extends PluginBase implements Listener {
         $i = 0;
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $row[$i]['player'] = $resultArr['player'];
-            if ($this->getServer()->getPlayer($row[$i]['player']) instanceof Player) {
+            if ($this->getServer()->getPlayerExact($row[$i]['player']) instanceof Player) {
                 $team .= TextFormat::ITALIC . TextFormat::AQUA . $row[$i]['player'] . TextFormat::GREEN . "[ON]" . TextFormat::RESET . TextFormat::WHITE . "||" . TextFormat::RESET;
             } else {
                 $team .= TextFormat::ITALIC . TextFormat::AQUA . $row[$i]['player'] . TextFormat::RED . "[OFF]" . TextFormat::RESET . TextFormat::WHITE . "||" . TextFormat::RESET;
@@ -266,7 +262,7 @@ class FactionMain extends PluginBase implements Listener {
         $s->sendMessage($this->formatMessage("~ *<$rankname> of |$faction|* ~", true));
         $s->sendMessage($team);
     }
-     public function getAllAllies($s, $faction) {
+     public function getAllAllies(Player $s, $faction) {
         $team = "";
         $result = $this->db->query("SELECT faction1, faction2 FROM allies WHERE faction1='$faction' OR faction2='$faction';");
         $i = 0;
@@ -282,7 +278,7 @@ class FactionMain extends PluginBase implements Listener {
 			$s->sendMessage($this->formatMessage("~ *$faction* has no allies ~", true));
 		}
 	}
-    public function sendListOfTop10FactionsTo($s) {
+    public function sendListOfTop10FactionsTo(Player $s) {
         $tf = "";
         $result = $this->db->query("SELECT faction FROM strength ORDER BY power DESC LIMIT 10;");
         $row = array();
@@ -297,7 +293,7 @@ class FactionMain extends PluginBase implements Listener {
             $i = $i + 1;
         }
     }
-    public function getPlayerFaction($player) {
+    public function getPlayerFaction(Player $player) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
@@ -312,14 +308,14 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
-    public function sameFaction($player1, $player2) {
+    public function sameFaction(Player $player1, Player $player2) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player1';");
         $player1Faction = $faction->fetchArray(SQLITE3_ASSOC);
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player2';");
         $player2Faction = $faction->fetchArray(SQLITE3_ASSOC);
         return $player1Faction["faction"] == $player2Faction["faction"];
     }
-    public function getNumberOfPlayers($faction) {
+    public function getNumberOfPlayers($faction) : int {
         $query = $this->db->query("SELECT COUNT(player) as count FROM master WHERE faction='$faction';");
         $number = $query->fetchArray();
         return $number['count'];
@@ -327,13 +323,13 @@ class FactionMain extends PluginBase implements Listener {
     public function isFactionFull($faction) {
         return $this->getNumberOfPlayers($faction) >= $this->prefs->get("MaxPlayersPerFaction");
     }
-    public function isNameBanned($name) {
+    public function isNameBanned(string $name) {
         $bannedNames = file_get_contents($this->getDataFolder() . "BannedNames.txt");
         $isbanned = false;
         if (isset($name) && $this->antispam && $this->antispam->getProfanityFilter()->hasProfanity($name)) $isbanned = true;
         return (strpos(strtolower($bannedNames), strtolower($name)) > 0 || $isbanned);
     }
-    public function newPlot($faction, $x1, $z1, $x2, $z2) {
+    public function newPlot($faction, int $x1, int $z1, int $x2, int $z2) {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO plots (faction, x1, z1, x2, z2) VALUES (:faction, :x1, :z1, :x2, :z2);");
         $stmt->bindValue(":faction", $faction);
         $stmt->bindValue(":x1", $x1);
@@ -342,7 +338,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":z2", $z2);
         $stmt->execute();
     }
-    public function drawPlot($sender, $faction, $x, $y, $z, $level, $size) {
+    public function drawPlot(Player $sender, $faction, int $x, int $y, int $z, Level $level, $size) {
         $arm = ($size - 1) / 2;
         $block = new Snow();
         if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) {
@@ -367,30 +363,30 @@ class FactionMain extends PluginBase implements Listener {
         $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
         return true;
     }
-    public function isInPlot($player) {
+    public function isInPlot(Player $player) {
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
-    public function factionFromPoint($x, $z) {
+    public function factionFromPoint(int $x, int $z) {
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
     }
-    public function inOwnPlot($player) {
+    public function inOwnPlot(Player $player) {
         $playerName = $player->getName();
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
         return $this->getPlayerFaction($playerName) == $this->factionFromPoint($x, $z);
     }
-    public function pointIsInPlot($x, $z) {
+    public function pointIsInPlot(int $x, int $z) {
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
-    public function cornerIsInPlot($x1, $z1, $x2, $z2) {
+    public function cornerIsInPlot(int $x1, int $z1, int $x2, int $z2) {
         return($this->pointIsInPlot($x1, $z1) || $this->pointIsInPlot($x1, $z2) || $this->pointIsInPlot($x2, $z1) || $this->pointIsInPlot($x2, $z2));
     }
     public function formatMessage($string, $confirm = false) {
@@ -400,17 +396,17 @@ class FactionMain extends PluginBase implements Listener {
             return TextFormat::YELLOW . "$string";
         }
     }
-    public function motdWaiting($player) {
+    public function motdWaiting(Player $player) {
         $stmt = $this->db->query("SELECT player FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
-    public function getMOTDTime($player) {
+    public function getMOTDTime(Player $player) {
         $stmt = $this->db->query("SELECT timestamp FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return $array['timestamp'];
     }
-    public function setMOTD($faction, $player, $msg) {
+    public function setMOTD($faction, Player $player, string $msg) {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO motd (faction, message) VALUES (:faction, :message);");
         $stmt->bindValue(":faction", $faction);
         $stmt->bindValue(":message", $msg);
@@ -423,7 +419,7 @@ class FactionMain extends PluginBase implements Listener {
         
     return $symbol;
     }
-    public function getBalance($faction){
+    public function getBalance($faction) : int{
 		$stmt = $this->db->query("SELECT * FROM balance WHERE `faction` LIKE '$faction';");
 		$array = $stmt->fetchArray(SQLITE3_ASSOC);
 		if(!$array){
@@ -464,14 +460,14 @@ class FactionMain extends PluginBase implements Listener {
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
 	}
-	public function getEconomy(){
+	public function getEconomy() : EconomyAPI{
 		$pl = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 		if(!$pl) return $pl;
 		if(!$pl->isEnabled()) return null;
 		return $pl;
 	}
     public function updateTag($playername) {
-        $p = $this->getServer()->getPlayer($playername);
+        $p = $this->getServer()->getPlayerExact($playername);
         $f = $this->getPlayerFaction($playername);
         if (!$this->isInFaction($playername)) {
             if(isset($this->purechat)){
