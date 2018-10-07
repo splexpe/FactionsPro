@@ -1,9 +1,9 @@
 name: FactionsPro
 author: Tethered_, edited by VMPE Development Team
-description: A Extended Factions plugin. [Beta Branch]
+description: A Extended Factions plugin. [4.0.0-api Branch]
 version: 3.0.0-BETA
 main: FactionsPro\FactionMain
-api: [4.0.0]
+api: 4.0.0
 softdepend: ["PureChat", "AntiSpamPro", "EssentialsPE", "EconomyAPI"]
 commands:
   f:
