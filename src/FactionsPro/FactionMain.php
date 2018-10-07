@@ -1,5 +1,7 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
@@ -9,8 +11,6 @@ use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
 use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
 use pocketmine\level\{Position, Level};
-
-use FactionsPro\{FactionListener, FactionCommands};
 
 use onebone\economyapi\EconomyAPI;
 
@@ -28,7 +28,7 @@ class FactionMain extends PluginBase implements Listener {
     public $allyChatActive = [];
     private $prefix = "§7[§6Void§bFactions§cPE§7]";
     
-    const HEX_SYMBOL = "e29688";
+    public const HEX_SYMBOL = "e29688";
     
     protected function onEnable(): void{
         @mkdir($this->getDataFolder());
@@ -325,7 +325,7 @@ class FactionMain extends PluginBase implements Listener {
         $number = $query->fetchArray();
         return $number['count'];
     }
-    public function isFactionFull(string $faction) {
+    public function isFactionFull(string $faction) : int {
         return $this->getNumberOfPlayers($faction) >= $this->prefs->get("MaxPlayersPerFaction");
     }
     public function isNameBanned(string $name) {
@@ -368,7 +368,7 @@ class FactionMain extends PluginBase implements Listener {
         $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
         return true;
     }
-    public function isInPlot(Player $player) {
+    public function isInPlot(Player $player) ; Position {
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
@@ -380,7 +380,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
     }
-    public function inOwnPlot(Player $player) {
+    public function inOwnPlot(Player $player) : Position {
         $playerName = $player->getName();
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
