@@ -103,8 +103,15 @@ This branch is called "4.0.0-API". This branch allows us to update the plugin to
 
 /f rmpower - Force removes a faction's STR / power.
 
-## TO-DO LIST
-Check out the to-do list here:
-https://github.com/TheFixerDevelopment/FactionsPro/issues/16
-
+## LATEST TO-DO LIST
+- [X] Update to 4.0.0 API
+- [X] Reformat plugin
+- [X] Bump API version to 4.0.0
+- [X] Bump Plugin version to 3.0.0-BETA
+- [X] Implement Accept_time & deny_time configurations (Untested)
+- [X] Fix onEnable and on Disable() function, and make them protected due to the latest API updates.
+- [X] Add more return types, and fixes relating to the outdated code (Untested)
+- [X] Remove useless imports that aren't needed.
+- [ ] Release out of the BETA stages.
+- [ ] Merge to beta branch (When complete and released.)
 If you want anything else added, please open a issue. Thank you.
