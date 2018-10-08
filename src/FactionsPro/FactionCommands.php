@@ -649,7 +649,7 @@ class FactionCommands {
                         }
                         $invitedTime = $array["timestamp"];
                         $currentTime = time();
-                        if (($currentTime - $invitedTime) <= 60) { //This should be configurable
+                        if (($currentTime - $invitedTime) <= $this->plugin->prefs->get("accept_time")) { //This should be configurable
                             $faction = $array["faction"];
                             $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                             $stmt->bindValue(":player", ($playerName));
@@ -678,7 +678,7 @@ class FactionCommands {
                         }
                         $invitedTime = $array["timestamp"];
                         $currentTime = time();
-                        if (($currentTime - $invitedTime) <= 60) { //This should be configurable
+                        if (($currentTime - $invitedTime) <= $this->plugin->prefs->get("deny_time")) { //This should be configurable
                             $this->plugin->db->query("DELETE FROM confirm WHERE player='$lowercaseName';");
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cInvite declined", true));
                             $this->plugin->getServer()->getPlayer($array["invitedby"])->sendMessage($this->plugin->formatMessage("$prefix §4$playerName §cdeclined the invitation"));
