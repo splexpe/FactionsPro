@@ -114,4 +114,5 @@ This branch is called "4.0.0-API". This branch allows us to update the plugin to
 - [X] Remove useless imports that aren't needed.
 - [ ] Release out of the BETA stages.
 - [ ] Merge to beta branch (When complete and released.)
+
 If you want anything else added, please open a issue. Thank you.
