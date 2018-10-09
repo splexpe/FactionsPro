@@ -9,7 +9,7 @@ class FactionWar extends Task {
 	public $plugin;
 	public $requester;
 	
-	public function __construct(FactionMain $plugin, $requester) {
+	public function __construct(FactionMain $plugin, string $requester) {
         $this->plugin = $plugin;
 		$this->requester = $requester;
     }
