@@ -30,6 +30,9 @@ class FactionMain extends PluginBase implements Listener {
     
     public const HEX_SYMBOL = "e29688";
     
+	
+    //protected function onLoad() : void { To-do seperate some onEnable() functions and/to onLoad() functions.
+	    
     protected function onEnable(): void{
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
