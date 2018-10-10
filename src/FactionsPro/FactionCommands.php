@@ -1411,7 +1411,7 @@ class FactionCommands {
         }
         return true;
     }
-    public function alphanum($string){ //To-do see if we can add some stuff to it. ;P
+    public function alphanum(string $string){
         if(function_exists('ctype_alnum')){
             $return = ctype_alnum($string);
         }else{
@@ -1489,22 +1489,23 @@ class FactionCommands {
 		$map[] = $fRow;
 		return $map;
 	}
-	public function getColorForTo(Player $player, $faction) {
+	public function getColorForTo(Player $player, string $faction) {
 		if($this->plugin->getPlayerFaction($player->getName()) === $faction) {
 			return "§6";
 		}
 		return "§c";
 	}
-	   const N = 'N'; //To-do update all the const to 4.0.0-API AKA the latest PHP version.
-    const NE = '/';
-    const E = 'E';
-    const SE = '\\';
-    const S = 'S';
-    const SW = '/';
-    const W = 'W';
-    const NW = '\\';
-    public static function getASCIICompass(int $degrees, $colorActive, $colorDefault) : array //To-do see if we can add somethings to $colorActive and $colorDefault.
-    {
+	   public const
+    N = 'N',
+    NE = '/',
+    E = 'E',
+    SE = '\\',
+    S = 'S',
+    SW = '/',
+    W = 'W',
+    NW = '\\';
+
+    public static function getASCIICompass(int $degrees, string $colorActive, string $colorDefault) : array {
         $ret = [];
         $point = self::getCompassPointForDirection($degrees);
         $row = "";
