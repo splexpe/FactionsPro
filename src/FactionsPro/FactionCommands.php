@@ -15,7 +15,7 @@ class FactionCommands {
     public $plugin;
     
     // ASCII Map
-	PUBLIC CONST 
+	public const
 	MAP_WIDTH = 50,
 	MAP_HEIGHT = 11,
 	MAP_HEIGHT_FULL = 17,
@@ -158,7 +158,7 @@ class FactionCommands {
 			    $this->plugin->updateTag($playerName);
                             $this->plugin->getServer()->broadcastMessage("§a$playerName §bhas created a faction named §c$factionName");
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour Faction named §a$factionName §bhas been created. §6Next, use /f desc to make a faction description.", true));
-			    var_dump($this->plugin->db->query("SELECT * FROM balance;")->fetchArray(SQLITE3_ASSOC));
+			    var_dump($this->plugin->db->query("SELECT * FROM balance;")->fetchArray(SQLITE3_ASSOC)); //To-do remove var_dumb and allow this to function with $this.
                             return true;
                         }
                     }
@@ -318,7 +318,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// KICK ///////////////////////////////
-                    if(strtolower($args[0]) == "kick" or strtolower($args[0]) == "k"){
+                    if(strtolower($args[0]) == "kick" or strtolower($args[0]) == "k"){ //To-do make the alias command "k" have more letters in them.
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <player>\n§aDescription: §dKicks a player from a faction."));
                             return true;
@@ -339,7 +339,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
                         }
-                        $kicked = $this->plugin->getServer()->getPlayer($args[1]);
+                        $kicked = $this->plugin->getServer()->getPlayer($args[1]); //To-do add Name spaces support
                         $factionName = $this->plugin->getPlayerFaction($playerName);
 						$stmt = $this->plugin->db->prepare("DELETE FROM master WHERE player = :playername;");
                         $stmt->bindvalue(":playername", $args[1]);
@@ -397,7 +397,7 @@ class FactionCommands {
 			$y = floor($sender->getY());
 			$z = floor($sender->getZ());
 			$faction = $this->plugin->getPlayerFaction($sender->getPlayer()->getName());
-			if(!$this->plugin->drawPlot($sender, $faction, $x, $y, $z, $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize"))){
+			if(!$this->plugin->drawPlot($sender, $faction, $x, $y, $z, $sender->getPlayer()->getLevel(), $this->plugin->prefs->get("PlotSize"))){ //To-do Make support for 4.0.0-API
 				return true;
                         }
 			$plot_size = $this->plugin->prefs->get("PlotSize");
@@ -587,7 +587,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// UNCLAIM ///////////////////////////////
-                    if(strtolower($args[0]) == "unclaim" or strtolower($args[0]) == "uncl"){
+                    if(strtolower($args[0]) == "unclaim" or strtolower($args[0]) == "uncl"){ //To-do add a better alias command.
 				  if($this->plugin->prefs->get("ClaimingEnabled") == false){
 					$sender->sendMessage($this->plugin->formatMessage("$prefix §cFaction Plots are not enabled on this server."));
 					return true;
@@ -715,7 +715,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// LEAVE ///////////////////////////////
-                    if(strtolower($args[0] == "leave")) {
+                    if(strtolower($args[0] == "leave")) { //To-do add an alias command.
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
                             return true;
@@ -738,7 +738,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// SETHOME ///////////////////////////////
-                    if(strtolower($args[0]) == "sethome" or strtolower($args[0]) == "shome"){
+                    if(strtolower($args[0]) == "sethome" or strtolower($args[0]) == "shome"){ //To-do make the alias command better than it is now.
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
                             return true;
@@ -779,7 +779,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bFaction Home was unset succesfully for §a$faction §3/f home §bwas removed from your faction.", true));
                     }
                     /////////////////////////////// HOME ///////////////////////////////
-                    if (strtolower($args[0] == "home")) {
+                    if (strtolower($args[0] == "home")) { //To-do add an alias command.
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
                             return true;
@@ -804,7 +804,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cFaction Home is not set. You can set it with: §4/f sethome"));
                         }
 		    }
-                    if(strtolower($args[0]) == "power" or strtolower($args[0]) == "pw"){
+                    if(strtolower($args[0]) == "power" or strtolower($args[0]) == "pw"){ //To-do make the alias command even better than it is now.
                         if($this->plugin->isInFaction($playerName) == false) {
 							$sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
                             return true;
@@ -813,7 +813,7 @@ class FactionCommands {
                         
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bYour faction has§a $faction_power §bpower",true));
                     }
-                    if(strtolower($args[0]) == "seepower" or strtolower($args[0]) == "sp"){
+                    if(strtolower($args[0]) == "seepower" or strtolower($args[0]) == "sp"){ //To-do make the alias command even better than it is now.
                         if(!isset($args[1])){
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §b/f $args[0] <faction>\n§aDescription: §bAllows you to see A faction's power."));
                             return true;
@@ -826,6 +826,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §a$args[1] §bhas §a$faction_power §bpower.",true));
                     }
                     /////////////////////////////// MEMBERS/OFFICERS/LEADER AND THEIR STATUSES ///////////////////////////////
+		    //To-do make the "our" and "list" ranked commands even better.
                     if (strtolower($args[0] == "ourmembers")) {
                         if ($this->plugin->isInFaction($playerName) == false) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
@@ -880,7 +881,7 @@ class FactionCommands {
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
                     }
-                    if (strtolower($args[0] == "say")) {
+                    if (strtolower($args[0] == "say")) { //To-do add an alias command.
 			if (!$this->plugin->prefs->get("AllowChat")) {
 			    $sender->sendMessage($this->plugin->formatMessage("§c/f say is disabled"));
 			    return true;
@@ -914,7 +915,7 @@ class FactionCommands {
 			}
 		    }
                     ////////////////////////////// ALLY SYSTEM ////////////////////////////////
-                    if (strtolower($args[0] == "enemy")) {
+                    if (strtolower($args[0] == "enemy")) { //To-do add an alias command - still thinking. 
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f enemy <faction>\n§aDescription: §dEnemy a faction."));
                             return true;
@@ -980,7 +981,7 @@ class FactionCommands {
 		    }
 			 $sender->sendMessage($this->plugin->formatMessage("You are no longer enemies with $args[1]!", true));
 		    }
-                    if(strtolower($args[0]) == "ally" or strtolower($args[0]) == "a"){
+                    if(strtolower($args[0]) == "ally" or strtolower($args[0]) == "a"){ //To-do make the alias command even better than it is now.
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction>\n§aDescription: §dAlly with a faction."));
                             return true;
@@ -1029,7 +1030,7 @@ class FactionCommands {
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §bYou requested to ally with §a$args[1]!\n§bWait for the leader's response...", true));
                         $leader->sendMessage($this->plugin->formatMessage("$prefix §bThe leader of §a$fac §brequested an alliance.\nType §3/f allyok §bto accept or §3/f allyno §bto deny.", true));
                     }
-                    if(strtolower($args[0]) == "unally" or strtolower($args[0]) == "una"){
+                    if(strtolower($args[0]) == "unally" or strtolower($args[0]) == "una"){ //To-do make the alias command even better than it is now.
                         if (!isset($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <faction>\n§aDescription: §dUn allies a faction."));
                             return true;
@@ -1119,7 +1120,7 @@ class FactionCommands {
                         }
                         $allyTime = $array["timestamp"];
                         $currentTime = time();
-                        if (($currentTime - $allyTime) <= 60) { //This should be configurable -> Use Beta branch to get this feature.
+                        if (($currentTime - $allyTime) <= 60) { //To-do make this configurable
                             $requested_fac = $this->plugin->getPlayerFaction($array["requestedby"]);
                             $sender_fac = $this->plugin->getPlayerFaction($playerName);
                             $this->plugin->setAllies($requested_fac, $sender_fac);
@@ -1168,6 +1169,7 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// ABOUT ///////////////////////////////
+		    //To-do change the whole /f about system to make it look better, instead of keep updating it. Right now, this is a complete mess.
                     if(strtolower($args[0]) == "about" or strtolower($args[0]) == "info"){
                         $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
                         $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b");
@@ -1175,7 +1177,7 @@ class FactionCommands {
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
 		    
-                    if (strtolower($args[0]) == "chat" or strtolower($args[0]) == "c") {
+                    if (strtolower($args[0]) == "chat" or strtolower($args[0]) == "c") { //To-do make the alias command better.
                         if (!$this->plugin->prefs->get("AllowChat")){
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §6All Faction chat is disabled", false));
                         }
@@ -1222,7 +1224,7 @@ class FactionCommands {
 			$sender->sendMessage($this->plugin->formatMessage("$prefix §6Faction balance: " . TextFormat::GREEN . "$".$balance));
 			return true;
 		}
-		if(strtolower($args[0]) == "seebalance" or strtolower($args[0]) == "sb"){
+		if(strtolower($args[0]) == "seebalance" or strtolower($args[0]) == "sb"){ //To-do make the alias command better.
                         if(!isset($args[1])){
                                $sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §b/f $args[0] <faction>\n§aDescription: §bAllows you to see A faction's balance."));
                                return true;
@@ -1234,7 +1236,7 @@ class FactionCommands {
                        	$balance = $this->plugin->getBalance($args[1]);
                        	$sender->sendMessage($this->plugin->formatMessage("$prefix §bThe faction §a $args[1] §bhas §a$balance §bMoney", true));
                     	}
-			if(strtolower($args[0]) == "withdraw" or strtolower($args[0]) == "wd"){
+			if(strtolower($args[0]) == "withdraw" or strtolower($args[0]) == "wd"){ //To-do make the alias command better.
 			 if(!isset($args[1])){
 			       $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <amount>\n§aDescription: §dWithdraw money from your faction bank."));
 			       return true;
@@ -1297,7 +1299,7 @@ class FactionCommands {
 		 }
                 /////////////////////////////// MAP, map by Primus (no compass) ////////////////////////////////
 					// Coupon for compass: G1wEmEde0mp455
-		if(strtolower($args[0] == "map")) {
+		if(strtolower($args[0] == "map")) { //To-do add an alias command.
                         if(!isset($args[1])) {
 					    $size = 1;
 						$map = $this->getMap($sender, self::MAP_WIDTH, self::MAP_HEIGHT, $sender->getYaw(), $size);
@@ -1310,7 +1312,7 @@ class FactionCommands {
                 }
                
                 /////////////////////////////// WHO ///////////////////////////////
-                if (strtolower($args[0]) == 'who') {
+                if (strtolower($args[0]) == 'who') { //To-do add an alias command
                     if (isset($args[1])) {
                         if (!(ctype_alnum($args[1])) or !($this->plugin->factionExists($args[1]))) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoes not exist"));
@@ -1409,7 +1411,7 @@ class FactionCommands {
         }
         return true;
     }
-    public function alphanum($string){
+    public function alphanum($string){ //To-do see if we can add some stuff to it. ;P
         if(function_exists('ctype_alnum')){
             $return = ctype_alnum($string);
         }else{
@@ -1493,7 +1495,7 @@ class FactionCommands {
 		}
 		return "§c";
 	}
-	   const N = 'N';
+	   const N = 'N'; //To-do update all the const to 4.0.0-API AKA the latest PHP version.
     const NE = '/';
     const E = 'E';
     const SE = '\\';
@@ -1501,7 +1503,7 @@ class FactionCommands {
     const SW = '/';
     const W = 'W';
     const NW = '\\';
-    public static function getASCIICompass($degrees, $colorActive, $colorDefault) : array
+    public static function getASCIICompass(int $degrees, $colorActive, $colorDefault) : array //To-do see if we can add somethings to $colorActive and $colorDefault.
     {
         $ret = [];
         $point = self::getCompassPointForDirection($degrees);
@@ -1522,7 +1524,7 @@ class FactionCommands {
         $ret[] = $row;
         return $ret;
     }
-    public static function getCompassPointForDirection($degrees)
+    public static function getCompassPointForDirection(int $degrees)
     {
         $degrees = ($degrees - 180) % 360;
         if ($degrees < 0)
