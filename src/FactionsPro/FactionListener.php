@@ -242,8 +242,7 @@ class FactionListener implements Listener {
     SW = '/',
     W = 'W',
     NW = '\\';
-    public static function getASCIICompass(int $degrees, $colorActive, $colorDefault) : array
-    {
+    public static function getASCIICompass(int $degrees, string $colorActive, string $colorDefault) : array {
         $ret = [];
         $point = self::getCompassPointForDirection($degrees);
         $row = "";
@@ -263,8 +262,7 @@ class FactionListener implements Listener {
         $ret[] = $row;
         return $ret;
     }
-    public static function getCompassPointForDirection(int $degrees)
-    {
+    public static function getCompassPointForDirection(int $degrees) {
         $degrees = ($degrees - 180) % 360;
         if ($degrees < 0)
             $degrees += 360;
