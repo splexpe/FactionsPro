@@ -114,7 +114,7 @@ class FactionMain extends PluginBase implements Listener {
         }catch(\ErrorException $ex){
         }
     }
-    protected function onEnable(): void{
+    protected function onEnable() : void {
         $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
         if (!$this->antispam) {
             $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system.");
@@ -342,16 +342,16 @@ class FactionMain extends PluginBase implements Listener {
     public function newPlot(string $faction, int $x1, int $z1, int $x2, int $z2) {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO plots (faction, x1, z1, x2, z2) VALUES (:faction, :x1, :z1, :x2, :z2);");
         $stmt->bindValue(":faction", $faction);
-        $stmt->bindValue(":x1", $x1);
-        $stmt->bindValue(":z1", $z1);
-        $stmt->bindValue(":x2", $x2);
-        $stmt->bindValue(":z2", $z2);
+        $stmt->bindValue(":x1", (int) $x1);
+        $stmt->bindValue(":z1", (int) $z1);
+        $stmt->bindValue(":x2", (int) $x2);
+        $stmt->bindValue(":z2", (int) $z2);
         $stmt->execute();
     }
     public function drawPlot(Player $sender, string $faction, int $x, int $y, int $z, Level $level, string $size) {
         $arm = ($size - 1) / 2;
         $block = new Snow();
-        if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) {
+        if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) { //To-do see if anything needs changing.
             $claimedBy = $this->factionFromPoint($x, $z);
             $power_claimedBy = $this->getFactionPower($claimedBy);
             $power_sender = $this->getFactionPower($faction);
@@ -429,7 +429,7 @@ class FactionMain extends PluginBase implements Listener {
         
     return $symbol;
     }
-    public function getBalance(string $faction) : int{
+    public function getBalance(string $faction) : int {
 		$stmt = $this->db->query("SELECT * FROM balance WHERE `faction` LIKE '$faction';");
 		$array = $stmt->fetchArray(SQLITE3_ASSOC);
 		if(!$array){
@@ -440,8 +440,8 @@ class FactionMain extends PluginBase implements Listener {
 	}
 	public function setBalance(string $faction, int $money){
 		$stmt = $this->db->prepare("INSERT OR REPLACE INTO balance (faction, cash) VALUES (:faction, :cash);");
-		$stmt->bindValue(":faction", $faction);
-		$stmt->bindValue(":cash", $money);
+		$stmt->bindValue(":faction", (string) $faction);
+		$stmt->bindValue(":cash", (int) $money);
 		return $stmt->execute();
 	}
 	public function addToBalance(string $faction, int $money){
@@ -460,7 +460,7 @@ class FactionMain extends PluginBase implements Listener {
         	var_dump($resultArr);
             $j = $i + 1;
             $cf = $resultArr['faction'];
-            $pf = $resultArr["cash"];
+            $pf = $resultArr['cash'];
             $s->sendMessage(TextFormat::BOLD.TextFormat::GOLD.$j.". ".TextFormat::RESET.TextFormat::AQUA.$cf.TextFormat::RED.TextFormat::BOLD." §c- ".TextFormat::LIGHT_PURPLE."§d$".$pf);
             $i = $i + 1;
         } 
@@ -470,7 +470,7 @@ class FactionMain extends PluginBase implements Listener {
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
 	}
-	public function getEconomy() : EconomyAPI{
+	public function getEconomy() : EconomyAPI {
 		$pl = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 		if(!$pl) return $pl;
 		if(!$pl->isEnabled()) return null;
@@ -495,7 +495,7 @@ class FactionMain extends PluginBase implements Listener {
             $p->setNameTag("§b§lPlayer: §r§c$p \n§b§lhasFaction: §r§ctrue \n§b§lFaction: §r§c$f"); //To-do make some changes
         }
     }
-    protected function onDisable(): void {
+    protected function onDisable() : void {
          if (isset($this->db)) $this->db->close();
     }
 }
