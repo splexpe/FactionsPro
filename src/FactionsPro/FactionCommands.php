@@ -10,6 +10,8 @@ use pocketmine\level\{Level, Position};
 
 use onebone\economyapi\EconomyAPI;
 
+use FactionsPro\FactionMain;
+
 class FactionCommands {
 	
     public $plugin;
