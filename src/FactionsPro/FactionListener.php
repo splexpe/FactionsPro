@@ -11,6 +11,7 @@ use pocketmine\tile\MobSpawner; //To-do - Fix bugs with MobSpawning and its comp
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
 use pocketmine\block\Block;
+
 class FactionListener implements Listener {
 	
 	public $plugin;
@@ -24,7 +25,7 @@ class FactionListener implements Listener {
 		$playerName = $PCE->getPlayer()->getName();
 		//MOTD Check
 		if($this->plugin->motdWaiting($playerName)) {
-			if(time() - $this->plugin->getMOTDTime($playerName) > 30) {
+			if(time() - $this->plugin->getMOTDTime($playerName) > 30) { //To-do make this configurable.
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§cTimed out. §bPlease use: §3/f desc again."));
 				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$playerName';");
 				$PCE->setCancelled(true);
@@ -203,7 +204,7 @@ class FactionListener implements Listener {
         }
                }
     }
-    public function onMoveMAP(PlayerMoveEvent $PME) : void{ //PME stands for PlayerMoveEvent
+    public function onMoveMAP(PlayerMoveEvent $PME) : void { //PME stands for PlayerMoveEvent
         
     $x = floor($PME->getPlayer()->getX());
     $y = floor($PME->getPlayer()->getY());
@@ -224,7 +225,7 @@ class FactionListener implements Listener {
                 }
             }
         if(!$this->plugin->ip->canGetHurt($PME->getPlayer())) {
-               $tip = $compass . "§l§aPublic area§r"; //To-do translate this to the actual english spelling
+               $tip = $compass . "§l§aPublic area§r";
                $PME->getPlayer()->sendTip($tip);
             }
         if(!$this->plugin->isInPlot($PME->getPlayer())){
@@ -242,6 +243,7 @@ class FactionListener implements Listener {
     SW = '/',
     W = 'W',
     NW = '\\';
+	
     public static function getASCIICompass(int $degrees, string $colorActive, string $colorDefault) : array {
         $ret = [];
         $point = self::getCompassPointForDirection($degrees);
