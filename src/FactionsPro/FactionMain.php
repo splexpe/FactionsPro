@@ -31,34 +31,16 @@ class FactionMain extends PluginBase implements Listener {
     public const HEX_SYMBOL = "e29688";
     
 	
-    //protected function onLoad() : void { To-do seperate some onEnable() functions and/to onLoad() functions.
-	    
-    protected function onEnable(): void{
-        @mkdir($this->getDataFolder());
+    protected function onLoad() : void {
+	    @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
             $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
             fwrite($file, $txt);
         }
-        $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
-        $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
-        if (!$this->antispam) {
-            $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system.");
-        }
-        $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
-        if (!$this->purechat) {
-            $this->getLogger()->info("PureChat is not installed. If you want to display Faction ranks in chat, then PureChat needs to be installed. Disabling Faction chat system.");
-        }
-        $this->essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
-        if (!$this->essentialspe) {
-            $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Faction Raiding system, then EssentialsPE needs to be installed. Disabling Raiding system.");
-    	}
-	$this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-	if (!$this->economyapi) {
-	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
-	}
-        $this->fCommand = new FactionCommands($this);
-        $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
+	$this->fCommand = new FactionCommands($this);
+	$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
+         $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
             "MaxFactionNameLength" => 15,
             "MaxPlayersPerFaction" => 30,
             "OnlyLeadersAndOfficersCanInvite" => true,
@@ -131,6 +113,24 @@ class FactionMain extends PluginBase implements Listener {
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
         }catch(\ErrorException $ex){
         }
+    }
+    protected function onEnable(): void{
+        $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
+        if (!$this->antispam) {
+            $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system.");
+        }
+        $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
+        if (!$this->purechat) {
+            $this->getLogger()->info("PureChat is not installed. If you want to display Faction ranks in chat, then PureChat needs to be installed. Disabling Faction chat system.");
+        }
+        $this->essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
+        if (!$this->essentialspe) {
+            $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Faction Raiding system, then EssentialsPE needs to be installed. Disabling Raiding system.");
+    	}
+	$this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+	if (!$this->economyapi) {
+	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
+	}
     }
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
