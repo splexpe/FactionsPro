@@ -31,15 +31,13 @@ class FactionMain extends PluginBase implements Listener {
     public const HEX_SYMBOL = "e29688";
     
 	
-    protected function onLoad() : void {
+    public function checkConfigurations() : void { //Checks and loads configurations within this plugin.
 	    @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
             $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
             fwrite($file, $txt);
         }
-	$this->fCommand = new FactionCommands($this);
-	$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
          $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
             "MaxFactionNameLength" => 15,
             "MaxPlayersPerFaction" => 30,
@@ -114,8 +112,17 @@ class FactionMain extends PluginBase implements Listener {
         }catch(\ErrorException $ex){
         }
     }
-    protected function onEnable() : void {
-        $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
+    protected function onEnable() : void { //Main class file to enable all the checks
+         $this->registerEvents();
+         $this->checkConfigurations();
+         $this->checkPlugins();
+	}
+    public function registerEvents() : void { //Enables all the events within this plugin.
+	$this->fCommand = new FactionCommands($this);
+	$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
+    }
+    public function checkPlugins() : void { //Checks for plugins and it's compatibility with FactionsPro.
+	    $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
         if (!$this->antispam) {
             $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system.");
         }
