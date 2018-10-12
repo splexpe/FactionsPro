@@ -112,12 +112,12 @@ class FactionMain extends PluginBase implements Listener {
         }catch(\ErrorException $ex){
         }
     }
-    protected function onEnable() : void { //Main class file to enable all the checks
+    protected function onEnable() : void { //Main class file to handle all the checks
          $this->registerEvents();
          $this->checkConfigurations();
          $this->checkPlugins();
 	}
-    public function registerEvents() : void { //Enables all the events within this plugin.
+    public function registerEvents() : void { //Handles all the events within this plugin.
 	$this->fCommand = new FactionCommands($this);
 	$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
     }
