@@ -1,4 +1,5 @@
 <?php
+
 namespace FactionsPro;
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
@@ -6,7 +7,9 @@ use pocketmine\event\Listener;
 use pocketmine\event\block\{BlockPlaceEvent, BlockBreakEvent};
 use pocketmine\Player;
 use pocketmine\event\entity\{EntityDamageEvent, EntityDamageByEntityEvent};
+
 use EssentialsPE\BaseFiles\BaseAPI;
+
 use pocketmine\tile\MobSpawner; //To-do - Fix bugs with MobSpawning and its compatibility with this plugin.
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
@@ -69,7 +72,7 @@ class FactionListener implements Listener {
 			}
 		}
 	}
-	
+	}
 	public function factionPVP(EntityDamageEvent $factionDamage) : void {
 		if($factionDamage instanceof EntityDamageByEntityEvent) {
 			if(!($factionDamage->getEntity() instanceof Player) or !($factionDamage->getDamager() instanceof Player)) {
@@ -107,7 +110,7 @@ class FactionListener implements Listener {
 			}
 		}
 	}
-	
+	}
 	public function factionBlockBreakProtect(BlockBreakEvent $BBE) : void { //BBE stands for BlockBreakEvent.
 		$x = $BBE->getBlock()->getX();
 		$y = $BBE->getBlock()->getY();
@@ -132,6 +135,7 @@ class FactionListener implements Listener {
 	      }
     }
 		}
+	}
 	}
 	public function factionBlockPlaceProtect(BlockPlaceEvent $BPE) : void { //BPE stands for BlockPlaceEvent
       		$x = $BPE->getBlock()->getX();
@@ -198,6 +202,7 @@ class FactionListener implements Listener {
                     }
             }
     }
+    }
     public function broadcastTeamQuit(PlayerQuitEvent $PQE) : void { //PQE stands for PlayerQuitEvent.
        $player = $PQE->getPlayer();
        $name = $player->getName();
@@ -215,6 +220,7 @@ class FactionListener implements Listener {
           }
         }
                }
+    }
     }
     public function onMoveMAP(PlayerMoveEvent $PME) : void { //PME stands for PlayerMoveEvent
         
