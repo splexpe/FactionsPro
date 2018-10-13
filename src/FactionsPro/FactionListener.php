@@ -92,9 +92,9 @@ class FactionListener implements Listener {
 	}
 	
 	public function onInteract(PlayerInteractEvent $PIE) : void{ //PIE stands for PlayerInteractEvent, funny that.
-		$ent = $PIE->getEntity();
-	     if($ent instanceof Player){
-         $e = $ent->getPlayer()->getName();
+		$user = $PIE->getPlayer();
+	     if($user instanceof Player){
+         $e = $user->getPlayer()->getName();
 		if($this->plugin->isInPlot($PIE->getPlayer())){
 			if(!$this->plugin->inOwnPlot($e)){
 				if($e->getPlayer()->isCreative()){
@@ -185,17 +185,17 @@ class FactionListener implements Listener {
         }
     }
     public function PlayerJoinEvent(PlayerJoinEvent $PJE) : void { //PJE stands for PlayerJoinEvent
-       $player = $PJE->getPlayer();
-	     $ent = $PJE->getEntity();
-	     if($ent instanceof Player){
-         $e = $ent->getPlayer()->getName();
+       $user = $PJE->getPlayer();
+	     if($user instanceof Player){
+	 $name = $user->getName();
+         $e = $user->getPlayer()->getName();
             if($this->plugin->isInFaction($e) == true) {
                $faction = $this->plugin->getPlayerFaction($e);
                $db = $this->plugin->db->query("SELECT * FROM master WHERE faction='$faction'");
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
-							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§a(!)§r§e " . $player->getName() . " §ais now online");
+							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§a(!)§r§e " . $user->getName() . " §ais now online");
 							$this->plugin->updateTag($event->getPlayer()->getName());
                                }
                           }
@@ -204,18 +204,17 @@ class FactionListener implements Listener {
     }
     }
     public function broadcastTeamQuit(PlayerQuitEvent $PQE) : void { //PQE stands for PlayerQuitEvent.
-       $player = $PQE->getPlayer();
-       $name = $player->getName();
-         $ent = $PQE->getEntity();
-	     if($ent instanceof Player){
-         $e = $ent->getPlayer()->getName();
+       $user = $PQE->getPlayer();
+	     if($user instanceof Player){
+	 $name = $user->getName();
+         $e = $user->getPlayer()->getName();
                if($this->plugin->isInFaction($e) == true) {
                $faction = $this->plugin->getPlayerFaction($e);
                $db = $this->plugin->db->query("SELECT * FROM master WHERE faction='$faction'");
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
-                                                    $this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§c(!)§r§4 " . $player->getName() . " §cis now offline");
+                                                    $this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§c(!)§r§4 " . $user->getName() . " §cis now offline");
             }
           }
         }
@@ -227,14 +226,18 @@ class FactionListener implements Listener {
     $x = floor($PME->getPlayer()->getX());
     $y = floor($PME->getPlayer()->getY());
     $z = floor($PME->getPlayer()->getZ());
+	  
+	     if($user instanceof Player){
+		     $e = $user->getPlayer()->getName();
+		     $user = $PME->getPlayer()->getName();
        $Faction = $this->plugin->factionFromPoint($x,$z);
            $asciiCompass = self::getASCIICompass($PME->getPlayer()->getYaw(), TextFormat::RED, TextFormat::GREEN);
              $compass = "     " . $asciiCompass[0] . "\n     " . $asciiCompass[1] . "\n     " . $asciiCompass[2] . "\n";
           if(isset($this->plugin->factionMapActive[$PME->getPlayer()->getName()])){
           if($this->plugin->factionMapActive[$PME->getPlayer()->getName()]){
         
-          if($this->plugin->isInPlot($PME->getPlayer())) {
-             if($this->plugin->inOwnPlot($PME->getPlayer())) {
+          if($this->plugin->isInPlot($PME->getPlayer()->getName())) {
+             if($this->plugin->inOwnPlot($PME->getPlayer()->getName())) {
                 $tip = $compass . "§l§6Protected area§r";
                 $PME->getPlayer()->sendTip($tip);
             } else {
@@ -242,16 +245,17 @@ class FactionListener implements Listener {
                 $PME->getPlayer()->sendTip($tip);
                 }
             }
-        if(!$this->plugin->ip->canGetHurt($PME->getPlayer())) {
+        if(!$this->plugin->ip->canGetHurt($PME->getPlayer()->getName())) {
                $tip = $compass . "§l§aPublic area§r";
                $PME->getPlayer()->sendTip($tip);
             }
-        if(!$this->plugin->isInPlot($PME->getPlayer())){
+        if(!$this->plugin->isInPlot($PME->getPlayer()->getName())){
                $tip = $compass . "§l§2Zona Book§r"; //To-do translate this to the actual english spelling
                $PME->getPlayer()->sendTip($tip);
             }
         }
     }
+	     }
     }
     public const N = 'N',
     NE = '/',
