@@ -142,19 +142,19 @@ class FactionMain extends PluginBase implements Listener {
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
     }
-    public function setEnemies(string $faction1, string $faction2) {
+    public function setEnemies($faction1, $faction2) {
         $stmt = $this->db->prepare("INSERT INTO enemies (faction1, faction2) VALUES (:faction1, :faction2);");
         $stmt->bindValue(":faction1", $faction1);
         $stmt->bindValue(":faction2", $faction2);
         $stmt->execute();
     }
-    public function unsetEnemies(string $faction1, string $faction2) {
+    public function unsetEnemies($faction1, $faction2) {
 		$stmt = $this->db->prepare("DELETE FROM enemies WHERE (faction1 = :faction1 AND faction2 = :faction2) OR (faction1 = :faction2 AND faction2 = :faction1);");
 		$stmt->bindValue(":faction1", $faction1);
 		$stmt->bindValue(":faction2", $faction2);
 		$stmt->execute();
 	}
-    public function areEnemies(string $faction1, string $faction2) {
+    public function areEnemies($faction1, $faction2) {
         $result = $this->db->query("SELECT ID FROM enemies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         if (empty($resultArr) == false) {
@@ -162,19 +162,19 @@ class FactionMain extends PluginBase implements Listener {
         }
     }
     
-    public function isInFaction(Player $player) {
+    public function isInFaction($player) {
         $result = $this->db->query("SELECT player FROM master WHERE player='$player';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
     
-    public function getFaction(Player $player) {
+    public function getFaction($player) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
     }
     
-    public function setFactionPower(string $faction, int $power) {
+    public function setFactionPower($faction, int $power) {
         if ($power < 0) {
             $power = 0;
         }
@@ -242,22 +242,22 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":power", $this->getFactionPower($faction) - $power);
         $stmt->execute();
     }
-    public function isLeader(Player $player) {
+    public function isLeader($player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Leader";
     }
-    public function isOfficer(Player $player) {
+    public function isOfficer($player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Officer";
     }
-    public function isMember(Player $player) {
+    public function isMember($player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Member";
     }
-    public function getPlayersInFactionByRank(Player $s, string $faction, string $rank) {
+    public function getPlayersInFactionByRank($s, string $faction, string $rank) {
         if ($rank != "Leader") {
             $rankname = $rank . 's';
         } else {
@@ -279,7 +279,7 @@ class FactionMain extends PluginBase implements Listener {
         $s->sendMessage($this->formatMessage("~ *<$rankname> of |$faction|* ~", true));
         $s->sendMessage($team);
     }
-     public function getAllAllies(Player $s, string $faction) {
+     public function getAllAllies($s, string $faction) {
         $team = "";
         $result = $this->db->query("SELECT faction1, faction2 FROM allies WHERE faction1='$faction' OR faction2='$faction';");
         $i = 0;
@@ -310,7 +310,7 @@ class FactionMain extends PluginBase implements Listener {
             $i = $i + 1;
         }
     }
-    public function getPlayerFaction(Player $player) {
+    public function getPlayerFaction($player) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
@@ -325,7 +325,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
-    public function sameFaction(Player $player1, Player $player2) {
+    public function sameFaction($player1, $player2) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player1';");
         $player1Faction = $faction->fetchArray(SQLITE3_ASSOC);
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player2';");
@@ -355,7 +355,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":z2", (int) $z2);
         $stmt->execute();
     }
-    public function drawPlot(Player $sender, string $faction, int $x, int $y, int $z, Level $level, string $size) {
+    public function drawPlot($sender, string $faction, int $x, int $y, int $z, Level $level, string $size) {
         $arm = ($size - 1) / 2;
         $block = new Snow();
         if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) { //To-do see if anything needs changing.
@@ -380,7 +380,7 @@ class FactionMain extends PluginBase implements Listener {
         $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
         return true;
     }
-    public function isInPlot(Player $player) : Position {
+    public function isInPlot($player) : Position {
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
@@ -392,7 +392,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
     }
-    public function inOwnPlot(Player $player) : Position {
+    public function inOwnPlot($player) : Position {
         $playerName = $player->getName();
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
@@ -413,17 +413,17 @@ class FactionMain extends PluginBase implements Listener {
             return TextFormat::YELLOW . "$string";
         }
     }
-    public function motdWaiting(Player $player) {
+    public function motdWaiting($player) {
         $stmt = $this->db->query("SELECT player FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
-    public function getMOTDTime(Player $player) {
+    public function getMOTDTime($player) {
         $stmt = $this->db->query("SELECT timestamp FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return $array['timestamp'];
     }
-    public function setMOTD(string $faction, Player $player, string $msg) {
+    public function setMOTD(string $faction, $player, string $msg) {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO motd (faction, message) VALUES (:faction, :message);");
         $stmt->bindValue(":faction", $faction);
         $stmt->bindValue(":message", $msg);
@@ -459,7 +459,7 @@ class FactionMain extends PluginBase implements Listener {
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) - $money);
 	}
-	public function sendListOfTop10RichestFactionsTo(Player $s){
+	public function sendListOfTop10RichestFactionsTo($s){
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
         $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§5§lTop 10 Richest Factions".TextFormat::RESET);
