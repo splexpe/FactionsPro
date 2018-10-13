@@ -22,45 +22,47 @@ class FactionListener implements Listener {
 	
 	public function factionChat(PlayerChatEvent $PCE) : void {
 		
-		$playerName = $PCE->getPlayer()->getName();
+		$player = $PCE->getEntity();
+	     if($player instanceof Player){
+         $e = $player->getPlayer()->getName();
 		//MOTD Check
-		if($this->plugin->motdWaiting($playerName)) {
-			if(time() - $this->plugin->getMOTDTime($playerName) > 30) { //To-do make this configurable.
+		if($this->plugin->motdWaiting($e)) {
+			if(time() - $this->plugin->getMOTDTime($e) > 30) { //To-do make this configurable.
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§cTimed out. §bPlease use: §3/f desc again."));
-				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$playerName';");
+				$this->plugin->db->query("DELETE FROM motdrcv WHERE player='$e';");
 				$PCE->setCancelled(true);
 			} else {
 				$motd = $PCE->getMessage();
-				$faction = $this->plugin->getPlayerFaction($playerName);
-				$this->plugin->setMOTD($faction, $playerName, $motd);
+				$faction = $this->plugin->getPlayerFaction($e);
+				$this->plugin->setMOTD($faction, $e, $motd);
 				$PCE->setCancelled(true);
 				$PCE->getPlayer()->sendMessage($this->plugin->formatMessage("§dSuccessfully updated the faction description. Type §5/f who", true));
 			}
 		}
-		if(isset($this->plugin->factionChatActive[$playerName])){
-			if($this->plugin->factionChatActive[$playerName]){
+		if(isset($this->plugin->factionChatActive[$e])){
+			if($this->plugin->factionChatActive[$e]){
 				$msg = $PCE->getMessage();
-				$faction = $this->plugin->getPlayerFaction($playerName);
+				$faction = $this->plugin->getPlayerFaction($e);
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
 							$PCE->setCancelled(true);
-							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
+							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $e: ".TextFormat::AQUA. $msg);
 						}
 					}
 				}
 			}
 		}
-		if(isset($this->plugin->allyChatActive[$playerName])){
-			if($this->plugin->allyChatActive[$playerName]){
+		if(isset($this->plugin->allyChatActive[$e])){
+			if($this->plugin->allyChatActive[$e]){
 				$msg = $PCE->getMessage();
-				$faction = $this->plugin->getPlayerFaction($playerName);
+				$faction = $this->plugin->getPlayerFaction($e);
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->areAllies($this->plugin->getPlayerFaction($fP->getName()), $faction)){
 						if($this->plugin->getServer()->getPlayerExact($fP->getName())){
 							$PCE->setCancelled(true);
-							$this->plugin->getServer()->getPlayerExact($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
-							$PCE->getPlayer()->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $playerName: ".TextFormat::AQUA. $msg);
+							$this->plugin->getServer()->getPlayerExact($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $e: ".TextFormat::AQUA. $msg);
+							$PCE->getPlayer()->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $e: ".TextFormat::AQUA. $msg);
 						}
 					}
 				}
@@ -87,8 +89,11 @@ class FactionListener implements Listener {
 	}
 	
 	public function onInteract(PlayerInteractEvent $PIE) : void{ //PIE stands for PlayerInteractEvent, funny that.
+		$ent = $PIE->getEntity();
+	     if($ent instanceof Player){
+         $e = $ent->getPlayer()->getName();
 		if($this->plugin->isInPlot($PIE->getPlayer())){
-			if(!$this->plugin->inOwnPlot($PIE->getPlayer())){
+			if(!$this->plugin->inOwnPlot($e)){
 				if($e->getPlayer()->isCreative()){
 					$PIE->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Switching to survival mode."));
 					$PIE->getPlayer()->setGamemode(0);
@@ -96,7 +101,7 @@ class FactionListener implements Listener {
 				}
 				if($this->plugin->essentialspe->getAPI()->isGod($PIE->getPlayer())){
 					$PIE->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Disabling god mode."));
-					 $this->plugin->essentialspe->getAPI()->getSession($e->getPlayer()->setGod($PIE->getPlayer()->getGodMode()));
+					 $this->plugin->essentialspe->getAPI()->getSession($PIE->getPlayer()->setGod($PIE->getPlayer()->getGodMode()));
 					$PIE->setCancelled(true);
 				}
 			}
@@ -107,19 +112,22 @@ class FactionListener implements Listener {
 		$x = $BBE->getBlock()->getX();
 		$y = $BBE->getBlock()->getY();
 		$z = $BBE->getBlock()->getZ();
-		if($this->plugin->pointIsInPlot($x, $z)){
-			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($BBE->getPlayer()->getName())){
+		if($this->plugin->pointIsInPlot((int) $x, (int) $z)){
+			if($this->plugin->factionFromPoint((int) $x, (int) $z) === $this->plugin->getFaction($BBE->getPlayer()->getName())){
 			}else{
 				$BBE->setCancelled(true);
 				$BBE->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot break blocks here. This is already a property of a faction. Type §2/f plotinfo §6for details."));
 			}
 			if($BBE->isCancelled()) return;
+			$ent = $BBE->getEntity();
+	     if($ent instanceof Player){
+         $e = $ent->getPlayer()->getName();
 	      $player = $BBE->getPlayer();
-	      if(!$this->plugin->isInFaction($player->getName())) return;
+	      if(!$this->plugin->isInFaction($e)) return;
 	      $block = $BBE->getBlock();
 	      if($block->getId() === Block::MONSTER_SPAWNER){
-		      $fHere = $this->plugin->factionFromPoint($block->x, $block->y);
-		      $playerF = $this->plugin->getPlayerFaction($player->getName());
+		      $fHere = $this->plugin->factionFromPoint((int) $block->x, (int) $block->y);
+		      $playerF = $this->plugin->getPlayerFaction($e);
 		      if($fHere !== $playerF and !$player->isOp()){ $BBE->setCancelled(true);
 	      }
     }
@@ -129,8 +137,8 @@ class FactionListener implements Listener {
       		$x = $BPE->getBlock()->getX();
 		$y = $BPE->getBlock()->getY();
      		$z = $BPE->getBlock()->getZ();
-		if($this->plugin->pointIsInPlot($x, $z)) {
-			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($BPE->getPlayer()->getName())) {
+		if($this->plugin->pointIsInPlot((int) $x, (int) $z)) {
+			if($this->plugin->factionFromPoint((int) $x, (int) $z) === $this->plugin->getFaction($BPE->getPlayer()->getName())) {
 			} else {
 				$BPE->setCancelled(true);
 				$BPE->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot place blocks here. This is already a property of a faction. Type §2/f plotinfo for details."));
@@ -174,9 +182,11 @@ class FactionListener implements Listener {
     }
     public function PlayerJoinEvent(PlayerJoinEvent $PJE) : void { //PJE stands for PlayerJoinEvent
        $player = $PJE->getPlayer();
-        
-            if($this->plugin->isInFaction($player->getName()) == true) {
-               $faction = $this->plugin->getPlayerFaction($player->getName());
+	     $ent = $PJE->getEntity();
+	     if($ent instanceof Player){
+         $e = $ent->getPlayer()->getName();
+            if($this->plugin->isInFaction($e) == true) {
+               $faction = $this->plugin->getPlayerFaction($e);
                $db = $this->plugin->db->query("SELECT * FROM master WHERE faction='$faction'");
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
@@ -191,9 +201,11 @@ class FactionListener implements Listener {
     public function broadcastTeamQuit(PlayerQuitEvent $PQE) : void { //PQE stands for PlayerQuitEvent.
        $player = $PQE->getPlayer();
        $name = $player->getName();
-        
-               if($this->plugin->isInFaction($player->getName()) == true) {
-               $faction = $this->plugin->getPlayerFaction($player->getName());
+         $ent = $PQE->getEntity();
+	     if($ent instanceof Player){
+         $e = $ent->getPlayer()->getName();
+               if($this->plugin->isInFaction($e) == true) {
+               $faction = $this->plugin->getPlayerFaction($e);
                $db = $this->plugin->db->query("SELECT * FROM master WHERE faction='$faction'");
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
@@ -234,8 +246,8 @@ class FactionListener implements Listener {
             }
         }
     }
-        }
-        public const N = 'N',
+    }
+    public const N = 'N',
     NE = '/',
     E = 'E',
     SE = '\\',
