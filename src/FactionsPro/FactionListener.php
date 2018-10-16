@@ -7,13 +7,15 @@ use pocketmine\event\Listener;
 use pocketmine\event\block\{BlockPlaceEvent, BlockBreakEvent};
 use pocketmine\Player;
 use pocketmine\event\entity\{EntityDamageEvent, EntityDamageByEntityEvent};
-
-use EssentialsPE\BaseFiles\BaseAPI;
-
-use pocketmine\tile\MobSpawner; //To-do - Fix bugs with MobSpawning and its compatibility with this plugin.
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
 use pocketmine\block\Block;
+
+//EssentialsPE imports
+use EssentialsPE\BaseFiles\BaseAPI; //To-do fix some bugs to do with Essentials and it's compatibility with this plugin.
+
+//TeaSpoon imports
+use CortexPE\tile\MobSpawner; //To-do - Fix bugs with MobSpawning and its compatibility with this plugin.
 
 class FactionListener implements Listener {
 	
@@ -25,7 +27,7 @@ class FactionListener implements Listener {
 	
 	public function factionChat(PlayerChatEvent $PCE) : void {
 		
-		$player = $PCE->getEntity();
+		$player = $PCE->getEntity(); //To-do see if this is correct
 	     if($player instanceof Player){
          $e = $player->getPlayer()->getName();
 		//MOTD Check
