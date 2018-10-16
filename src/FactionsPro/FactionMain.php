@@ -137,7 +137,8 @@ class FactionMain extends PluginBase implements Listener {
 	}
 	$this->spoondetector = $this->getServer()->getPluginManager()->getPlugin("SpoonDetector");
         if (is_null($this->spoondetector)) {
-            $this->getLogger()->critical("SpoonDetector is required because this plugin doesn't allow Spoons. If you do not have this plugin, you will have issues, and we can't provide support otherwise. You can download the plugin here: (Update link soon). Plugin disabled.");
+            $this->getLogger()->critical("SpoonDetector is required because this plugin doesn't allow Spoons. If you do not have this plugin, you will have issues, and we can't provide support otherwise. You can download the plugin here: https://poggit.pmmp.io/ci/TheFixerDevelopment/spoondetector/SpoonDetector - Plugin disabled.");
+	    $this->getLogger()->critical("Also keep in mind - You need to use the SpoonDetector 4.0.0-API branch in order for this system to work.");
             $this->getServer()->getPluginManager()->disablePlugin($this);
             return; //To-Do revamp the return types
         }
