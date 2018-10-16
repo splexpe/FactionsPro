@@ -33,7 +33,8 @@ class FactionMain extends PluginBase implements Listener {
     public const HEX_SYMBOL = "e29688";
     
 	//All checks before plugin enables.
-    public function checkConfigurations() : void { //Checks and loads configurations within this plugin. To-do make this function protected.
+   public function checkConfigurations() : void { //Checks and loads configurations within this plugin. To-do make this function protected.
+	    $this->getLogger()->info("Configurations have been enabled. Looking for errors.");
 	    @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
@@ -115,6 +116,7 @@ class FactionMain extends PluginBase implements Listener {
         }
     }
     public function registerEvents() : void { //Handles all the events within this plugin. To-do make this function protected.
+	$this->getLogger()->info("Events have been enabled. Looking for errors.");
 	$this->fCommand = new FactionCommands($this);
 	$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
     }
@@ -141,15 +143,19 @@ class FactionMain extends PluginBase implements Listener {
 	    $this->getLogger()->critical("Also keep in mind - You need to use the SpoonDetector 4.0.0-API branch in order for this system to work.");
             $this->getServer()->getPluginManager()->disablePlugin($this);
             return; //To-Do revamp the return types
+		$this->getLogger()->info("Passed the plugins check.");
         }
     }
     public function checkSpoons() : void{ //Checks for spoons! To-do make this function protected.
 	   SpoonDetector::printSpoon($this, "spoon.txt"); //You must have the SpoonDetector plugin for this to start checking the system.
+	    $this->getLogger()->info("You have no spoons! Passed Spoons check."); //To-Do see if this needs changing.
     }
     protected function onEnable() : void { //Main class file to handle all the checks
          $this->registerEvents();
          $this->checkConfigurations();
          $this->checkPlugins();
+	 $this->checkSpoons();
+	 $this->getLogger()->info("All plugin checks have passed with success. Plugin now enabled."); //To-Do seperate it with its own function.
 	}
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
