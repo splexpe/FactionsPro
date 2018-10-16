@@ -9,12 +9,16 @@ use pocketmine\{Server, Player};
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
-use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast}; //To-Do improve spawners
 use pocketmine\level\{Position, Level};
 
+//TeaSpoon imports
+use CortexPE\entity\mob\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast}; //To-Do improve spawners
+
+//EconomyAPI imports
 use onebone\economyapi\EconomyAPI;
 
-use spoondetector\SpoonDetector; //For spoon detecting
+//SpoonDetector imports
+use spoondetector\SpoonDetector;
 
 class FactionMain extends PluginBase implements Listener {
     
@@ -26,6 +30,9 @@ class FactionMain extends PluginBase implements Listener {
     public $antispam;
     public $purechat;
     public $esssentialspe;
+    public $economyapi;
+    public $spoondetector;
+    public $teaspoon;
     public $factionChatActive = [];
     public $allyChatActive = [];
     private $prefix = "§7[§6Void§bFactions§cPE§7]"; //This can easilly be changed in configurations (prefs.yml)
@@ -123,20 +130,25 @@ class FactionMain extends PluginBase implements Listener {
     public function checkPlugins() : void { //Checks for plugins and it's compatibility with FactionsPro. To-do make this function protected.
 	    $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
         if (!$this->antispam) {
-            $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system.");
+            $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system...");
         }
         $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
         if (!$this->purechat) {
-            $this->getLogger()->info("PureChat is not installed. If you want to display Faction ranks in chat, then PureChat needs to be installed. Disabling Faction chat system.");
+            $this->getLogger()->info("PureChat is not installed. If you want to display Faction ranks in chat, then PureChat needs to be installed. Disabling Faction chat system...");
         }
         $this->essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
         if (!$this->essentialspe) {
-            $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Faction Raiding system, then EssentialsPE needs to be installed. Disabling Raiding system.");
+            $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Faction Raiding system, then EssentialsPE needs to be installed. Disabling Raiding system...");
     	}
 	$this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 	if (!$this->economyapi) {
-	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
+	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system...");
 	}
+	$this->teaspoon = $this->getServer()->getPluginManager()->getPlugin("TeaSpoon");
+        if (!$this->teaspoon) {
+            $this->getLogger()->info("TeaSpoon is currently not inatalled. If you want mob spawners implementations, then TeaSpoon needs to be installed. Disabling the Mob spawners system..");
+        }
+	    //This is the check if you don't have SpoonDetector installed.
 	$this->spoondetector = $this->getServer()->getPluginManager()->getPlugin("SpoonDetector");
         if (is_null($this->spoondetector)) {
             $this->getLogger()->critical("SpoonDetector is required because this plugin doesn't allow Spoons. If you do not have this plugin, you will have issues, and we can't provide support otherwise. You can download the plugin here: https://poggit.pmmp.io/ci/TheFixerDevelopment/spoondetector/SpoonDetector - Plugin disabled.");
@@ -147,6 +159,7 @@ class FactionMain extends PluginBase implements Listener {
         }
     }
     public function checkSpoons() : void{ //Checks for spoons! To-do make this function protected.
+	    //This is the check if you have the plugin, but have a spoon installed.
 	   SpoonDetector::printSpoon($this, "spoon.txt"); //You must have the SpoonDetector plugin for this to start checking the system.
 	    $this->getLogger()->info("You have no spoons! Passed Spoons check."); //To-Do see if this needs changing.
     }
@@ -155,24 +168,24 @@ class FactionMain extends PluginBase implements Listener {
          $this->checkConfigurations();
          $this->checkPlugins();
 	 $this->checkSpoons();
-	 $this->getLogger()->info("All plugin checks have passed with success. Plugin now enabled."); //To-Do seperate it with its own function.
+	 $this->getLogger()->info("All plugin checks have passed with success. Plugin now enabled. Now, checking for errors."); //To-Do seperate it with its own function.
 	}
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
     }
-    public function setEnemies($faction1, $faction2) {
+    public function setEnemies(string $faction1, string $faction2) {
         $stmt = $this->db->prepare("INSERT INTO enemies (faction1, faction2) VALUES (:faction1, :faction2);");
         $stmt->bindValue(":faction1", $faction1);
         $stmt->bindValue(":faction2", $faction2);
         $stmt->execute();
     }
-    public function unsetEnemies($faction1, $faction2) {
+    public function unsetEnemies(string $faction1, string $faction2) {
 		$stmt = $this->db->prepare("DELETE FROM enemies WHERE (faction1 = :faction1 AND faction2 = :faction2) OR (faction1 = :faction2 AND faction2 = :faction1);");
 		$stmt->bindValue(":faction1", $faction1);
 		$stmt->bindValue(":faction2", $faction2);
 		$stmt->execute();
 	}
-    public function areEnemies($faction1, $faction2) {
+    public function areEnemies(string $faction1, string $faction2) {
         $result = $this->db->query("SELECT ID FROM enemies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         if (empty($resultArr) == false) {
@@ -192,7 +205,7 @@ class FactionMain extends PluginBase implements Listener {
         return $factionArray["faction"];
     }
     
-    public function setFactionPower($faction, int $power) {
+    public function setFactionPower(string $faction, int $power) {
         if ($power < 0) {
             $power = 0;
         }
@@ -275,7 +288,7 @@ class FactionMain extends PluginBase implements Listener {
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Member";
     }
-    public function getPlayersInFactionByRank($s, string $faction, string $rank) {
+    public function getPlayersInFactionByRank(Player $s, string $faction, string $rank) {
         if ($rank != "Leader") {
             $rankname = $rank . 's';
         } else {
@@ -297,7 +310,7 @@ class FactionMain extends PluginBase implements Listener {
         $s->sendMessage($this->formatMessage("~ *<$rankname> of |$faction|* ~", true));
         $s->sendMessage($team);
     }
-     public function getAllAllies($s, string $faction) {
+     public function getAllAllies(Player $s, string $faction) {
         $team = "";
         $result = $this->db->query("SELECT faction1, faction2 FROM allies WHERE faction1='$faction' OR faction2='$faction';");
         $i = 0;
@@ -373,7 +386,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":z2", (int) $z2);
         $stmt->execute();
     }
-    public function drawPlot($sender, string $faction, int $x, int $y, int $z, Level $level, string $size) {
+    public function drawPlot(Player $sender, string $faction, int $x, int $y, int $z, Level $level, string $size) {
         $arm = ($size - 1) / 2;
         $block = new Snow();
         if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) { //To-do see if anything needs changing.
@@ -477,7 +490,7 @@ class FactionMain extends PluginBase implements Listener {
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) - $money);
 	}
-	public function sendListOfTop10RichestFactionsTo($s){
+	public function sendListOfTop10RichestFactionsTo(Player $s){
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
         $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§5§lTop 10 Richest Factions".TextFormat::RESET);
@@ -495,13 +508,13 @@ class FactionMain extends PluginBase implements Listener {
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
 	}
-	public function getEconomy() : EconomyAPI {
+	public function getEconomy() : EconomyAPI { //To-do see if this needs updating..
 		$pl = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 		if(!$pl) return $pl;
 		if(!$pl->isEnabled()) return null;
 		return $pl;
 	}
-    public function updateTag(Player $playername) {
+    public function updateTag($playername) {
         $p = $this->getServer()->getPlayerExact($playername);
         $f = $this->getPlayerFaction($playername);
         if (!$this->isInFaction($playername)) {
