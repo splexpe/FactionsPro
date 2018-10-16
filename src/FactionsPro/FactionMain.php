@@ -9,10 +9,12 @@ use pocketmine\{Server, Player};
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
-use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
+use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast}; //To-Do improve spawners
 use pocketmine\level\{Position, Level};
 
 use onebone\economyapi\EconomyAPI;
+
+use spoondetector\SpoonDetector; //For spoon detecting
 
 class FactionMain extends PluginBase implements Listener {
     
@@ -26,12 +28,12 @@ class FactionMain extends PluginBase implements Listener {
     public $esssentialspe;
     public $factionChatActive = [];
     public $allyChatActive = [];
-    private $prefix = "§7[§6Void§bFactions§cPE§7]";
+    private $prefix = "§7[§6Void§bFactions§cPE§7]"; //This can easilly be changed in configurations (prefs.yml)
     
     public const HEX_SYMBOL = "e29688";
     
-	
-    public function checkConfigurations() : void { //Checks and loads configurations within this plugin.
+	//All checks before plugin enables.
+    public function checkConfigurations() : void { //Checks and loads configurations within this plugin. To-do make this function protected.
 	    @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
@@ -70,7 +72,7 @@ class FactionMain extends PluginBase implements Listener {
 	    "deny_time" => 60,
 	    "ServerName" => "§6Void§bFactions§cPE",
                 "prefix" => "§7[§6Void§bFactions§cPE§7]",
-                "spawnerPrices" => [
+                "spawnerPrices" => [ //To-Do make this system actually work.
                 	"skeleton" => 500,
                 	"pig" => 200,
                 	"chicken" => 100,
@@ -112,16 +114,11 @@ class FactionMain extends PluginBase implements Listener {
         }catch(\ErrorException $ex){
         }
     }
-    protected function onEnable() : void { //Main class file to handle all the checks
-         $this->registerEvents();
-         $this->checkConfigurations();
-         $this->checkPlugins();
-	}
-    public function registerEvents() : void { //Handles all the events within this plugin.
+    public function registerEvents() : void { //Handles all the events within this plugin. To-do make this function protected.
 	$this->fCommand = new FactionCommands($this);
 	$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
     }
-    public function checkPlugins() : void { //Checks for plugins and it's compatibility with FactionsPro.
+    public function checkPlugins() : void { //Checks for plugins and it's compatibility with FactionsPro. To-do make this function protected.
 	    $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
         if (!$this->antispam) {
             $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system.");
@@ -138,7 +135,21 @@ class FactionMain extends PluginBase implements Listener {
 	if (!$this->economyapi) {
 	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
 	}
+	$this->spoondetector = $this->getServer()->getPluginManager()->getPlugin("SpoonDetector");
+        if (is_null($this->spoondetector)) {
+            $this->getLogger()->critical("SpoonDetector is required because this plugin doesn't allow Spoons. If you do not have this plugin, you will have issues, and we can't provide support otherwise. You can download the plugin here: (Update link soon). Plugin disabled.");
+            $this->getServer()->getPluginManager()->disablePlugin($this);
+            return; //To-Do revamp the return types
+        }
     }
+    public function checkSpoons() : void{ //Checks for spoons! To-do make this function protected.
+	   SpoonDetector::printSpoon($this, "spoon.txt"); //You must have the SpoonDetector plugin for this to start checking the system.
+    }
+    protected function onEnable() : void { //Main class file to handle all the checks
+         $this->registerEvents();
+         $this->checkConfigurations();
+         $this->checkPlugins();
+	}
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
     }
