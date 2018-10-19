@@ -5,7 +5,6 @@ version: 3.0.0-BETA
 main: FactionsPro\FactionMain
 api: 4.0.0
 softdepend: ["PureChat", "AntiSpamPro", "EssentialsPE", "EconomyAPI", "TeaSpoon"]
-depend: ["SpoonDetector"]
 commands:
   f:
     description: Faction commands.
