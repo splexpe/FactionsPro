@@ -17,9 +17,6 @@ use CortexPE\entity\mob\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, B
 //EconomyAPI imports
 use onebone\economyapi\EconomyAPI;
 
-//SpoonDetector imports
-use spoondetector\SpoonDetector;
-
 class FactionMain extends PluginBase implements Listener {
     
     public $db;
@@ -31,7 +28,6 @@ class FactionMain extends PluginBase implements Listener {
     public $purechat;
     public $esssentialspe;
     public $economyapi;
-    public $spoondetector;
     public $teaspoon;
     public $factionChatActive = [];
     public $allyChatActive = [];
@@ -40,7 +36,7 @@ class FactionMain extends PluginBase implements Listener {
     public const HEX_SYMBOL = "e29688";
     
 	//All checks before plugin enables.
-   public function checkConfigurations() : void { //Checks and loads configurations within this plugin. To-do make this function protected.
+   protected function checkConfigurations() : void { //Checks and loads configurations within this plugin.
 	    $this->getLogger()->info("Configurations have been enabled. Looking for errors.");
 	    @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
@@ -122,54 +118,103 @@ class FactionMain extends PluginBase implements Listener {
         }catch(\ErrorException $ex){
         }
     }
-    public function registerEvents() : void { //Handles all the events within this plugin. To-do make this function protected.
+    
+     public function registerEvents() : void { //Handles all the events within this plugin.
 	$this->getLogger()->info("Events have been enabled. Looking for errors.");
 	$this->fCommand = new FactionCommands($this);
 	$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
     }
-    public function checkPlugins() : void { //Checks for plugins and it's compatibility with FactionsPro. To-do make this function protected.
+    
+    public function checkPlugins() : void { //Checks for plugins and it's compatibility with FactionsPro.
 	    $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
         if (!$this->antispam) {
             $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system...");
         }
+        
         $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
         if (!$this->purechat) {
             $this->getLogger()->info("PureChat is not installed. If you want to display Faction ranks in chat, then PureChat needs to be installed. Disabling Faction chat system...");
         }
+        
         $this->essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
         if (!$this->essentialspe) {
             $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Faction Raiding system, then EssentialsPE needs to be installed. Disabling Raiding system...");
     	}
+    	
 	$this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 	if (!$this->economyapi) {
 	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system...");
 	}
+	
 	$this->teaspoon = $this->getServer()->getPluginManager()->getPlugin("TeaSpoon");
         if (!$this->teaspoon) {
             $this->getLogger()->info("TeaSpoon is currently not inatalled. If you want mob spawners implementations, then TeaSpoon needs to be installed. Disabling the Mob spawners system..");
         }
-	    //This is the check if you don't have SpoonDetector installed.
-	$this->spoondetector = $this->getServer()->getPluginManager()->getPlugin("SpoonDetector");
-        if (is_null($this->spoondetector)) {
-            $this->getLogger()->critical("SpoonDetector is required because this plugin doesn't allow Spoons. If you do not have this plugin, you will have issues, and we can't provide support otherwise. You can download the plugin here: https://poggit.pmmp.io/ci/TheFixerDevelopment/spoondetector/SpoonDetector - Plugin disabled.");
-	    $this->getLogger()->critical("Also keep in mind - You need to use the SpoonDetector 4.0.0-API branch in order for this system to work.");
-            $this->getServer()->getPluginManager()->disablePlugin($this);
-            return; //To-Do revamp the return types
-		$this->getLogger()->info("Passed the plugins check.");
+    }
+    
+    public function checkSpoons() : void{ //Checks for spoons!
+    $this->getLogger()->info("Checking to see if you have any spoons..");
+	    //This is the check if you have the plugin, but have a spoon installed.
+	   self::printSpoon($this, "spoon.txt"); //If you're using a spoon, this file will be generated.
+	   
+    }
+    //To-Do move the spoondetector related files to utils.
+    private static $subtleAsciiSpoon = "   
+         ___ _ __   ___   ___  _ __  
+        / __| '_ \\ / _ \\ / _ \\| '_ \\ 
+        \\__ \\ |_) | (_) | (_) | | | |
+        |___/ .__/ \\___/ \\___/|_| |_|
+            | |                      
+            |_|                      
+    ";
+    private static $spoonTxtContent = "
+    The author of this plugin does not provide support for third-party builds of 
+    PocketMine-MP (spoons). Spoons detract from the overall quality of the MCPE plugin environment, which is already 
+    lacking in quality. They force plugin developers to waste time trying to support conflicting APIs.
+    
+    In order to begin using this plugin you must understand that you will be offered no support. 
+    
+    Furthermore, the GitHub issue tracker for this project is targeted at vanilla PocketMine only. Any bugs you create which don't affect vanilla PocketMine, will be deleted.
+    
+    Have you read and understood the above (type 'yes' after the question mark)?";
+    private static $thingsThatAreNotSpoons = [
+        'PocketMine-MP'
+    ];
+    public static function isThisSpoon() : bool {
+        return !in_array(Server::getInstance()->getName(), self::$thingsThatAreNotSpoons);
+    }
+    private static function contentValid(string $content): bool {
+        return (strpos($content, self::$spoonTxtContent) > -1) && (strrpos($content, "yes") > strrpos($content, "?"));
+    }
+    public static function printSpoon(PluginBase $pluginBase, $fileToCheck){
+        if(self::isThisSpoon()){
+            if(!file_exists($pluginBase->getDataFolder() . $fileToCheck)){
+                file_put_contents($pluginBase->getDataFolder() . $fileToCheck, self::$spoonTxtContent);
+            }
+            if(!self::contentValid(file_get_contents($pluginBase->getDataFolder() . $fileToCheck))) {
+                $pluginBase->getLogger()->info(self::$subtleAsciiSpoon);
+                $pluginBase->getLogger()->warning("You are attempting to run " . $pluginBase->getDescription()->getName() . " on a SPOON!");
+                $pluginBase->getLogger()->warning("Before using the plugin you will need to open /plugins/" . $pluginBase->getDescription()->getName() . "/" . $fileToCheck . " in a text editor and agree to the terms.");
+                $pluginBase->getServer()->getPluginManager()->disablePlugin($pluginBase);
+            }
         }
     }
-    public function checkSpoons() : void{ //Checks for spoons! To-do make this function protected.
-	    //This is the check if you have the plugin, but have a spoon installed.
-	   SpoonDetector::printSpoon($this, "spoon.txt"); //You must have the SpoonDetector plugin for this to start checking the system.
-	    $this->getLogger()->info("You have no spoons! Passed Spoons check."); //To-Do see if this needs changing.
+    public function checkOriginal() : void{ //Checks if this plugin's from this repo, and not from other repos.
+    if ($this->getDescription()->getAuthors() !== ["Tethered, edited by VMPE Development Team"] || $this->getDescription()->getAuthors() !== ["Tethered_"] || $this->getDescription()->getName() !== "FactionsPro") {
+            $this->getLogger()->error("You are not using the original version of FactionsPro by Tethered, edited by VMPE Development Team. Disabling plugin.");
+             $this->getServer()->getPluginManager()->disablePlugin($this); //We stop people from changing the author's names when they probably never did any of the work, by disabling the plugin if the player or user were to do so.
     }
+    }
+    
     protected function onEnable() : void { //Main class file to handle all the checks
          $this->registerEvents();
          $this->checkConfigurations();
          $this->checkPlugins();
 	 $this->checkSpoons();
+	 $this->checkOriginal();
 	 $this->getLogger()->info("All plugin checks have passed with success. Plugin now enabled. Now, checking for errors."); //To-Do seperate it with its own function.
 	}
+	
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
     }
