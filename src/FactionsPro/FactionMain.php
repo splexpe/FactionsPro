@@ -2,6 +2,7 @@
 
 namespace FactionsPro;
 
+//Pocketmine imports
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
@@ -35,9 +36,14 @@ class FactionMain extends PluginBase implements Listener {
     
     public const HEX_SYMBOL = "e29688";
     
+    //Let's the console know that this plugin's loading.
+   protected function onLoad() : void{
+       $this->getLogger()->info("Plugin loading..");
+       $this->getLogger()->info("Loading in all checks..");
+   }
 	//All checks before plugin enables.
    public function checkConfigurations() : void { //Checks and loads configurations within this plugin.
-	    $this->getLogger()->info("Configurations have been enabled. Looking for errors.");
+	    $this->getLogger()->info("Checking configurations..");
 	    @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
@@ -120,12 +126,13 @@ class FactionMain extends PluginBase implements Listener {
     }
     
      public function registerEvents() : void { //Handles all the events within this plugin.
-	$this->getLogger()->info("Events have been enabled. Looking for errors.");
+	$this->getLogger()->info("Checking events..");
 	$this->fCommand = new FactionCommands($this);
 	$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
     }
     
     public function checkPlugins() : void { //Checks for plugins and it's compatibility with FactionsPro.
+	    $this->getLogger()->info("Checking for plugins..");
 	    $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
         if (!$this->antispam) {
             $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system...");
@@ -148,12 +155,12 @@ class FactionMain extends PluginBase implements Listener {
 	
 	$this->teaspoon = $this->getServer()->getPluginManager()->getPlugin("TeaSpoon");
         if (!$this->teaspoon) {
-            $this->getLogger()->info("TeaSpoon is currently not inatalled. If you want mob spawners implementations, then TeaSpoon needs to be installed. Disabling the Mob spawners system..");
+            $this->getLogger()->info("TeaSpoon is currently not installed. If you want mob spawners implementations, then TeaSpoon needs to be installed. Disabling the Mob spawners system..");
         }
     }
     
-    public function checkSpoons() : void{ //Checks for spoons!
-    $this->getLogger()->info("Checking to see if you have any spoons..");
+    public function checkSpoons() : void { //Checks for spoons!
+    $this->getLogger()->info("Checking for spoons..");
 	    //This is the check if you have the plugin, but have a spoon installed.
 	   self::printSpoon($this, "spoon.txt"); //If you're using a spoon, this file will be generated.
 	   
@@ -199,20 +206,19 @@ class FactionMain extends PluginBase implements Listener {
             }
         }
     }
-    public function checkOriginal() : void{ //Checks if this plugin's from this repo, and not from other repos.
+    public function checkOriginal() : void { //Checks if this plugin's from this repo, and not from other repos.
     if ($this->getDescription()->getAuthors() !== ["Tethered, edited by VMPE Development Team"] || $this->getDescription()->getAuthors() !== ["Tethered_"] || $this->getDescription()->getName() !== "FactionsPro") {
             $this->getLogger()->error("You are not using the original version of FactionsPro by Tethered, edited by VMPE Development Team. Disabling plugin.");
              $this->getServer()->getPluginManager()->disablePlugin($this); //We stop people from changing the author's names when they probably never did any of the work, by disabling the plugin if the player or user were to do so.
     }
     }
-    
     protected function onEnable() : void { //Main class file to handle all the checks
          $this->registerEvents();
          $this->checkConfigurations();
          $this->checkPlugins();
 	 $this->checkSpoons();
 	 $this->checkOriginal();
-	 $this->getLogger()->info("All plugin checks have passed with success. Plugin now enabled. Now, checking for errors."); //To-Do seperate it with its own function.
+	 $this->getLogger()->info("Checked all plugin checks. Finding any errors (If none, won't display)");
 	}
 	
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
@@ -552,12 +558,6 @@ class FactionMain extends PluginBase implements Listener {
 		$sp = $this->prefs->get("spawnerPrices");
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
-	}
-	public function getEconomy() : EconomyAPI { //To-do see if this needs updating..
-		$pl = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-		if(!$pl) return $pl;
-		if(!$pl->isEnabled()) return null;
-		return $pl;
 	}
     public function updateTag($playername) {
         $p = $this->getServer()->getPlayerExact($playername);
