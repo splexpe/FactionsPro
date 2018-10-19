@@ -112,6 +112,11 @@ This branch is called "4.0.0-API". This branch allows us to update the plugin to
 - [X] Fix onEnable and on Disable() function, and make them protected due to the latest API updates.
 - [X] Add more return types, and fixes relating to the outdated code (Untested)
 - [X] Remove useless imports that aren't needed.
+- [X] No spoons allowed implementation
+- [X] System bug fixes and much improvements.
+- [X] Add the following checks for the onEnable() check: checkConfigurations(), registerEvents(), checkPlugins(), checkOriginal(), and checkSpoon()
+- [X] Add onLoad() function and make that protected.
+- [ ] Make this plugin stabled. (There's still lots to do.)
 - [ ] Release out of the BETA stages.
 - [ ] Merge to beta branch (When complete and released.)
 
