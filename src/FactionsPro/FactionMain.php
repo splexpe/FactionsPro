@@ -37,7 +37,7 @@ class FactionMain extends PluginBase implements Listener {
     public const HEX_SYMBOL = "e29688";
     
     //Let's the console know that this plugin's loading.
-   protected function onLoad() : void{
+   protected function onLoad() : void {
        $this->getLogger()->info("Plugin loading..");
        $this->getLogger()->info("Loading in all checks..");
    }
@@ -70,13 +70,9 @@ class FactionMain extends PluginBase implements Listener {
             "AllowChat" => true,
             "AllowFactionPvp" => false,
             "AllowAlliedPvp" => false,
-            "BroadcastFactionCreation" => true,
-            "FactionCreationBroadcast" => "%PLAYER% created a faction named %FACTION%",
-            "BroadcastFactionDisband" => true,
-            "FactionDisbandBroadcast" => "The Faction named %FACTION% was disbaned by %PLAYER%",
             "defaultFactionBalance" => 0,
 	    "MoneyGainedPerPlayerInFaction" => 20,
-	    "MoneyGainedPerAlly" => 50,
+	    "MoneyGainedPerAlly" => 50, //To-do make this feature work
             "MoneyNeededToClaimAPlot" => 0,
 	    "accept_time" => 60,
 	    "deny_time" => 60,
@@ -207,19 +203,19 @@ class FactionMain extends PluginBase implements Listener {
         }
     }
     public function checkOriginal() : void { //Checks if this plugin's from this repo, and not from other repos.
-    if ($this->getDescription()->getAuthors() !== ["Tethered, edited by VMPE Development Team"] || $this->getDescription()->getAuthors() !== ["Tethered_"] || $this->getDescription()->getName() !== "FactionsPro") {
+    if ($this->getDescription()->getAuthors() !== ["Tethered, edited by VMPE Development Team"] || $this->getDescription()->getName() !== "FactionsPro") {
             $this->getLogger()->error("You are not using the original version of FactionsPro by Tethered, edited by VMPE Development Team. Disabling plugin.");
              $this->getServer()->getPluginManager()->disablePlugin($this); //We stop people from changing the author's names when they probably never did any of the work, by disabling the plugin if the player or user were to do so.
     }
     }
     protected function onEnable() : void { //Main class file to handle all the checks
-         $this->registerEvents();
-         $this->checkConfigurations();
-         $this->checkPlugins();
-	 $this->checkSpoons();
-	 $this->checkOriginal();
-	 $this->getLogger()->info("Checked all plugin checks. Finding any errors (If none, won't display)");
-	}
+              $this->registerEvents();
+              $this->checkConfigurations();
+              $this->checkPlugins();
+	      $this->checkSpoons();
+	      $this->checkOriginal();
+	      $this->getLogger()->info("Checked all plugin checks. Finding any errors (If none, won't display)");
+	      }
 	
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
@@ -500,7 +496,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
-    public function getMOTDTime($player) {
+    public function getMOTDTime($player) : int{
         $stmt = $this->db->query("SELECT timestamp FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return $array['timestamp'];
