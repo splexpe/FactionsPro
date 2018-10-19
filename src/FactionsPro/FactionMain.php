@@ -36,7 +36,7 @@ class FactionMain extends PluginBase implements Listener {
     public const HEX_SYMBOL = "e29688";
     
 	//All checks before plugin enables.
-   protected function checkConfigurations() : void { //Checks and loads configurations within this plugin.
+   public function checkConfigurations() : void { //Checks and loads configurations within this plugin.
 	    $this->getLogger()->info("Configurations have been enabled. Looking for errors.");
 	    @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
