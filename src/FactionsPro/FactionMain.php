@@ -117,14 +117,16 @@ class FactionMain extends PluginBase implements Listener {
         try{
             $this->db->exec("ALTER TABLE plots ADD COLUMN world TEXT default null");
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
+            $this->getLogger()->info("Configurations checked.");
         }catch(\ErrorException $ex){
         }
     }
-    
-     public function registerEvents() : void { //Handles all the events within this plugin.
+
+    public function registerEvents() : void { //Handles all the events within this plugin.
 	$this->getLogger()->info("Checking events..");
 	$this->fCommand = new FactionCommands($this);
 	$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
+   $this->getLogger()->info("Events checked.");
     }
     
     public function checkPlugins() : void { //Checks for plugins and it's compatibility with FactionsPro.
@@ -152,6 +154,7 @@ class FactionMain extends PluginBase implements Listener {
 	$this->teaspoon = $this->getServer()->getPluginManager()->getPlugin("TeaSpoon");
         if (!$this->teaspoon) {
             $this->getLogger()->info("TeaSpoon is currently not installed. If you want mob spawners implementations, then TeaSpoon needs to be installed. Disabling the Mob spawners system..");
+        $this->getLogger()->info("Plugins checked.");
         }
     }
     
@@ -159,6 +162,7 @@ class FactionMain extends PluginBase implements Listener {
     $this->getLogger()->info("Checking for spoons..");
 	    //This is the check if you have the plugin, but have a spoon installed.
 	   self::printSpoon($this, "spoon.txt"); //If you're using a spoon, this file will be generated.
+    $this->getLogger()->info("Spoons checked.");
 	   
     }
     //To-Do move the spoondetector related files to utils.
@@ -206,15 +210,16 @@ class FactionMain extends PluginBase implements Listener {
     if ($this->getDescription()->getAuthors() !== ["Tethered, edited by VMPE Development Team"] || $this->getDescription()->getName() !== "FactionsPro") {
             $this->getLogger()->error("You are not using the original version of FactionsPro by Tethered, edited by VMPE Development Team. Disabling plugin.");
              $this->getServer()->getPluginManager()->disablePlugin($this); //We stop people from changing the author's names when they probably never did any of the work, by disabling the plugin if the player or user were to do so.
+    $this->getLogger()->info("Original author checked.");
     }
     }
     protected function onEnable() : void { //Main class file to handle all the checks
               $this->registerEvents();
               $this->checkConfigurations();
               $this->checkPlugins();
-	      $this->checkSpoons();
-	      $this->checkOriginal();
-	      $this->getLogger()->info("Checked all plugin checks. Finding any errors (If none, won't display)");
+	           $this->checkSpoons();
+	           $this->checkOriginal();
+	           $this->getLogger()->info("All checks have been processed. Finding any errors.. (If none, won't display)");
 	      }
 	
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
