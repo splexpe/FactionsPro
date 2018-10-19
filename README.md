@@ -116,7 +116,7 @@ This branch is called "4.0.0-API". This branch allows us to update the plugin to
 - [X] System bug fixes and much improvements.
 - [X] Add the following checks for the onEnable() check: checkConfigurations(), registerEvents(), checkPlugins(), checkOriginal(), and checkSpoon()
 - [X] Add onLoad() function and make that protected.
-- [ ] Make this plugin stabled. (There's still lots to do.)
+- [ ] Make this plugin stable. (There's still lots to do.)
 - [ ] Release out of the BETA stages.
 - [ ] Merge to beta branch (When complete and released.)
 
