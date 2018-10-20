@@ -117,7 +117,7 @@ class FactionMain extends PluginBase implements Listener {
         try{
             $this->db->exec("ALTER TABLE plots ADD COLUMN world TEXT default null");
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
-            $this->getLogger()->info("Configurations checked.");
+            $this->getLogger()->info("All configurations checked.");
         }catch(\ErrorException $ex){
         }
     }
@@ -126,7 +126,7 @@ class FactionMain extends PluginBase implements Listener {
 	$this->getLogger()->info("Checking events..");
 	$this->fCommand = new FactionCommands($this);
 	$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
-   $this->getLogger()->info("Events checked.");
+   $this->getLogger()->info("All events checked.");
     }
     
     public function checkPlugins() : void { //Checks for plugins and it's compatibility with FactionsPro.
@@ -154,7 +154,7 @@ class FactionMain extends PluginBase implements Listener {
 	$this->teaspoon = $this->getServer()->getPluginManager()->getPlugin("TeaSpoon");
         if (!$this->teaspoon) {
             $this->getLogger()->info("TeaSpoon is currently not installed. If you want mob spawners implementations, then TeaSpoon needs to be installed. Disabling the Mob spawners system..");
-        $this->getLogger()->info("Plugins checked.");
+        $this->getLogger()->info("All plugins checked.");
         }
     }
     
@@ -162,7 +162,7 @@ class FactionMain extends PluginBase implements Listener {
     $this->getLogger()->info("Checking for spoons..");
 	    //This is the check if you have the plugin, but have a spoon installed.
 	   self::printSpoon($this, "spoon.txt"); //If you're using a spoon, this file will be generated.
-    $this->getLogger()->info("Spoons checked.");
+    $this->getLogger()->info("All spoons checked.");
 	   
     }
     //To-Do move the spoondetector related files to utils.
@@ -217,9 +217,9 @@ class FactionMain extends PluginBase implements Listener {
               $this->registerEvents();
               $this->checkConfigurations();
               $this->checkPlugins();
-	           $this->checkSpoons();
-	           $this->checkOriginal();
-	           $this->getLogger()->info("All checks have been processed. Finding any errors.. (If none, won't display)");
+	      $this->checkSpoons();
+	      $this->checkOriginal();
+	      $this->getLogger()->info("All checks have been processed. Finding any errors.. (If none, won't display)");
 	      }
 	
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
@@ -245,13 +245,13 @@ class FactionMain extends PluginBase implements Listener {
         }
     }
     
-    public function isInFaction($player) {
+    public function isInFaction(string $player) { //To-do see if this is correct.
         $result = $this->db->query("SELECT player FROM master WHERE player='$player';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
     
-    public function getFaction($player) {
+    public function getFaction(string $player) { //To-do see if this is correct.
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
@@ -279,7 +279,7 @@ class FactionMain extends PluginBase implements Listener {
             return true;
         }
     }
-    public function updateAllies(string $faction) : int{
+    public function updateAllies(string $faction) : int {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO alliescountlimit(faction, count) VALUES (:faction, :count);");
         $stmt->bindValue(":faction", $faction);
         $result = $this->db->query("SELECT ID FROM allies WHERE faction1='$faction' OR faction2='$faction';");
@@ -295,7 +295,7 @@ class FactionMain extends PluginBase implements Listener {
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         return (int) $resultArr["count"];
     }
-    public function getAlliesLimit() : int{
+    public function getAlliesLimit() : int {
         return (int) $this->prefs->get("AllyLimitPerFaction");
     }
     public function deleteAllies(string $faction1, string $faction2) {
@@ -325,17 +325,17 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":power", $this->getFactionPower($faction) - $power);
         $stmt->execute();
     }
-    public function isLeader($player) {
+    public function isLeader(string $player) { //To-do see if this is correct.
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Leader";
     }
-    public function isOfficer($player) {
+    public function isOfficer(string $player) { //To-do see if this is correct.
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Officer";
     }
-    public function isMember($player) {
+    public function isMember(string $player) { //To-do see if this is correct.
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Member";
@@ -393,7 +393,7 @@ class FactionMain extends PluginBase implements Listener {
             $i = $i + 1;
         }
     }
-    public function getPlayerFaction($player) {
+    public function getPlayerFaction(string $player) { //To-do see if this is correct.
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
@@ -408,7 +408,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
-    public function sameFaction($player1, $player2) {
+    public function sameFaction(string $player1, string $player2) { //To-do see if this is correct.
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player1';");
         $player1Faction = $faction->fetchArray(SQLITE3_ASSOC);
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player2';");
@@ -438,7 +438,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":z2", (int) $z2);
         $stmt->execute();
     }
-    public function drawPlot(Player $sender, string $faction, int $x, int $y, int $z, Level $level, string $size) {
+    public function drawPlot(Player $sender, string $faction, int $x, int $y, int $z, Level $level, int $size) { //To-do see if this is correct.
         $arm = ($size - 1) / 2;
         $block = new Snow();
         if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) { //To-do see if anything needs changing.
@@ -463,7 +463,7 @@ class FactionMain extends PluginBase implements Listener {
         $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
         return true;
     }
-    public function isInPlot($player) : Position {
+    public function isInPlot(string $player) : Position { //To-do see if this is correct.
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
@@ -475,7 +475,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
     }
-    public function inOwnPlot($player) : Position {
+    public function inOwnPlot(string $player) : Position { //To-do see if this is correct.
         $playerName = $player->getName();
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
@@ -496,17 +496,17 @@ class FactionMain extends PluginBase implements Listener {
             return TextFormat::YELLOW . "$string";
         }
     }
-    public function motdWaiting($player) {
+    public function motdWaiting(string $player) { //To-do see if this is correct.
         $stmt = $this->db->query("SELECT player FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
-    public function getMOTDTime($player) : int{
+    public function getMOTDTime(string $player) : int { //To-do see if this is correct.
         $stmt = $this->db->query("SELECT timestamp FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return $array['timestamp'];
     }
-    public function setMOTD(string $faction, $player, string $msg) {
+    public function setMOTD(string $faction, string $player, string $msg) { //To-do see if this is correct.
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO motd (faction, message) VALUES (:faction, :message);");
         $stmt->bindValue(":faction", $faction);
         $stmt->bindValue(":message", $msg);
@@ -560,7 +560,7 @@ class FactionMain extends PluginBase implements Listener {
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
 	}
-    public function updateTag($playername) {
+    public function updateTag(string $playername) { //To-do see if this is correct.
         $p = $this->getServer()->getPlayerExact($playername);
         $f = $this->getPlayerFaction($playername);
         if (!$this->isInFaction($playername)) {
