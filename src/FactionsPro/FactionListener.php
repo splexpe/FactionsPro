@@ -27,7 +27,7 @@ class FactionListener implements Listener {
 	
 	public function factionChat(PlayerChatEvent $PCE) : void {
 		
-		$player = $PCE->getEntity(); //To-do see if this is correct
+		$player = $PCE->getPlayer(); //To-do see if this is correct
 	     if($player instanceof Player){
          $e = $player->getPlayer()->getName();
 		//MOTD Check
