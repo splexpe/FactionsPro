@@ -27,7 +27,7 @@ class FactionListener implements Listener {
 	
 	public function factionChat(PlayerChatEvent $PCE) : void {
 		
-		$player = $PCE->getPlayer(); //To-do see if this is correct
+		$player = $PCE->getPlayer();
 	     if($player instanceof Player){
          $e = $player->getPlayer()->getName();
 		//MOTD Check
@@ -123,17 +123,18 @@ class FactionListener implements Listener {
 				$BBE->setCancelled(true);
 				$BBE->getPlayer()->sendMessage($this->plugin->formatMessage("§6You cannot break blocks here. This is already a property of a faction. Type §2/f plotinfo §6for details."));
 			}
-			if($BBE->isCancelled()) return;
-			$ent = $BBE->getEntity();
+			if($BBE->isCancelled()) {
+			$ent = $BBE->getPlayer();
 	     if($ent instanceof Player){
          $e = $ent->getPlayer()->getName();
 	      $player = $BBE->getPlayer();
-	      if(!$this->plugin->isInFaction($e)) return;
+	      if(!$this->plugin->isInFaction($e)){
 	      $block = $BBE->getBlock();
-	      if($block->getId() === Block::MONSTER_SPAWNER){
+	      if($block->getId() === Block::MONSTER_SPAWNER){ //To-do improve mob spawning.
 		      $fHere = $this->plugin->factionFromPoint((int) $block->x, (int) $block->y);
 		      $playerF = $this->plugin->getPlayerFaction($e);
-		      if($fHere !== $playerF and !$player->isOp()){ $BBE->setCancelled(true);
+		      if($fHere !== $playerF and !$player->isOp()){
+	        $BBE->setCancelled(true);
 	      }
     }
 		}
@@ -197,7 +198,7 @@ class FactionListener implements Listener {
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
-							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§a(!)§r§e " . $user->getName() . " §ais now online");
+							$this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§a(!)§r§e " . $user->getName() . " §ais now online"); //To-do make this configurable.
 							$this->plugin->updateTag($event->getPlayer()->getName());
                                }
                           }
@@ -216,7 +217,7 @@ class FactionListener implements Listener {
 				foreach($this->plugin->getServer()->getOnlinePlayers() as $fP){
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
-                                                    $this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§c(!)§r§4 " . $user->getName() . " §cis now offline");
+                                                    $this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§c(!)§r§4 " . $user->getName() . " §cis now offline"); //To-do make this configurable.
             }
           }
         }
