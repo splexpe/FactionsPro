@@ -68,12 +68,12 @@ class FactionListener implements Listener {
 							$PCE->setCancelled(true);
 							$this->plugin->getServer()->getPlayerExact($fP->getName())->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $e: ".TextFormat::AQUA. $msg);
 							$PCE->getPlayer()->sendMessage(TextFormat::DARK_GREEN."[$faction]".TextFormat::BLUE." $e: ".TextFormat::AQUA. $msg);
-						}
-					}
-				}
-			}
-		}
-	}
+						  }
+					  }
+				  }
+			  }
+		  }
+	  }
 	}
 	public function factionPVP(EntityDamageEvent $factionDamage) : void {
 		if($factionDamage instanceof EntityDamageByEntityEvent) {
@@ -108,10 +108,10 @@ class FactionListener implements Listener {
 					$PIE->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Disabling god mode."));
 					 $this->plugin->essentialspe->getAPI()->getSession($PIE->getPlayer()->setGod($PIE->getPlayer()->getGodMode()));
 					$PIE->setCancelled(true);
-				}
-			}
-		}
-	}
+				  }
+			  }
+		  }
+	  }
 	}
 	public function factionBlockBreakProtect(BlockBreakEvent $BBE) : void { //BBE stands for BlockBreakEvent.
 		$x = $BBE->getBlock()->getX();
@@ -136,10 +136,12 @@ class FactionListener implements Listener {
 		      if($fHere !== $playerF and !$player->isOp()){
 	        $BBE->setCancelled(true);
 	      }
+        }
+		 }
+      }
+     }
     }
-		}
-	}
-	}
+   }
 	public function factionBlockPlaceProtect(BlockPlaceEvent $BPE) : void { //BPE stands for BlockPlaceEvent
       		$x = $BPE->getBlock()->getX();
 		$y = $BPE->getBlock()->getY();
@@ -204,7 +206,7 @@ class FactionListener implements Listener {
                           }
                     }
             }
-    }
+       }
     }
     public function broadcastTeamQuit(PlayerQuitEvent $PQE) : void { //PQE stands for PlayerQuitEvent.
        $user = $PQE->getPlayer();
@@ -218,11 +220,11 @@ class FactionListener implements Listener {
 					if($this->plugin->getPlayerFaction($fP->getName()) == $faction){
 						if($this->plugin->getServer()->getPlayer($fP->getName())){
                                                     $this->plugin->getServer()->getPlayer($fP->getName())->sendMessage("§l§c(!)§r§4 " . $user->getName() . " §cis now offline"); //To-do make this configurable.
+              }
             }
           }
         }
-               }
-    }
+      }
     }
     public function onMoveMAP(PlayerMoveEvent $PME) : void { //PME stands for PlayerMoveEvent
         
@@ -247,7 +249,7 @@ class FactionListener implements Listener {
                 $tip = $compass . "§l§c".$Faction;
                 $PME->getPlayer()->sendTip($tip);
                 }
-            }
+        }
         if(!$this->plugin->ip->canGetHurt($PME->getPlayer()->getName())) {
                $tip = $compass . "§l§aPublic area§r";
                $PME->getPlayer()->sendTip($tip);
@@ -256,9 +258,9 @@ class FactionListener implements Listener {
                $tip = $compass . "§l§2Zona Book§r"; //To-do translate this to the actual english spelling
                $PME->getPlayer()->sendTip($tip);
             }
+          }
         }
-    }
-	     }
+	   }
     }
     public const N = 'N',
     NE = '/',
