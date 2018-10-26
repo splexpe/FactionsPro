@@ -18,6 +18,7 @@ use EssentialsPE\BaseFiles\BaseAPI; //To-do fix some bugs to do with Essentials 
 //TeaSpoon imports
 use CortexPE\tile\MobSpawner; //To-do - Fix bugs with MobSpawning and its compatibility with this plugin.
 
+//FactionsPro imports
 use FactionsPro\Main\FactionMain;
 
 class FactionListener implements Listener {
