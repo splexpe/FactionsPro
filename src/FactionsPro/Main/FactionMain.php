@@ -395,7 +395,7 @@ class FactionMain extends PluginBase implements Listener {
     }
     public function newPlot(string $faction, int $x1, int $z1, int $x2, int $z2) {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO plots (faction, x1, z1, x2, z2) VALUES (:faction, :x1, :z1, :x2, :z2);");
-        $stmt->bindValue(":faction", $faction);
+        $stmt->bindValue(":faction", (string) $faction);
         $stmt->bindValue(":x1", (int) $x1);
         $stmt->bindValue(":z1", (int) $z1);
         $stmt->bindValue(":x2", (int) $x2);
@@ -406,9 +406,9 @@ class FactionMain extends PluginBase implements Listener {
         $arm = ($size - 1) / 2;
         $block = new Snow();
         if ($this->cornerIsInPlot($x + $arm, $z + $arm, $x - $arm, $z - $arm)) { //To-do see if anything needs changing.
-            $claimedBy = $this->factionFromPoint($x, $z);
+            $claimedBy = $this->factionFromPoint((int) $x, (int) $z);
             $power_claimedBy = $this->getFactionPower($claimedBy);
-            $power_sender = $this->getFactionPower($faction);
+            $power_sender = $this->getFactionPower((string) $faction);
            
 	    if ($this->prefs->get("EnableOverClaim")) {
                 if ($power_sender < $power_claimedBy) {
@@ -477,7 +477,7 @@ class FactionMain extends PluginBase implements Listener {
         $result = $stmt->execute();
         $this->db->query("DELETE FROM motdrcv WHERE player='$player';");
     }
-    public function getMapBlock() : string{
+    public function getMapBlock() : string {
         
     $symbol = hex2bin(self::HEX_SYMBOL);
         
@@ -519,7 +519,7 @@ class FactionMain extends PluginBase implements Listener {
             $i = $i + 1;
         } 
     }
-	public function getSpawnerPrice(string $type) : int {
+	public function getSpawnerPrice(string $type) : int { //To-do improve function.
 		$sp = $this->prefs->get("spawnerPrices");
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
