@@ -116,8 +116,8 @@ This branch is called "4.0.0-API". This branch allows us to update the plugin to
 - [X] System bug fixes and much improvements.
 - [X] Add the following checks for the onEnable() check: checkConfigurations(), registerEvents(), checkPlugins(), checkOriginal(), and checkSpoon()
 - [X] Add onLoad() function and make that protected.
-- [ ] Add new folders: tasks, and listeners for FactionWar and FactionListener, instead of making it more confusing.
-- [ ] Rename FactionWar to FactionWarTask so people know it's a task rather than just a normal class file.
+- [X] Add new folders: tasks, and listeners for FactionWar and FactionListener, instead of making it more confusing.
+- [X] Rename FactionWar to FactionWarTask so people know it's a task rather than just a normal class file.
 - [ ] Make this plugin stable. (There's still lots to do.)
 - [ ] Release out of the BETA stages.
 - [ ] Merge to beta branch (When complete and released.)
