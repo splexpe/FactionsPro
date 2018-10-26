@@ -1,6 +1,6 @@
 <?php
 
-namespace FactionPro\utils;
+namespace FactionsPro\utils;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\Server;

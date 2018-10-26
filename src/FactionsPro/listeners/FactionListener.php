@@ -1,6 +1,6 @@
 <?php
 
-namespace FactionsPro;
+namespace FactionsPro\listeners;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
