@@ -209,13 +209,13 @@ class FactionMain extends PluginBase implements Listener {
         }
     }
     
-    public function isInFaction(string $player) { //To-do see if this is correct.
+    public function isInFaction(string $player) {
         $result = $this->db->query("SELECT player FROM master WHERE player='$player';");
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
     
-    public function getFaction(string $player) { //To-do see if this is correct.
+    public function getFaction(string $player) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
@@ -357,7 +357,7 @@ class FactionMain extends PluginBase implements Listener {
             $i = $i + 1;
         }
     }
-    public function getPlayerFaction(string $player) { //To-do see if this is correct.
+    public function getPlayerFaction(string $player) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["faction"];
@@ -372,7 +372,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return empty($array) == false;
     }
-    public function sameFaction(string $player1, string $player2) { //To-do see if this is correct.
+    public function sameFaction(string $player1, string $player2) {
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player1';");
         $player1Faction = $faction->fetchArray(SQLITE3_ASSOC);
         $faction = $this->db->query("SELECT faction FROM master WHERE player='$player2';");
@@ -427,7 +427,7 @@ class FactionMain extends PluginBase implements Listener {
         $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
         return true;
     }
-    public function isInPlot(string $player) : Position { //To-do see if this is correct.
+    public function isInPlot(string $player) : Position {
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
@@ -439,7 +439,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
     }
-    public function inOwnPlot(string $player) : Position { //To-do see if this is correct.
+    public function inOwnPlot(string $player) : Position { 
         $playerName = $player->getName();
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
@@ -524,7 +524,7 @@ class FactionMain extends PluginBase implements Listener {
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
 	}
-    public function updateTag(string $playername) { //To-do see if this is correct.
+    public function updateTag(string $playername) {
         $p = $this->getServer()->getPlayerExact($playername);
         $f = $this->getPlayerFaction($playername);
         if (!$this->isInFaction($playername)) {
