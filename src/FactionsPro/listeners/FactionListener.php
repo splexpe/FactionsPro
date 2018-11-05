@@ -29,7 +29,7 @@ class FactionListener implements Listener {
 		$this->plugin = $plugin;
 	}
 	
-	public function factionChat(PlayerChatEvent $PCE) : void {
+	public function factionChat(PlayerChatEvent $PCE): void {
 		
 		$player = $PCE->getPlayer();
 	     if($player instanceof Player){
@@ -79,7 +79,7 @@ class FactionListener implements Listener {
 		  }
 	  }
 	}
-	public function factionPVP(EntityDamageEvent $factionDamage) : void {
+	public function factionPVP(EntityDamageEvent $factionDamage): void {
 		if($factionDamage instanceof EntityDamageByEntityEvent) {
 			if(!($factionDamage->getEntity() instanceof Player) or !($factionDamage->getDamager() instanceof Player)) {
 			}
@@ -97,7 +97,7 @@ class FactionListener implements Listener {
 		}
 	}
 	
-	public function onInteract(PlayerInteractEvent $PIE) : void{ //PIE stands for PlayerInteractEvent, funny that.
+	public function onInteract(PlayerInteractEvent $PIE): void { //PIE stands for PlayerInteractEvent, funny that.
 		$user = $PIE->getPlayer();
 	     if($user instanceof Player){
          $e = $user->getPlayer()->getName();
@@ -117,7 +117,7 @@ class FactionListener implements Listener {
 		  }
 	  }
 	}
-	public function factionBlockBreakProtect(BlockBreakEvent $BBE) : void { //BBE stands for BlockBreakEvent.
+	public function factionBlockBreakProtect(BlockBreakEvent $BBE): void { //BBE stands for BlockBreakEvent.
 		$x = $BBE->getBlock()->getX();
 		$y = $BBE->getBlock()->getY();
 		$z = $BBE->getBlock()->getZ();
@@ -146,7 +146,7 @@ class FactionListener implements Listener {
      }
     }
    }
-	public function factionBlockPlaceProtect(BlockPlaceEvent $BPE) : void { //BPE stands for BlockPlaceEvent
+	public function factionBlockPlaceProtect(BlockPlaceEvent $BPE): void { //BPE stands for BlockPlaceEvent
       		$x = $BPE->getBlock()->getX();
 		$y = $BPE->getBlock()->getY();
      		$z = $BPE->getBlock()->getZ();
@@ -158,7 +158,7 @@ class FactionListener implements Listener {
 			}
 		}
 	}
-	public function onKill(PlayerDeathEvent $PDE) : void { //PDE stands for PlayerDeathEvent.
+	public function onKill(PlayerDeathEvent $PDE): void { //PDE stands for PlayerDeathEvent.
         $ent = $PDE->getEntity();
         $cause = $PDE->getEntity()->getLastDamageCause();
         if($cause instanceof EntityDamageByEntityEvent){
@@ -193,7 +193,7 @@ class FactionListener implements Listener {
             }
         }
     }
-    public function PlayerJoinEvent(PlayerJoinEvent $PJE) : void { //PJE stands for PlayerJoinEvent
+    public function PlayerJoinEvent(PlayerJoinEvent $PJE): void { //PJE stands for PlayerJoinEvent
        $user = $PJE->getPlayer();
 	     if($user instanceof Player){
 	 $name = $user->getName();
@@ -212,7 +212,7 @@ class FactionListener implements Listener {
             }
        }
     }
-    public function broadcastTeamQuit(PlayerQuitEvent $PQE) : void { //PQE stands for PlayerQuitEvent.
+    public function broadcastTeamQuit(PlayerQuitEvent $PQE): void { //PQE stands for PlayerQuitEvent.
        $user = $PQE->getPlayer();
 	     if($user instanceof Player){
 	 $name = $user->getName();
@@ -230,7 +230,7 @@ class FactionListener implements Listener {
         }
       }
     }
-    public function onMoveMAP(PlayerMoveEvent $PME) : void { //PME stands for PlayerMoveEvent
+    public function onMoveMAP(PlayerMoveEvent $PME): void { //PME stands for PlayerMoveEvent
         
     $x = floor($PME->getPlayer()->getX());
     $y = floor($PME->getPlayer()->getY());
@@ -275,7 +275,7 @@ class FactionListener implements Listener {
     W = 'W',
     NW = '\\';
 	
-    public static function getASCIICompass(int $degrees, string $colorActive, string $colorDefault) : array {
+    public static function getASCIICompass(int $degrees, string $colorActive, string $colorDefault): array {
         $ret = [];
         $point = self::getCompassPointForDirection($degrees);
         $row = "";
