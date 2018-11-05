@@ -42,12 +42,12 @@ class FactionMain extends PluginBase implements Listener {
     public const HEX_SYMBOL = "e29688";
     
     //Let's the console know that this plugin's loading.
-   protected function onLoad() : void {
+   protected function onLoad(): void {
        $this->getLogger()->info("Plugin loading..");
        $this->getLogger()->info("Loading in all checks..");
    }
 	//All checks before plugin enables.
-   public function checkConfigurations() : void { //Checks and loads configurations within this plugin.
+   public function checkConfigurations(): void { //Checks and loads configurations within this plugin.
 	    $this->getLogger()->info("Checking configurations..");
 	    @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
@@ -127,14 +127,14 @@ class FactionMain extends PluginBase implements Listener {
         }
     }
 
-    public function registerEvents() : void { //Handles all the events within this plugin.
+    public function registerEvents(): void { //Handles all the events within this plugin.
 	$this->getLogger()->info("Checking events..");
 	$this->fCommand = new FactionCommands($this);
 	$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
    $this->getLogger()->info("All events checked.");
     }
     
-    public function checkPlugins() : void { //Checks for plugins and it's compatibility with FactionsPro.
+    public function checkPlugins(): void { //Checks for plugins and it's compatibility with FactionsPro.
 	    $this->getLogger()->info("Checking for plugins..");
 	    $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
         if (!$this->antispam) {
@@ -163,21 +163,21 @@ class FactionMain extends PluginBase implements Listener {
         }
     }
     
-    public function checkSpoons() : void { //Checks for spoons!
+    public function checkSpoons(): void { //Checks for spoons!
     $this->getLogger()->info("Checking for spoons..");
 	    //This is the check if you have the plugin, but have a spoon installed.
 	   SpoonDetector::printSpoon($this, "spoon.txt"); //If you're using a spoon, this file will be generated.
     $this->getLogger()->info("All spoons checked.");
 	   
     }
-    public function checkOriginal() : void { //Checks if this plugin's from this repo, and not from other repos.
+    public function checkOriginal(): void { //Checks if this plugin's from this repo, and not from other repos.
     if ($this->getDescription()->getAuthors() !== ["Tethered, edited by VMPE Development Team"] || $this->getDescription()->getName() !== "FactionsPro") {
             $this->getLogger()->error("You are not using the original version of FactionsPro by Tethered, edited by VMPE Development Team. Disabling plugin.");
              $this->getServer()->getPluginManager()->disablePlugin($this); //We stop people from changing the author's names when they probably never did any of the work, by disabling the plugin if the player or user were to do so.
     $this->getLogger()->info("Original author checked.");
     }
     }
-    protected function onEnable() : void { //Main class file to handle all the checks
+    protected function onEnable(): void { //Main class file to handle all the checks
               $this->registerEvents();
               $this->checkConfigurations();
               $this->checkPlugins();
@@ -243,7 +243,7 @@ class FactionMain extends PluginBase implements Listener {
             return true;
         }
     }
-    public function updateAllies(string $faction) : int {
+    public function updateAllies(string $faction): int {
         $stmt = $this->db->prepare("INSERT OR REPLACE INTO alliescountlimit(faction, count) VALUES (:faction, :count);");
         $stmt->bindValue(":faction", $faction);
         $result = $this->db->query("SELECT ID FROM allies WHERE faction1='$faction' OR faction2='$faction';");
@@ -254,7 +254,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":count", (int) $i);
         $stmt->execute();
     }
-    public function getAlliesCount(string $faction) : int {
+    public function getAlliesCount(string $faction): int {
         $result = $this->db->query("SELECT count FROM alliescountlimit WHERE faction = '$faction';");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         return (int) $resultArr["count"];
@@ -266,7 +266,7 @@ class FactionMain extends PluginBase implements Listener {
         $stmt = $this->db->prepare("DELETE FROM allies WHERE (faction1 = '$faction1' AND faction2 = '$faction2') OR (faction1 = '$faction2' AND faction2 = '$faction1');");
         $stmt->execute();
     }
-    public function getFactionPower(string $faction) : int {
+    public function getFactionPower(string $faction): int {
         $result = $this->db->query("SELECT power FROM strength WHERE faction = '$faction';");
         $resultArr = $result->fetchArray(SQLITE3_ASSOC);
         return (int) $resultArr["power"];
@@ -289,17 +289,17 @@ class FactionMain extends PluginBase implements Listener {
         $stmt->bindValue(":power", $this->getFactionPower($faction) - $power);
         $stmt->execute();
     }
-    public function isLeader(string $player) { //To-do see if this is correct.
+    public function isLeader(string $player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Leader";
     }
-    public function isOfficer(string $player) { //To-do see if this is correct.
+    public function isOfficer(string $player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Officer";
     }
-    public function isMember(string $player) { //To-do see if this is correct.
+    public function isMember(string $player) {
         $faction = $this->db->query("SELECT rank FROM master WHERE player='$player';");
         $factionArray = $faction->fetchArray(SQLITE3_ASSOC);
         return $factionArray["rank"] == "Member";
@@ -384,7 +384,7 @@ class FactionMain extends PluginBase implements Listener {
         $number = $query->fetchArray();
         return $number['count'];
     }
-    public function isFactionFull(string $faction) : int {
+    public function isFactionFull(string $faction): int {
         return $this->getNumberOfPlayers($faction) >= $this->prefs->get("MaxPlayersPerFaction");
     }
     public function isNameBanned(string $name) {
@@ -427,7 +427,7 @@ class FactionMain extends PluginBase implements Listener {
         $this->newPlot($faction, $x + $arm, $z + $arm, $x - $arm, $z - $arm);
         return true;
     }
-    public function isInPlot(string $player) : Position {
+    public function isInPlot(string $player): Position {
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
         $result = $this->db->query("SELECT faction FROM plots WHERE $x <= x1 AND $x >= x2 AND $z <= z1 AND $z >= z2;");
@@ -439,7 +439,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $result->fetchArray(SQLITE3_ASSOC);
         return $array["faction"];
     }
-    public function inOwnPlot(string $player) : Position { 
+    public function inOwnPlot(string $player): Position { 
         $playerName = $player->getName();
         $x = $player->getFloorX();
         $z = $player->getFloorZ();
@@ -465,7 +465,7 @@ class FactionMain extends PluginBase implements Listener {
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return !empty($array);
     }
-    public function getMOTDTime(string $player) : int { //To-do see if this is correct.
+    public function getMOTDTime(string $player): int { //To-do see if this is correct.
         $stmt = $this->db->query("SELECT timestamp FROM motdrcv WHERE player='$player';");
         $array = $stmt->fetchArray(SQLITE3_ASSOC);
         return $array['timestamp'];
@@ -477,13 +477,13 @@ class FactionMain extends PluginBase implements Listener {
         $result = $stmt->execute();
         $this->db->query("DELETE FROM motdrcv WHERE player='$player';");
     }
-    public function getMapBlock() : string {
+    public function getMapBlock(): string {
         
     $symbol = hex2bin(self::HEX_SYMBOL);
         
     return $symbol;
     }
-    public function getBalance(string $faction) : int {
+    public function getBalance(string $faction): int {
 		$stmt = $this->db->query("SELECT * FROM balance WHERE `faction` LIKE '$faction';");
 		$array = $stmt->fetchArray(SQLITE3_ASSOC);
 		if(!$array){
@@ -492,24 +492,24 @@ class FactionMain extends PluginBase implements Listener {
 		}
 		return $array["cash"];
 	}
-	public function setBalance(string $faction, int $money){
+	public function setBalance(string $faction, int $money) {
 		$stmt = $this->db->prepare("INSERT OR REPLACE INTO balance (faction, cash) VALUES (:faction, :cash);");
 		$stmt->bindValue(":faction", (string) $faction);
 		$stmt->bindValue(":cash", (int) $money);
 		return $stmt->execute();
 	}
-	public function addToBalance(string $faction, int $money){
+	public function addToBalance(string $faction, int $money) {
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) + $money);
 	}
-	public function takeFromBalance(string $faction, int $money){
+	public function takeFromBalance(string $faction, int $money) {
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) - $money);
 	}
-	public function sendListOfTop10RichestFactionsTo(Player $s){
+	public function sendListOfTop10RichestFactionsTo(Player $s) {
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
-        $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§5§lTop 10 Richest Factions".TextFormat::RESET);
+        $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§5§lTop 10 Richest Factions".TextFormat::RESET); //To-Do make this configurable.
         while($resultArr = $result->fetchArray(SQLITE3_ASSOC)){
         	var_dump($resultArr);
             $j = $i + 1;
@@ -519,7 +519,7 @@ class FactionMain extends PluginBase implements Listener {
             $i = $i + 1;
         } 
     }
-	public function getSpawnerPrice(string $type) : int { //To-do improve function.
+	public function getSpawnerPrice(string $type): int { //To-do improve function.
 		$sp = $this->prefs->get("spawnerPrices");
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
@@ -543,7 +543,7 @@ class FactionMain extends PluginBase implements Listener {
             $p->setNameTag("§b§lPlayer: §r§c$p \n§b§lhasFaction: §r§ctrue \n§b§lFaction: §r§c$f"); //To-do make some changes
         }
     }
-    protected function onDisable() : void {
+    protected function onDisable(): void {
          if (isset($this->db)) $this->db->close();
     }
 }
