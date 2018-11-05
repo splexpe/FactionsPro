@@ -31,7 +31,7 @@ class SpoonDetector{
     private static $thingsThatAreNotSpoons = [
         'PocketMine-MP'
     ];
-    public static function isThisSpoon() : bool {
+    public static function isThisSpoon(): bool {
         return !in_array(Server::getInstance()->getName(), self::$thingsThatAreNotSpoons);
     }
     private static function contentValid(string $content): bool {
