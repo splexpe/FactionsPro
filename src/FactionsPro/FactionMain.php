@@ -1,6 +1,6 @@
 <?php
 
-namespace FactionsPro\Main;
+namespace FactionsPro\Main; //To-Do fix namespace.
 
 //Pocketmine imports
 use pocketmine\plugin\PluginBase;
