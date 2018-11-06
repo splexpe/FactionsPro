@@ -6,7 +6,7 @@ namespace FactionsPro\tasks;
 use pocketmine\scheduler\Task;
 
 //FactionsPro imports
-use FactionsPro\Main\FactionMain;
+use FactionsPro\FactionMain;
 
 class FactionWarTask extends Task {
 	
