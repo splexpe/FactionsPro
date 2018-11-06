@@ -14,7 +14,7 @@ use onebone\economyapi\EconomyAPI;
 
 //FactionsPro imports
 use FactionsPro\tasks\FactionWarTask;
-use FactionsPro\Main\FactionMain;
+use FactionsPro\FactionMain;
 
 class FactionCommands {
 	
