@@ -1,5 +1,7 @@
 <?php
-namespace FactionsPro; //To-Do fix namespace.
+
+namespace FactionsPro;
+
 //Pocketmine imports
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
@@ -9,14 +11,18 @@ use pocketmine\utils\{Config, TextFormat};
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
 use pocketmine\level\{Position, Level};
+
 //TeaSpoon imports
 use CortexPE\entity\mob\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast}; //To-Do improve spawners
+
 //EconomyAPI imports
 use onebone\economyapi\EconomyAPI;
+
 //FactionsPro imports
 use FactionsPro\commands\FactionCommands;
 use FactionsPro\listeners\FactionListener;
 use FactionsPro\utils\SpoonDetector;
+
 class FactionMain extends PluginBase implements Listener {
     
     public $db;
