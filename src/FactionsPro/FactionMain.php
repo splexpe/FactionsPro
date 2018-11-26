@@ -1,18 +1,17 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
-use pocketmine\event\block\BlockBreakEvent;
-use pocketmine\event\player\{PlayerJoinEvent, PlayerChatEvent};
 use pocketmine\{Server, Player};
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\utils\{Config, TextFormat};
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\block\Snow;
+use pocketmine\blsck\Snow;
 use pocketmine\math\Vector3;
 use pocketmine\entity\{Skeleton, Pig, Chicken, Zombie, Creeper, Cow, Spider, Blaze, Ghast};
 use pocketmine\level\{Position, Level};
+
 class FactionMain extends PluginBase implements Listener {
     
     public $db;
@@ -20,9 +19,6 @@ class FactionMain extends PluginBase implements Listener {
     public $war_req = [];
     public $wars = [];
     public $war_players = [];
-    public $antispam;
-    public $purechat;
-    public $esssentialspe;
     public $factionChatActive = [];
     public $allyChatActive = [];
     private $prefix = "§7[§6Void§bFactions§cPE§7]";
@@ -37,21 +33,41 @@ class FactionMain extends PluginBase implements Listener {
             fwrite($file, $txt);
         }
         $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
-        $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
-        if (!$this->antispam) {
+        $antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
+        if ($antispam === null) {
             $this->getLogger()->info("AntiSpamPro is not installed. If you want to ban rude Faction names, then AntiSpamPro needs to be installed. Disabling Rude faction names system.");
         }
-        $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
-        if (!$this->purechat) {
+        $aspfound = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
+	if($aspfound) {
+	   $this->getLogger()->info($aspfound . " plugin has been found on the server system. Enabling banned Faction names system.");
+		return;
+	}
+        $purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
+        if ($purechat === null) {
             $this->getLogger()->info("PureChat is not installed. If you want to display Faction ranks in chat, then PureChat needs to be installed. Disabling Faction chat system.");
         }
-        $this->essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
-        if (!$this->essentialspe) {
+        $pcfound = $this->getServer()->getPluginManager()->getPlugin("PureChat");
+	if($pcfound) {
+	   $this->getLogger()->info($pcfound . " plugin has been found on the server system. Enabling Factions chat system!");
+		return;
+	}
+        $essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
+        if ($essentialspe === null) {
             $this->getLogger()->info("EssentialsPE is not installed. If you want to use the new Faction Raiding system, then EssentialsPE needs to be installed. Disabling Raiding system.");
     	}
-	$this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-	if (!$this->economyapi) {
+    	$essfound = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
+	if($essfound) {
+	   $this->getLogger()->info($essfound . " plugin has been found on the server system. Enabling Raiding system!");
+		return;
+	}
+	$economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+	if ($economyapi === null) {
 	    $this->getLogger()->info("EconomyAPI is not installed. If you want to use the Faction Values system, then EconomyAPI needs to be installed. Disabling the Factions Value system.");
+	}
+	$ecofound = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+	if($ecofound) {
+	   $this->getLogger()->info($ecofound . " plugin has been found on the server system. Enabling F Value (Faction money) system!");
+		return;
 	}
         $this->fCommand = new FactionCommands($this);
         $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
@@ -463,12 +479,6 @@ class FactionMain extends PluginBase implements Listener {
 		$sp = $this->prefs->get("spawnerPrices");
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
-	}
-	public function getEconomy(){
-		$pl = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-		if(!$pl) return $pl;
-		if(!$pl->isEnabled()) return null;
-		return $pl;
 	}
     public function updateTag($playername) {
         $p = $this->getServer()->getPlayer($playername);
