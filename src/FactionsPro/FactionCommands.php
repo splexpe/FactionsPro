@@ -263,7 +263,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
 			}
-			if (!$this->plugin->isOfficer($args[1])) {
+			if ($this->plugin->isOfficer($args[1])) {
                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is already Officer"));
                            return true;
                         }
