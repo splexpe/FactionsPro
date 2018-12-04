@@ -263,17 +263,21 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
 			}
+			if (!$this->plugin->isOfficer($args[1])) {
+                           $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is already Officer"));
+                           return true;
+                        }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
                         $stmt->bindValue(":player", $playerName);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
-                        $promotee = $this->plugin->getServer()->getPlayer($args[1]);
+                        $promotee = $this->plugin->getServer()->getPlayerExact($args[1]);
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §a$args[1] §bhas been promoted to Officer", true));
                         if ($promotee instanceof Player) {
                             $promotee->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
-		            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
+		            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
                             return true;
                         }
                     }
@@ -297,6 +301,10 @@ class FactionCommands {
                         }
                         if ($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't demote yourself"));
+                            return true;
+                        }
+			if (!$this->plugin->isOfficer($args[1])) {
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is already Officer"));
                             return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
