@@ -39,7 +39,7 @@ class FactionMain extends PluginBase implements Listener {
         }
         $aspfound = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
 	if($aspfound) {
-	   $this->getLogger()->info($aspfound . " plugin has been found on the server system. Enabling banned Faction names system.");
+	   $this->getLogger()->info("AntiSpamPro plugin has been found on the server system. Enabling banned Faction names system.");
 		return;
 	}
         $purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
@@ -48,7 +48,7 @@ class FactionMain extends PluginBase implements Listener {
         }
         $pcfound = $this->getServer()->getPluginManager()->getPlugin("PureChat");
 	if($pcfound) {
-	   $this->getLogger()->info($pcfound . " plugin has been found on the server system. Enabling Factions chat system!");
+	   $this->getLogger()->info("PureChat plugin has been found on the server system. Enabling Factions chat system!");
 		return;
 	}
         $essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
@@ -57,7 +57,7 @@ class FactionMain extends PluginBase implements Listener {
     	}
     	$essfound = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
 	if($essfound) {
-	   $this->getLogger()->info($essfound . " plugin has been found on the server system. Enabling Raiding system!");
+	   $this->getLogger()->info("EssentialsPE plugin has been found on the server system. Enabling Raiding system!");
 		return;
 	}
 	$economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
@@ -66,7 +66,7 @@ class FactionMain extends PluginBase implements Listener {
 	}
 	$ecofound = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 	if($ecofound) {
-	   $this->getLogger()->info($ecofound . " plugin has been found on the server system. Enabling F Value (Faction money) system!");
+	   $this->getLogger()->info("EconomyAPI plugin has been found on the server system. Enabling F Value (Faction money) system!");
 		return;
 	}
         $this->fCommand = new FactionCommands($this);
