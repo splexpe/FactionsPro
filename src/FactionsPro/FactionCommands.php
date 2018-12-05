@@ -2,17 +2,19 @@
 
 namespace FactionsPro;
 
-use pocketmine\command\{Command, CommandSender};
-use pocketmine\{Server, Player};
+use pocketmine\command\CommandSender;
+use pocketmine\command\Command;
+use pocketmine\Player;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
+use pocketmine\level\Position;
 use pocketmine\math\Vector3;
-use pocketmine\level\{Level, Position};
 
 class FactionCommands {
-	
+
     public $plugin;
-    
-    // ASCII Map
+
+	// ASCII Map
 	CONST MAP_WIDTH = 50;
 	CONST MAP_HEIGHT = 11;
 	CONST MAP_HEIGHT_FULL = 17;
@@ -21,16 +23,22 @@ class FactionCommands {
 	CONST MAP_KEY_SEPARATOR = TextFormat::AQUA . "*"; /*Del*/
 	CONST MAP_KEY_OVERFLOW = TextFormat::WHITE . "-" . TextFormat::WHITE; # ::MAGIC?
 	CONST MAP_OVERFLOW_MESSAGE = self::MAP_KEY_OVERFLOW . ": Too Many Factions (>" . 107 . ") on this Map.";
-        
+
     public function __construct(FactionMain $pg) {
         $this->plugin = $pg;
     }
+
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
         if ($sender instanceof Player) {
-            $playerName = $sender->getPlayer()->getName(); //Sender who executes the command.
-	    $prefix = $this->plugin->prefs->get("prefix"); //Prefix configurations.
+            $playerName = $sender->getPlayer()->getName();
+			 $prefix = $this->plugin->prefs->get("prefix"); //Prefix configurations.
             if (strtolower($command->getName()) === "f") {
                 if (empty($args)) {
+                    $sender->sendMessage($this->plugin->formatMessage("Please use /f help for a list of commands"));
+                    return true;
+                }
+
+                   if (empty($args)) {
                     $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use §3/f help §6for a list of commands"));
                     return true;
                 }
@@ -241,50 +249,50 @@ class FactionCommands {
 			$this->plugin->updateTag($sender->getName());
                         $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
                     }
-                    /////////////////////////////// PROMOTE ///////////////////////////////
+					 /////////////////////////////// PROMOTE ///////////////////////////////
                     if ($args[0] == "promote") {
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f promote <player>\n§aDescription: §dPromote a player from your faction."));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §b/f promote <player>"));
                             return true;
                         }
-                        if ($this->plugin->isInFaction($sender->getName()) == false) {
+                        if (!$this->plugin->isInFaction($sender->getName())) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this"));
                             return true;
                         }
-                        if ($this->plugin->isLeader($playerName) == false) {
+                        if (!$this->plugin->isLeader($playerName)) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to use this"));
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named: §4$args[1] §cis not in this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is not in this faction"));
                             return true;
                         }
                         if ($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
-			}
-			if ($this->plugin->isOfficer($args[1])) {
-                           $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is already Officer"));
-                           return true;
+                        }
+                        if ($this->plugin->isOfficer($args[1])) {
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is already Officer"));
+                            return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
-                        $stmt->bindValue(":player", $playerName);
+                        $stmt->bindValue(":player", $args[1]);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Officer");
                         $result = $stmt->execute();
                         $promotee = $this->plugin->getServer()->getPlayerExact($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §a$args[1] §bhas been promoted to Officer", true));
+                        $sender->sendMessage($this->plugin->formatMessage("§5$args[1] §dhas been promoted to Officer", true));
                         if ($promotee instanceof Player) {
-                            $promotee->sendMessage($this->plugin->formatMessage("$prefix §bYou were promoted to officer of §a$factionName!", true));
-		            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
+                            $promotee->sendMessage($this->plugin->formatMessage("$prefix §dYou were promoted to officer of §5$factionName!", true));
+                            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
                             return true;
                         }
                     }
                     /////////////////////////////// DEMOTE ///////////////////////////////
                     if ($args[0] == "demote") {
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f demote <player>\n§aDescription: §dDemote a player from your faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §aPlease use: §b/f demote <player>"));
                             return true;
                         }
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
@@ -296,39 +304,39 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named: §4$args[1] §cis not in this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is not in this faction"));
                             return true;
                         }
                         if ($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't demote yourself"));
                             return true;
                         }
-			if (!$this->plugin->isOfficer($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is already Officer"));
+                        if (!$this->plugin->isOfficer($args[1])) {
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is already Member"));
                             return true;
                         }
                         $factionName = $this->plugin->getPlayerFaction($playerName);
                         $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO master (player, faction, rank) VALUES (:player, :faction, :rank);");
-                        $stmt->bindValue(":player", $playerName);
+                        $stmt->bindValue(":player", $args[1]);
                         $stmt->bindValue(":faction", $factionName);
                         $stmt->bindValue(":rank", "Member");
                         $result = $stmt->execute();
-                        $demotee = $this->plugin->getServer()->getPlayer($args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §5$args[1] §2has been demoted to Member", true));
+                        $demotee = $this->plugin->getServer()->getPlayerExact($args[1]);
+                        $sender->sendMessage($this->plugin->formatMessage("§5$args[1] §dhas been demoted to Member", true));
                         if ($demotee instanceof Player) {
-                            $demotee->sendMessage($this->plugin->formatMessage("$prefix §2You were demoted to member of §5$factionName!", true));
-		            $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
+                            $demotee->sendMessage($this->plugin->formatMessage("$prefix §dYou were demoted to member of §5$factionName!", true));
+                            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
                             return true;
                         }
                     }
                     /////////////////////////////// KICK ///////////////////////////////
-                    if(strtolower($args[0]) == "kick" or strtolower($args[0]) == "k"){
+                    if ($args[0] == "kick") {
                         if (!isset($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use: §3/f $args[0] <player>\n§aDescription: §dKicks a player from a faction."));
+                            $sender->sendMessage($this->plugin->formatMessage("§aPlease use: §b/f kick <player>"));
                             return true;
                         }
                         if ($this->plugin->isInFaction($sender->getName()) == false) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to use this"));
+                            $sender->sendMessage($this->plugin->formatMessage("§cYou must be in a faction to use this"));
                             return true;
                         }
                         if ($this->plugin->isLeader($playerName) == false) {
@@ -336,29 +344,27 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Player named §4$args[1] §cis not in this faction"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is not in this faction"));
                             return true;
                         }
-                        if ($playerName == $sender->getName()) {
+                        if ($args[1] == $sender->getName()) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
                         }
-                        $kicked = $this->plugin->getServer()->getPlayer($args[1]);
+                        $kicked = $this->plugin->getServer()->getPlayerExact($args[1]);
                         $factionName = $this->plugin->getPlayerFaction($playerName);
-						$stmt = $this->plugin->db->prepare("DELETE FROM master WHERE player = :playername;");
+                        $stmt = $this->plugin->db->prepare("DELETE FROM master WHERE player = :playername;");
                         $stmt->bindvalue(":playername", $args[1]);
                         $stmt->execute();
-                        $this->plugin->db->query("DELETE FROM master WHERE player='$playerName';");
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §aYou successfully kicked §2$kicked", true));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §dYou successfully kicked §5$args[1]", true));
                         $this->plugin->subtractFactionPower($factionName, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
-			$this->plugin->takeFromBalance($factionName, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
                         if ($kicked instanceof Player) {
-                            $kicked->sendMessage($this->plugin->formatMessage("$prefix §bYou have been kicked from \n §a$factionName", true));
-			    $this->plugin->updateTag($this->plugin->getServer()->getPlayer($args[1])->getName());
+                            $kicked->sendMessage($this->plugin->formatMessage("$prefix §dYou have been kicked from \n §5$factionName", true));
+                            $this->plugin->updateTag($this->plugin->getServer()->getPlayerExact($args[1])->getName());
                             return true;
                         }
                     }
-                    /////////////////////////////// CLAIM ///////////////////////////////
+					/////////////////////////////// CLAIM ///////////////////////////////
                     if(strtolower($args[0]) == "claim" or strtolower($args[0]) == "cl"){
 				if($this->plugin->prefs->get("ClaimingEnabled") == false){
 					$sender->sendMessage($this->plugin->formatMessage("$prefix §cPlots are not enabled on this server."));

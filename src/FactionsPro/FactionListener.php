@@ -1,7 +1,5 @@
 <?php
-
 namespace FactionsPro;
-
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
@@ -13,7 +11,6 @@ use pocketmine\tile\MobSpawner;
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
 use pocketmine\block\Block;
-
 class FactionListener implements Listener {
 	
 	public $plugin;
