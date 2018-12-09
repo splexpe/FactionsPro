@@ -208,7 +208,7 @@ class FactionListener implements Listener {
     $x = floor($event->getPlayer()->getX());
     $y = floor($event->getPlayer()->getY());
     $z = floor($event->getPlayer()->getZ());
-       $Faction = $this->plugin->factionFromPoint($x,$z);
+       $Faction = $this->plugin->factionFromPoint($x, $z);
            $asciiCompass = self::getASCIICompass($event->getPlayer()->getYaw(), TextFormat::RED, TextFormat::GREEN);
              $compass = "     " . $asciiCompass[0] . "\n     " . $asciiCompass[1] . "\n     " . $asciiCompass[2] . "\n";
           if(isset($this->plugin->factionMapActive[$event->getPlayer()->getName()])){
@@ -223,7 +223,7 @@ class FactionListener implements Listener {
                 $event->getPlayer()->sendTip($tip);
                 }
             }
-        if(!$this->plugin->ip->canGetHurt($event->getPlayer())) {
+        if(!$this->plugin->ip->canGetHurt($event->getPlayer())) { //To-do fix function and make it work.
                $tip = $compass . "§l§aPublic area§r";
                $event->getPlayer()->sendTip($tip);
             }
