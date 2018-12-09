@@ -219,10 +219,10 @@ class FactionListener implements Listener {
         
           if($this->plugin->isInPlot($event->getPlayer())) {
              if($this->plugin->inOwnPlot($event->getPlayer())) {
-                $tip = $compass . "§a" . $Faction "'s §bplot";
+                $tip = $compass . "§a" . $Faction . "'s §bplot";
                 $event->getPlayer()->sendTip($tip);
             } else {
-                $tip = $compass . "§l§cLeaving §4".$Faction;
+                $tip = $compass . "§l§cLeaving §4" . $Faction;
                 $event->getPlayer()->sendTip($tip);
                 }
             }
