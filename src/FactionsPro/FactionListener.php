@@ -1,5 +1,7 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\{Command, CommandSender};
 use pocketmine\event\Listener;
@@ -11,6 +13,7 @@ use pocketmine\tile\MobSpawner;
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
 use pocketmine\block\Block;
+
 class FactionListener implements Listener {
 	
 	public $plugin;
@@ -81,7 +84,7 @@ class FactionListener implements Listener {
 				$player2 = $factionDamage->getDamager()->getPlayer()->getName();
                 		$f1 = $this->plugin->getPlayerFaction($player1);
 				$f2 = $this->plugin->getPlayerFaction($player2);
-				if((!$this->plugin->prefs->get("AllowFactionPvp") && $this->plugin->sameFaction($player1, $player2) == true) or (!$this->plugin->prefs->get("AllowAlliedPvp") && $this->plugin->areAllies($f1,$f2))) {
+				if((!$this->plugin->prefs->get("AllowFactionPvp") && $this->plugin->sameFaction($player1, $player2) == true) or (!$this->plugin->prefs->get("AllowAlliedPvp") && $this->plugin->areAllies($f1, $f2))) {
 					$factionDamage->setCancelled(true);
 				}
 			}
@@ -146,9 +149,9 @@ class FactionListener implements Listener {
                     $e = $this->plugin->prefs->get("PowerGainedPerKillingAnEnemy");
                     if($ent instanceof Player){
                         if($this->plugin->isInFaction($ent->getPlayer()->getName())){
-                           $this->plugin->addFactionPower($f,$e);
+                           $this->plugin->addFactionPower($f, $e);
                         } else {
-                           $this->plugin->addFactionPower($f,$e/2);
+                           $this->plugin->addFactionPower($f, $e/2);
                         }
                     }
                 }
@@ -161,9 +164,9 @@ class FactionListener implements Listener {
                 $e = $this->plugin->prefs->get("PowerGainedPerKillingAnEnemy");
                 if($ent->getLastDamageCause() instanceof EntityDamageByEntityEvent && $ent->getLastDamageCause()->getDamager() instanceof Player){
                     if($this->plugin->isInFaction($ent->getLastDamageCause()->getDamager()->getPlayer()->getName())){      
-                        $this->plugin->subtractFactionPower($f,$e*2);
+                        $this->plugin->subtractFactionPower($f, $e*2);
                     } else {
-                        $this->plugin->subtractFactionPower($f,$e);
+                        $this->plugin->subtractFactionPower($f, $e);
                     }
                 }
             }
@@ -216,19 +219,19 @@ class FactionListener implements Listener {
         
           if($this->plugin->isInPlot($event->getPlayer())) {
              if($this->plugin->inOwnPlot($event->getPlayer())) {
-                $tip = $compass . "§l§6Protected area§r";
+                $tip = $compass . "§a" . $Faction "'s §bplot";
                 $event->getPlayer()->sendTip($tip);
             } else {
-                $tip = $compass . "§l§c".$Faction;
+                $tip = $compass . "§l§cLeaving §4".$Faction;
                 $event->getPlayer()->sendTip($tip);
                 }
             }
         if(!$this->plugin->ip->canGetHurt($event->getPlayer())) { //To-do fix function and make it work.
-               $tip = $compass . "§l§aPublic area§r";
+               $tip = $compass . "§l§aPvP enabled§r";
                $event->getPlayer()->sendTip($tip);
             }
         if(!$this->plugin->isInPlot($event->getPlayer())){
-               $tip = $compass . "§l§2Zona Book§r";
+               $tip = $compass . "§l§cPvP disabled§r";
                $event->getPlayer()->sendTip($tip);
             }
         }
