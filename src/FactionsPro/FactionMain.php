@@ -14,6 +14,8 @@ use pocketmine\utils\Config;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
 
+use onebone\economyapi\EconomyAPI;
+
 class FactionMain extends PluginBase implements Listener {
 	
     public $db;
@@ -30,7 +32,7 @@ class FactionMain extends PluginBase implements Listener {
 	 private $prefix = "§7[§6Void§bFactions§cPE§7]";
 	  const HEX_SYMBOL = "e29688";
 	  
-    public function onEnable() {
+    public function onEnable(): void {
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
@@ -75,6 +77,7 @@ class FactionMain extends PluginBase implements Listener {
             "AllowChat" => true,
             "AllowFactionPvp" => false,
             "AllowAlliedPvp" => false,
+	        "faction-nametag" => "§a{player} §b| §3{faction}",
             "BroadcastFactionCreation" => true,
             "FactionCreationBroadcast" => "%PLAYER% created a faction named %FACTION%",
             "BroadcastFactionDisband" => true,
@@ -463,33 +466,20 @@ class FactionMain extends PluginBase implements Listener {
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
 	}
-	public function getEconomy(){
+	public function getEconomy(): EconomyAPI{
 		$pl = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 		if(!$pl) return $pl;
 		if(!$pl->isEnabled()) return null;
 		return $pl;
 	}
-    public function updateTag($playername) {
-        $p = $this->getServer()->getPlayer($playername);
-        $f = $this->getPlayerFaction($playername);
-        if (!$this->isInFaction($playername)) {
-            if(isset($this->purechat)){
-                $levelName = $this->purechat->getConfig()->get("enable-multiworld-chat") ? $p->getLevel()->getName() : null;
-                $nameTag = $this->purechat->getNametag($p, $levelName);
-                $p->setNameTag($nameTag);
-            }else{
-                $p->setNameTag(TextFormat::ITALIC . TextFormat::YELLOW . "<$playername>");
-            }
-        }elseif(isset($this->purechat)) {
-            $levelName = $this->purechat->getConfig()->get("enable-multiworld-chat") ? $p->getLevel()->getName() : null;
-            $nameTag = $this->purechat->getNametag($p, $levelName);
-            $p->setNameTag($nameTag);
-        } else {
-            $p->setNameTag(TextFormat::ITALIC . TextFormat::GOLD . "<$f> " .
-                TextFormat::ITALIC . TextFormat::YELLOW . "<$playername>");
+    public function updateTag(Player $player): void {
+        $p = $this->getServer()->getPlayer($player);
+        $f = $this->getPlayerFaction($player);
+        if (!$this->isInFaction($player)) {
+        $p->setNameTag(str_replace("{player}", "{faction}"), $p, $f, $this->prefs->get("faction-nametag"));
         }
     }
-    public function onDisable() {
+    public function onDisable(): void {
         if (isset($this->db)) $this->db->close();
     }
 }
