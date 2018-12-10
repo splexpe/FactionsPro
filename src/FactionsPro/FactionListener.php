@@ -110,7 +110,7 @@ class FactionListener implements Listener {
 	
 	public function factionBlockBreakProtect(BlockBreakEvent $event) {
 		$x = $event->getBlock()->getX();
-		$y = $event->getBlock()->getY();
+		$z = $event->getBlock()->getZ();
 		if($this->plugin->pointIsInPlot($x, $z)){
 			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())){
 				return true;
@@ -124,7 +124,7 @@ class FactionListener implements Listener {
 	
 	public function factionBlockPlaceProtect(BlockPlaceEvent $event) {
       		$x = $event->getBlock()->getX();
-		$y = $event->getBlock()->getY();
+		$z = $event->getBlock()->getZ();
 		if($this->plugin->pointIsInPlot($x, $z)) {
 			if($this->plugin->factionFromPoint($x, $z) === $this->plugin->getFaction($event->getPlayer()->getName())) {
 				return true;
@@ -207,7 +207,7 @@ class FactionListener implements Listener {
     public function onMoveMAP(PlayerMoveEvent $event){
         
     $x = floor($event->getPlayer()->getX());
-    $y = floor($event->getPlayer()->getY());
+    $Z = floor($event->getPlayer()->getZ());
        $Faction = $this->plugin->factionFromPoint($x, $z);
            $asciiCompass = self::getASCIICompass($event->getPlayer()->getYaw(), TextFormat::RED, TextFormat::GREEN);
              $compass = "     " . $asciiCompass[0] . "\n     " . $asciiCompass[1] . "\n     " . $asciiCompass[2] . "\n";
