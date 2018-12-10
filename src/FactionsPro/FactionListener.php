@@ -18,8 +18,8 @@ class FactionListener implements Listener {
 	
 	public $plugin;
 	
-	public function __construct(FactionMain $pg) {
-		$this->plugin = $pg;
+	public function __construct(FactionMain $plugin) {
+		$this->plugin = $plugin;
 	}
 	
 	public function factionChat(PlayerChatEvent $PCE) {
