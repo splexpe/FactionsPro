@@ -207,7 +207,7 @@ class FactionListener implements Listener {
     public function onMoveMAP(PlayerMoveEvent $event){
         
     $x = floor($event->getPlayer()->getX());
-    $Z = floor($event->getPlayer()->getZ());
+    $z = floor($event->getPlayer()->getZ());
        $Faction = $this->plugin->factionFromPoint($x, $z);
            $asciiCompass = self::getASCIICompass($event->getPlayer()->getYaw(), TextFormat::RED, TextFormat::GREEN);
              $compass = "     " . $asciiCompass[0] . "\n     " . $asciiCompass[1] . "\n     " . $asciiCompass[2] . "\n";
