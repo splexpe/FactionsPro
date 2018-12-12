@@ -39,20 +39,20 @@ class FactionMain extends PluginBase implements Listener {
             $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
             fwrite($file, $txt);
         }
-        $this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
-        $this->antispam = $this->getServer()->getPluginManager()->getPlugin("AntiSpamPro");
+        Server::getInstance()->getPluginManager()->registerEvents(new FactionListener($this), $this);
+        $this->antispam = Server::getInstance()->getPluginManager()->getPlugin("AntiSpamPro");
         if (!$this->antispam) {
             $this->getLogger()->info("Add AntiSpamPro to ban rude Faction names");
         }
-        $this->purechat = $this->getServer()->getPluginManager()->getPlugin("PureChat");
+        $this->purechat = Server::getInstance()->getPluginManager()->getPlugin("PureChat");
         if (!$this->purechat) {
             $this->getLogger()->info("Add PureChat to display Faction ranks in chat");
         }
-	$this->essentialspe = $this->getServer()->getPluginManager()->getPlugin("EssentialsPE");
+	$this->essentialspe = Server::getInstance()->getPluginManager()->getPlugin("EssentialsPE");
 	if (!$this->essentialspe) {
 	     $this->getLogger()->info("Add EssentialsPE to use the raiding system.");
 	}
-	$this->economyapi = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+	$this->economyapi = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI");
 	if (!$this->economyapi) {
 	     $this->getLogger()->info("Add EconomyAPI to use the f value system.");
 	}
@@ -294,7 +294,7 @@ class FactionMain extends PluginBase implements Listener {
             $cf = $resultArr['faction'];
             $pf = $this->getFactionPower($cf);
             $df = $this->getNumberOfPlayers($cf);
-           $s->sendMessage(TextFormat::ITALIC . TextFormat::GOLD . "§6§l$j -> " . TextFormat::GREEN . "§r§d$cf" . TextFormat::GOLD . " §b| " . TextFormat::RED . "§e$pf STR" . TextFormat::GOLD . " §b| " . TextFormat::LIGHT_PURPLE . "§a$df/50" . TextFormat::RESET);
+           $s->sendMessage(TextFormat::ITALIC . TextFormat::GOLD . "§6§l$j -> " . TextFormat::GREEN . "§r§d$cf" . TextFormat::GOLD . " §b| " . TextFormat::RED . "§e$pf STR" . TextFormat::GOLD . " §b| " . TextFormat::LIGHT_PURPLE . "§a$df/" . $this->prefs->get("MaxPlayersPerFaction") . TextFormat::RESET);
             $i = $i + 1;
         }
     }
@@ -448,7 +448,7 @@ class FactionMain extends PluginBase implements Listener {
 		if($money < 0) return false;
 		return $this->setBalance($faction, $this->getBalance($faction) - $money);
 	}
-	public function sendListOfTop10RichestFactionsTo(Player $s){
+	public function sendListOfTop10RichestFactionsTo($s){
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
         $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§5§lTop 10 Richest Factions".TextFormat::RESET);
@@ -467,13 +467,13 @@ class FactionMain extends PluginBase implements Listener {
 		return 0;
 	}
 	public function getEconomy(): EconomyAPI{
-		$pl = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+		$pl = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI");
 		if(!$pl) return $pl;
 		if(!$pl->isEnabled()) return null;
 		return $pl;
 	}
     public function updateTag(Player $player): void {
-        $p = $this->getServer()->getPlayer($player);
+        $p = Server::getInstance()->getPlayer($player);
         $f = $this->getPlayerFaction($player);
         if (!$this->isInFaction($player)) {
         $p->setNameTag(str_replace("{player}", "{faction}"), $p, $f, $this->prefs->get("faction-nametag"));
