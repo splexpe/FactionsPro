@@ -86,6 +86,10 @@ This branch is called the "beta" branch. It's nothing special, and the fact is; 
 
 /f listofficers - Lists the officers in your faction.
 
+/f ourfaction - Lists the player names currently in your faction.
+
+/f listfaction <faction> - Lists the player names currently in other factions.
+
 ## Admin Commands
 /f addstrto - Adds strength to a faction.
 
