@@ -935,6 +935,39 @@ class FactionCommands {
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
                     }
+					if(strtolower($args[0] == "listfaction")){
+					if (!isset($args[1])) {
+						$sender->sendMessage("$prefix §aPlease use: §b/f listfaction <faction>");
+						return true;
+					}
+                         if (!$this->plugin->factionExists($args[1])) {
+
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoesn't exist"));
+
+                            return true;
+
+                        }
+
+                        $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Member");
+
+                        $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Officer");
+
+                        $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
+
+                    }
+					if (strtolower($args[0] == "ourfaction")) {
+						 if ($this->plugin->isInFaction($playerName) == false) {
+
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
+
+                            return true;
+						}
+						 $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Member");
+
+                        $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Officer");
+
+                        $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Leader");
+					}
                     if (strtolower($args[0] == "say")) {
 			if (!$this->plugin->prefs->get("AllowChat")) {
 			    $sender->sendMessage($this->plugin->formatMessage("§c/f say is disabled"));
@@ -1223,10 +1256,9 @@ class FactionCommands {
                         }
                     }
                     /////////////////////////////// ABOUT ///////////////////////////////
-                    if(strtolower($args[0]) == "about" or strtolower($args[0]) == "info"){
+                    if(strtolower($args[0]) == "about" or strtolower($args[0]) == "version"){
                         $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
-                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§b");
-			$sender->sendMessage(TextFormat::GREEN . "§bPlugin Information:\n§aFaction Build release: §5381\n§aBuild Tested and works on: §5377-381\n§aPlugin Link: §5Not showing due to self-leak information\n§aPlugin download: §5Not showing due to self-leak information.\n§aAuthor: §5VMPE Development Team\n§aOriginal Author: §5Tethered\n§aDescription: §5A factions plugin which came back to life and re-added features like the good 'ol' versions of FactionsPro.\n§aVersion: §5v2.0.6\n§aPlugin Version: §5v2.0.0");
+                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§aVersion: §fv2.1.1");
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
 		    
@@ -1359,7 +1391,7 @@ class FactionCommands {
                     }
                
                 /////////////////////////////// WHO ///////////////////////////////
-                if (strtolower($args[0]) == 'who') {
+                if (strtolower($args[0]) == 'who' or strtolower($args[0]) == 'info') {
                     if (isset($args[1])) {
                         if (!(ctype_alnum($args[1])) or !($this->plugin->factionExists($args[1]))) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoes not exist"));
@@ -1413,7 +1445,7 @@ class FactionCommands {
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 1){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§51/7§2]" . TextFormat::RED . "\n§a/f about|info - §7Shows Plugin information\n§a/f accept|yes - §7Accepts an faction invitation\n§a/f claim|cl - §7Claims a faction plot!\n§a/f create|make <name> - §7Creates a faction.\n§a/f del|disband - Deletes a faction.\n§a/f demote <player> - §7Demotes a player from a faction.\n§a/f deny|no - §7Denies a player's invitation.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§51/7§2]" . TextFormat::RED . "\n§a/f about|version - §7Shows Plugin information\n§a/f accept|yes - §7Accepts an faction invitation\n§a/f claim|cl - §7Claims a faction plot!\n§a/f create|make <name> - §7Creates a faction.\n§a/f del|disband - Deletes a faction.\n§a/f demote <player> - §7Demotes a player from a faction.\n§a/f deny|no - §7Denies a player's invitation.");
 				return true;
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
@@ -1438,7 +1470,7 @@ class FactionCommands {
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 6){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§56/7§2]" . TextFormat::RED . "\n§a/f listleader <faction> - §7Checks who the leader is in a faction.\n§a/f listmembers <faction> - §7Checks who the members are in a faction.\n§a/f listofficers <faction> - §7Checks who the officers are in a faction.\n§a/f ourmembers - §7Checks who your faction members are.\n§a/f ourofficers - §7Checks who your faction officers are.\n§a/f ourleader - §7Checks to see who your leader is.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §dHelp §2[§56/7§2]" . TextFormat::RED . "\n§a/f listleader <faction> - §7Checks who the leader is in a faction.\n§a/f listmembers <faction> - §7Checks who the members are in a faction.\n§a/f listofficers <faction> - §7Checks who the officers are in a faction.\n§a/f ourmembers - §7Checks who your faction members are.\n§a/f ourofficers - §7Checks who your faction officers are.\n§a/f ourleader - §7Checks to see who your leader is.\n§a/f listfaction <faction> - §7Allows you to check the total amount of players in that faction (via names)\n§a/f ourfaction - §7Checks how many users are in your faction.");
 				return true;
                         }
 			$serverName = $this->plugin->prefs->get("ServerName");

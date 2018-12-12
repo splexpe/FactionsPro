@@ -32,6 +32,8 @@ class FactionMain extends PluginBase implements Listener {
 	 private $prefix = "§7[§6Void§bFactions§cPE§7]";
 	  const HEX_SYMBOL = "e29688";
 	  
+	  
+	  
     public function onEnable(): void {
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
@@ -248,26 +250,47 @@ class FactionMain extends PluginBase implements Listener {
         return $factionArray["rank"] == "Member";
     }
     public function getPlayersInFactionByRank($s, $faction, $rank) {
+
         if ($rank != "Leader") {
+
             $rankname = $rank . 's';
+
         } else {
+
             $rankname = $rank;
+
         }
+
         $team = "";
+
         $result = $this->db->query("SELECT player FROM master WHERE faction='$faction' AND rank='$rank';");
+
         $row = array();
+
         $i = 0;
+
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
+
             $row[$i]['player'] = $resultArr['player'];
+
             if ($this->getServer()->getPlayerExact($row[$i]['player']) instanceof Player) {
-                $team .= TextFormat::ITALIC . TextFormat::AQUA . $row[$i]['player'] . TextFormat::GREEN . "[ON]" . TextFormat::RESET . TextFormat::WHITE . "||" . TextFormat::RESET;
+
+                 $team .= TextFormat::ITALIC . TextFormat::AQUA . $row[$i]['player'] . TextFormat::GREEN . " §a§lONLINE" . TextFormat::RESET;
+
             } else {
-                $team .= TextFormat::ITALIC . TextFormat::AQUA . $row[$i]['player'] . TextFormat::RED . "[OFF]" . TextFormat::RESET . TextFormat::WHITE . "||" . TextFormat::RESET;
+
+                $team .= TextFormat::ITALIC . TextFormat::AQUA . $row[$i]['player'] . TextFormat::RED . " §c§lOFFLINE" . TextFormat::RESET;
+
             }
+
             $i = $i + 1;
+
         }
-        $s->sendMessage($this->formatMessage("~ *<$rankname> of |$faction|* ~", true));
+
+        $s->sendMessage($this->formatMessage(TextFormat::RED . $rankname . " §5of " . TextFormat::RED . $faction . ":", true));
+
         $s->sendMessage($team);
+
     }
     public function getAllAllies($s, $faction) {
         $team = "";
