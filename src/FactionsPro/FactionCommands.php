@@ -935,16 +935,15 @@ class FactionCommands {
                         }
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
                     }
-					if(strtolower($args[0] == "listfaction")){
-					if (!isset($args[1])) {
-						$sender->sendMessage("$prefix §aPlease use: §b/f listfaction <faction>");
-						return true;
-					}
-                         if (!$this->plugin->factionExists($args[1])) {
+		    if(strtolower($args[0] == "listfaction")){
+		       if (!isset($args[1])) {
+			   $sender->sendMessage("$prefix §aPlease use: §b/f listfaction <faction>");
+			   return true;
+		       }
+                       if (!$this->plugin->factionExists($args[1])) {
 
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoesn't exist"));
-
-                            return true;
+                           $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe faction named §4$args[1] §cdoesn't exist"));
+                           return true;
 
                         }
 
@@ -955,19 +954,19 @@ class FactionCommands {
                         $this->plugin->getPlayersInFactionByRank($sender, $args[1], "Leader");
 
                     }
-					if (strtolower($args[0] == "ourfaction")) {
-						 if ($this->plugin->isInFaction($playerName) == false) {
+		    if (strtolower($args[0] == "ourfaction")) {
+			if ($this->plugin->isInFaction($playerName) == false) {
 
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
 
                             return true;
-						}
-						 $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Member");
+			}
+			$this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Member");
 
                         $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Officer");
 
                         $this->plugin->getPlayersInFactionByRank($sender, $this->plugin->getPlayerFaction($playerName), "Leader");
-					}
+		    }
                     if (strtolower($args[0] == "say")) {
 			if (!$this->plugin->prefs->get("AllowChat")) {
 			    $sender->sendMessage($this->plugin->formatMessage("§c/f say is disabled"));
