@@ -5,7 +5,7 @@ A modified plugin, better than ever. Being updated frequently. Edited by the VMP
 This branch is called the "beta" branch. It's nothing special, and the fact is; This branch is mostly stabled. It's called the beta branch because this branch can sometimes have some bugs. We plan on fixing some issues that could be there from a while ago, and some bugs, which have just been implemented into this branch. We do plan on fixing almost ALL BUGS. At this stage, this branch is bug free, but when we add stuff, or fix stuff, bugs may rise. This doesn't happen often though. But just a heads up anyways.
 
 ## Features
-* All the features from the good 'ol' days are now back, and working with PMMP Latest APi's.
+* All the features from the good 'ol' days are now back, and working with PMMP's Latest API's.
 
 * /f map = Better than ever.
 
@@ -17,7 +17,7 @@ This branch is called the "beta" branch. It's nothing special, and the fact is; 
 
 * /f say now works - It's better than ever, and /f say is finally working!
 
-* Better Factions help page! Use /f help for the usage!
+* Better Factions help page! Use /f help <page number> for a list of all commands (from p1-7)
 
 * /f claim now works as it should - We've fixed /f claim, and it's better than ever!
 
