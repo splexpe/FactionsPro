@@ -1490,6 +1490,7 @@ class FactionCommands {
         }
         return true;
     }
+    }
     public function alphanum($string){
         if(function_exists('ctype_alnum')){
             $return = ctype_alnum($string);
