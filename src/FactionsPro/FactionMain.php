@@ -496,15 +496,15 @@ class FactionMain extends PluginBase implements Listener {
 		if(!$pl->isEnabled()) return null;
 		return $pl;
 	}
-    public function updateTag($player): void {
-	$username = $player->getName();
+    /*public function updateTag($player): void { To-Do fix issues caused.
+	$username = $this->getServer()->getPlayerExact($player->getName());
 	$lower = strtolower($username);
         $f = $this->getPlayerFaction($lower);
         if (!$this->isInFaction($lower)) {
         $player->setNameTag("§a$username §5| §a$f"); //To-Do make this configurable.
         }
     }
-    public function onDisable(): void {
+    */public function onDisable(): void {
         if (isset($this->db)) $this->db->close();
     }
 }
