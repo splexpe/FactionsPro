@@ -499,8 +499,8 @@ class FactionMain extends PluginBase implements Listener {
     public function updateTag($player): void {
 	$username = $player->getName();
 	$lower = strtolower($username);
-        $f = $this->getPlayerFaction($player);
-        if (!$this->isInFaction($player)) {
+        $f = $this->getPlayerFaction($lower);
+        if (!$this->isInFaction($lower)) {
         $player->setNameTag("§a$username §5| §a$f"); //To-Do make this configurable.
         }
     }
