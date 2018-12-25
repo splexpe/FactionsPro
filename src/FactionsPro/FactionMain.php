@@ -496,7 +496,7 @@ class FactionMain extends PluginBase implements Listener {
 		if(!$pl->isEnabled()) return null;
 		return $pl;
 	}
-    public function updateTag(Player $player): void {
+    public function updateTag($player): void {
         $p = Server::getInstance()->getPlayer($player);
         $f = $this->getPlayerFaction($player);
         if (!$this->isInFaction($player)) {
