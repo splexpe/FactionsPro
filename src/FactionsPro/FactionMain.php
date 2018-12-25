@@ -500,7 +500,7 @@ class FactionMain extends PluginBase implements Listener {
         $p = Server::getInstance()->getPlayer($player);
         $f = $this->getPlayerFaction($player);
         if (!$this->isInFaction($player)) {
-        $p->setNameTag(str_replace("{player}", "{faction}"), $p, $f, $this->prefs->get("faction-nametag"));
+        $p->setNameTag(str_replace("{player}", "{faction}", $p, $f, $this->prefs->get("faction-nametag")));
         }
     }
     public function onDisable(): void {
