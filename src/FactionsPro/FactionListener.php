@@ -201,10 +201,7 @@ class FactionListener implements Listener {
         }
                }
     }
-    /*public function onPlayerJoin(PlayerJoinEvent $event) {
-		$this->plugin->updateTag($event->getPlayer());
-    }
-    */public function onMoveMAP(PlayerMoveEvent $event){
+    public function onMoveMAP(PlayerMoveEvent $event){
         
     $x = floor($event->getPlayer()->getX());
     $z = floor($event->getPlayer()->getZ());
