@@ -480,6 +480,12 @@ class FactionMain extends PluginBase implements Listener {
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
 	}
+	public function getEconomy(): EconomyAPI{	
+ 		$pl = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI");	
+ 		if(!$pl) return $pl;	
+ 		if(!$pl->isEnabled()) return null;	
+ 		return $pl;	
+ 	}
     /*public function updateTag($player): void { To-Do fix issues caused.
 	$username = $this->getServer()->getPlayerExact($player->getName());
 	$lower = strtolower($username);
