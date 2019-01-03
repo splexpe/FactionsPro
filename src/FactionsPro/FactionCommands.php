@@ -21,6 +21,7 @@ class FactionCommands {
 	CONST MAP_KEY_SEPARATOR = TextFormat::AQUA . "*"; /*Del*/
 	CONST MAP_KEY_OVERFLOW = TextFormat::WHITE . "-" . TextFormat::WHITE; # ::MAGIC?
 	CONST MAP_OVERFLOW_MESSAGE = self::MAP_KEY_OVERFLOW . ": Too Many Factions (>" . 107 . ") on this Map.";
+	
     public function __construct(FactionMain $plugin) {
         $this->plugin = $plugin;
     }
@@ -1243,7 +1244,7 @@ class FactionCommands {
                     /////////////////////////////// ABOUT ///////////////////////////////
                     if(strtolower($args[0]) == "about" or strtolower($args[0]) == "version"){
                         $sender->sendMessage(TextFormat::GREEN . "§7[§6Void§bFactions§cPE§dINFO§7]");
-                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§aVersion: §fv2.1.1");
+                        $sender->sendMessage(TextFormat::GOLD . "§7[§2MODDED§7] §3This version is by §6Void§bFactions§cPE\n§aVersion: §fv2.1.2");
                     }
                     ////////////////////////////// CHAT ////////////////////////////////
 		    

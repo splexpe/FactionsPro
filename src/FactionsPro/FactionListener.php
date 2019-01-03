@@ -8,7 +8,6 @@ use pocketmine\event\Listener;
 use pocketmine\event\block\{BlockPlaceEvent, BlockBreakEvent};
 use pocketmine\Player;
 use pocketmine\event\entity\{EntityDamageEvent, EntityDamageByEntityEvent};
-use EssentialsPE\BaseFiles\BaseAPI;
 use pocketmine\tile\MobSpawner;
 use pocketmine\utils\{Config, TextFormat};
 use pocketmine\event\player\{PlayerQuitEvent, PlayerJoinEvent, PlayerMoveEvent, PlayerDeathEvent, PlayerChatEvent, PlayerInteractEvent};
@@ -91,18 +90,13 @@ class FactionListener implements Listener {
 		}
 	}
 	
-	public function onInteract(PlayerInteractEvent $e){
-		if($this->plugin->isInPlot($e->getPlayer())){
-			if(!$this->plugin->inOwnPlot($e->getPlayer())){
-				if($e->getPlayer()->isCreative()){
-					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Switching to survival mode."));
-					$e->getPlayer()->setGamemode(0);
-					$e->setCancelled(true);
-				}
-				if($this->plugin->essentialspe->getAPI()->isGod($e->getPlayer()) !== null){
-					$e->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Disabling god mode."));
-					 $this->plugin->essentialspe->getAPI()->getSession($e->getPlayer()->setGod($e->getPlayer()->getGodMode()));
-					$e->setCancelled(true);
+	public function onInteract(PlayerInteractEvent $REF){ //REF = Raiding envirement feature
+		if($this->plugin->isInPlot($REF->getPlayer())){
+			if(!$this->plugin->inOwnPlot($REF->getPlayer())){
+				if($REF->getPlayer()->isCreative()){
+					$REF->getPlayer()->sendMessage($this->plugin->formatMessage("§c§lRaiding environment detected. Switching to survival mode."));
+					$REF->getPlayer()->setGamemode(0);
+					$REF->setCancelled(true);
 				}
 			}
 		}

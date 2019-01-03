@@ -25,7 +25,6 @@ class FactionMain extends PluginBase implements Listener {
     public $war_players = [];
     public $antispam;
     public $purechat;
-    public $essentialspe;
     public $economyapi;
     public $factionChatActive = [];
     public $allyChatActive = [];
@@ -50,14 +49,10 @@ class FactionMain extends PluginBase implements Listener {
         if (!$this->purechat) {
             $this->getLogger()->info("Add PureChat to display Faction ranks in chat");
         }
-	$this->essentialspe = Server::getInstance()->getPluginManager()->getPlugin("EssentialsPE");
-	if (!$this->essentialspe) {
-	     $this->getLogger()->info("Add EssentialsPE to use the raiding system.");
-	}
-	$this->economyapi = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI");
-	if (!$this->economyapi) {
-	     $this->getLogger()->info("Add EconomyAPI to use the f value system.");
-	}
+		$this->economyapi = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI");
+		if (!$this->economyapi) {
+	        $this->getLogger()->info("Add EconomyAPI to use the f value system.");
+		}
         $this->fCommand = new FactionCommands($this);
          $this->prefs = new Config($this->getDataFolder() . "Prefs.yml", CONFIG::YAML, array(
             "MaxFactionNameLength" => 15,
@@ -484,12 +479,6 @@ class FactionMain extends PluginBase implements Listener {
 		$sp = $this->prefs->get("spawnerPrices");
 		if(isset($sp[$type])) return $sp[$type];
 		return 0;
-	}
-	public function getEconomy(): EconomyAPI{
-		$pl = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI");
-		if(!$pl) return $pl;
-		if(!$pl->isEnabled()) return null;
-		return $pl;
 	}
     /*public function updateTag($player): void { To-Do fix issues caused.
 	$username = $this->getServer()->getPlayerExact($player->getName());
