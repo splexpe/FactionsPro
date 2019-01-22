@@ -34,10 +34,6 @@ class FactionCommands {
                     $sender->sendMessage($this->plugin->formatMessage("Please use /f help for a list of commands"));
                     return true;
                 }
-                   if (empty($args)) {
-                    $sender->sendMessage($this->plugin->formatMessage("$prefix §bPlease use §3/f help §6for a list of commands"));
-                    return true;
-                }
                     ///////////////////////////////// WAR /////////////////////////////////
                     if(strtolower($args[0]) == "war" or strtolower($args[0]) == "wr"){
                         if (!isset($args[1])) {
