@@ -493,7 +493,8 @@ class FactionMain extends PluginBase implements Listener {
         $players->setScoreTag("§a$player->getName() §5| §a$f"); //To-Do make this configurable.
         }
     }
-    */public function onDisable(): void {
+}
+    public function onDisable(): void {
         if (isset($this->db)) $this->db->close();
     }
 }
