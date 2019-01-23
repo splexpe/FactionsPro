@@ -487,12 +487,14 @@ class FactionMain extends PluginBase implements Listener {
  		return $pl;	
  	}
     public function updateTag($player): void {
-        $f = $this->getPlayerFaction($player->getName());
-        if($this->isInFaction($player->getName())) {
-		foreach ($this->getServer()->getOnlinePlayers() as $players){
-        $players->setScoreTag("§a$player->getName() §5| §a$f"); //To-Do make this configurable.
+foreach ($this->getServer()->getOnlinePlayers() as $players){
+        $f = $this->getPlayerFaction($players->getName());
+        if($this->isInFaction($players->getName())) {
+foreach ($this->getServer()->getOnlinePlayers() as $player){
+        $player->setScoreTag("§a$players->getName() §5| §a$f"); //To-Do make this configurable.
         }
     }
+}
 }
     public function onDisable(): void {
         if (isset($this->db)) $this->db->close();
