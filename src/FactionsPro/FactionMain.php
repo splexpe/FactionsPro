@@ -1,7 +1,5 @@
 <?php
-
 namespace FactionsPro;
-
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
@@ -13,9 +11,9 @@ use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
-
 use onebone\economyapi\EconomyAPI;
 
+use FactionsPro\tasks\updateTagTask;
 class FactionMain extends PluginBase implements Listener {
 	
     public $db;
@@ -68,6 +66,8 @@ class FactionMain extends PluginBase implements Listener {
             "PowerGainedPerKillingAnEnemy" => 10,
             "PowerGainedPerAlly" => 100,
             "AllyLimitPerFaction" => 5,
+            "enable-faction-tag" => true,
+            "faction-tag" => "§3{player} §5| §3{faction}",
             "TheDefaultPowerEveryFactionStartsWith" => 0,
 	    "EnableOverClaim" => true,
             "ClaimWorlds" => [],
@@ -95,6 +95,8 @@ class FactionMain extends PluginBase implements Listener {
 			"empty" => 100
                 ],
 		));
+			if($this->prefs->get("enable-faction-tag") == "true"){
+		 $this->getScheduler()->scheduleRepeatingTask(new updateTagTask($this), 20);
 		$this->prefix = $this->prefs->get("prefix", $this->prefix);
 		$this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
 		$this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
@@ -123,6 +125,7 @@ class FactionMain extends PluginBase implements Listener {
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
         }catch(\ErrorException $ex){
         }
+		}
     }
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
@@ -240,47 +243,26 @@ class FactionMain extends PluginBase implements Listener {
         return $factionArray["rank"] == "Member";
     }
     public function getPlayersInFactionByRank($s, $faction, $rank) {
-
         if ($rank != "Leader") {
-
             $rankname = $rank . 's';
-
         } else {
-
             $rankname = $rank;
-
         }
-
         $team = "";
-
         $result = $this->db->query("SELECT player FROM master WHERE faction='$faction' AND rank='$rank';");
-
         $row = array();
-
         $i = 0;
-
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
-
             $row[$i]['player'] = $resultArr['player'];
-
             if ($this->getServer()->getPlayerExact($row[$i]['player']) instanceof Player) {
-
                  $team .= TextFormat::ITALIC . TextFormat::AQUA . $row[$i]['player'] . TextFormat::GREEN . " §a§lONLINE" . TextFormat::RESET;
-
             } else {
-
                 $team .= TextFormat::ITALIC . TextFormat::AQUA . $row[$i]['player'] . TextFormat::RED . " §c§lOFFLINE" . TextFormat::RESET;
-
             }
-
             $i = $i + 1;
-
         }
-
         $s->sendMessage($this->formatMessage(TextFormat::RED . $rankname . " §5of " . TextFormat::RED . $faction . ":", true));
-
         $s->sendMessage($team);
-
     }
     public function getAllAllies($s, $faction) {
         $team = "";
@@ -486,16 +468,6 @@ class FactionMain extends PluginBase implements Listener {
  		if(!$pl->isEnabled()) return null;	
  		return $pl;	
  	}
-    public function updateTag($player): void {
-foreach ($this->getServer()->getOnlinePlayers() as $players){
-        $f = $this->getPlayerFaction($players->getName());
-        if($this->isInFaction($players->getName())) {
-foreach ($this->getServer()->getOnlinePlayers() as $player){
-        $player->setScoreTag("§a$player->getName() §5| §a$f"); //To-Do make this configurable.
-        }
-    }
-}
-}
     public function onDisable(): void {
         if (isset($this->db)) $this->db->close();
     }
