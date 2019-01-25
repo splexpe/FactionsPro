@@ -702,7 +702,6 @@ class FactionCommands {
 			        $this->plugin->db->query("DELETE FROM balance WHERE faction='$faction';");
 		                $this->plugin->getServer()->broadcastMessage("§aThe player: §2$playerName §awho owned §3$faction §bhas been disbanded!");
                                 $sender->sendMessage($this->plugin->formatMessage("$prefix §bThe Faction named: §a$faction §bhas been successfully disbanded and the faction plot, and Overclaims are unclaimed.", true));
-			        $this->plugin->updateTag($playerName);
 				    unset($this->plugin->factionChatActive[$playerName]);
 			            unset($this->plugin->allyChatActive[$playerName]);
                             } else {
@@ -722,14 +721,12 @@ class FactionCommands {
                         }
                         if ($this->plugin->isLeader($playerName) == false) {
                             $faction = $this->plugin->getPlayerFaction($playerName);
-			    $remove = $sender->getPlayer()->getNameTag();
                             $name = $sender->getName();
                             $this->plugin->db->query("DELETE FROM master WHERE player='$name';");
 			    $this->plugin->getServer()->broadcastMessage("§2$name §bhas left §2$faction");
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §bYou successfully left §a$faction", true));
                             $this->plugin->subtractFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			    $this->plugin->takeFromBalance($faction, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
-		    	    $this->plugin->updateTag($sender->getName());
 							unset($this->plugin->factionChatActive[$playerName]);
 							unset($this->plugin->allyChatActive[$playerName]);
                         } else {
