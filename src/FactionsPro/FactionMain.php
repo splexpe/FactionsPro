@@ -131,7 +131,7 @@ class FactionMain extends PluginBase implements Listener {
 		}
     }
     public function tagCheck() : void{
-if(!$this->prefs->get("tag-type")){
+if($this->prefs->get("tag-type")){
 $this->getLogger()->info("Tag-type has an invalid option. Either select ‘nametag’ or ‘scoretag’ in prefs.yml. Plugin disabled.");
 $this->getServer()->getPluginManager()->disablePlugin($this);
 return;
