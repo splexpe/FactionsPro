@@ -1,7 +1,6 @@
+
 <?php
-
 namespace FactionsPro;
-
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
@@ -13,11 +12,8 @@ use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
-
 use onebone\economyapi\EconomyAPI;
-
 use FactionsPro\tasks\updateTagTask;
-
 class FactionMain extends PluginBase implements Listener {
 	
     public $db;
@@ -131,9 +127,8 @@ $this->prefix = $this->prefs->get("prefix", $this->prefix);
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
         }catch(\ErrorException $ex){
         }
-if($this->prefs->get("enable-faction-tag") == "false"){
-$this->getLogger()->warning("Faction tag has been disabled because you turned it off in the config file.");
-$this->prefix = $this->prefs->get("prefix", $this->prefix);
+} else {
+		$this->prefix = $this->prefs->get("prefix", $this->prefix);
 		$this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
 		$this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
 		$this->db->exec("CREATE TABLE IF NOT EXISTS confirm (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, invitedby TEXT, timestamp INT);");
@@ -160,10 +155,6 @@ $this->prefix = $this->prefs->get("prefix", $this->prefix);
             $this->db->exec("ALTER TABLE plots ADD COLUMN world TEXT default null");
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
         }catch(\ErrorException $ex){
-        }
-} else {
-        $this->getLogger()->error("Faction tag has an invalid option. Please set it to either: “true” or “false”. Plugin disabled.");
-Server::getInstance()->getPluginManager()->disablePlugin($this);
         }
 		}
     }
