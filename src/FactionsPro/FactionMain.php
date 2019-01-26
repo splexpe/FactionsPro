@@ -1,5 +1,7 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
@@ -30,8 +32,8 @@ class FactionMain extends PluginBase implements Listener {
 	  const HEX_SYMBOL = "e29688";
 	  
 	  
-	  
     public function onEnable(): void {
+         $this->tagCheck();
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
@@ -128,6 +130,21 @@ class FactionMain extends PluginBase implements Listener {
         }
 		}
     }
+    public function tagCheck() : void{
+if($this->prefs->get("tag-type") == null){
+$this->getLogger()->info("Tag-type has an invalid option. Either select ‘nametag’ or ‘scoretag’ in prefs.yml. Plugin disabled.");
+$this->getServer()->getPluginManager()->disablePlugin($this);
+return;
+}
+if($this->prefs->get("tag-type") == "scoretag"){
+$this->getLogger()->info("Plugin enabled! Selected scoretag for faction tags!");
+return;
+}
+if($this->prefs->get("tag-type") == "nametag"){
+$this->getLogger()->info("Plugin enabled! Selected nametag for Faction tags!");
+return;
+}
+}
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) :bool {
         return $this->fCommand->onCommand($sender, $command, $label, $args);
     }
