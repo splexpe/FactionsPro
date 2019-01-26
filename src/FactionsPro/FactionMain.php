@@ -33,7 +33,6 @@ class FactionMain extends PluginBase implements Listener {
 	  
 	  
     public function onEnable(): void {
-         $this->tagCheck();
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
@@ -100,6 +99,7 @@ class FactionMain extends PluginBase implements Listener {
 		));
 			if($this->prefs->get("enable-faction-tag") == "true"){
 		 $this->getScheduler()->scheduleRepeatingTask(new updateTagTask($this), 20);
+				$this->tagCheck();
 		$this->prefix = $this->prefs->get("prefix", $this->prefix);
 		$this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
 		$this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
