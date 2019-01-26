@@ -161,17 +161,16 @@ $this->prefix = $this->prefs->get("prefix", $this->prefix);
 		}
     }
     public function tagCheck() : void{
-if(!$this->prefs->get("tag-type")){ //to-do fix some bugs with this.
-$this->getLogger()->info("Tag-type has an invalid option. Either select ‘nametag’ or ‘scoretag’ in prefs.yml. Plugin disabled.");
-$this->getServer()->getPluginManager()->disablePlugin($this);
-return;
-}
 if($this->prefs->get("tag-type") == "scoretag"){
 $this->getLogger()->info("Plugin enabled! Selected 'scoretag' for faction tags!");
 return;
 }
 if($this->prefs->get("tag-type") == "nametag"){
 $this->getLogger()->info("Plugin enabled! Selected 'nametag' for Faction tags!");
+return;
+} else {
+$this->getLogger()->info("Invalid tag type. Select either ‘nametag’ or ‘scoretag’ in config option. Plugin disabled.");
+Server::getInstance()->getPluginManager()->disablePlugin($this);
 return;
 }
 }
