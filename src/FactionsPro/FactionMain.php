@@ -131,8 +131,9 @@ $this->prefix = $this->prefs->get("prefix", $this->prefix);
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
         }catch(\ErrorException $ex){
         }
-} else {
-		$this->prefix = $this->prefs->get("prefix", $this->prefix);
+if($this->prefs->get("enable-faction-tag") == "false"){
+$this->getLogger()->warning("Faction tag has been disabled because you turned it off in the config file.");
+$this->prefix = $this->prefs->get("prefix", $this->prefix);
 		$this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
 		$this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
 		$this->db->exec("CREATE TABLE IF NOT EXISTS confirm (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, invitedby TEXT, timestamp INT);");
@@ -159,6 +160,10 @@ $this->prefix = $this->prefs->get("prefix", $this->prefix);
             $this->db->exec("ALTER TABLE plots ADD COLUMN world TEXT default null");
             Server::getInstance()->getLogger()->info(TextFormat::GREEN . "FactionPro: Added 'world' column to plots");
         }catch(\ErrorException $ex){
+        }
+} else {
+        $this->getLogger()->error("Faction tag has an invalid option. Please set it to either: “true” or “false”. Plugin disabled.");
+Server::getInstance()->getPluginManager()->disablePlugin($this);
         }
 		}
     }
