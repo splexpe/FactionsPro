@@ -13,9 +13,11 @@ use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
+
 use onebone\economyapi\EconomyAPI;
 
 use FactionsPro\tasks\updateTagTask;
+
 class FactionMain extends PluginBase implements Listener {
 	
     public $db;
@@ -169,7 +171,7 @@ if($this->prefs->get("tag-type") == "nametag"){
 $this->getLogger()->info("Plugin enabled! Selected 'nametag' for Faction tags!");
 return;
 } else {
-$this->getLogger()->info("Invalid tag type. Select either ‘nametag’ or ‘scoretag’ in config option. Plugin disabled.");
+$this->getLogger()->error("Invalid tag type. Select either ‘nametag’ or ‘scoretag’ in config option. Plugin disabled.");
 Server::getInstance()->getPluginManager()->disablePlugin($this);
 return;
 }
