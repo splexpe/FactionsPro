@@ -36,7 +36,7 @@ class FactionMain extends PluginBase implements Listener {
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
             $file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
-            $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
+            $txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op:':/:^:[:-:+:]";
             fwrite($file, $txt);
         }
         Server::getInstance()->getPluginManager()->registerEvents(new FactionListener($this), $this);
