@@ -68,6 +68,7 @@ class FactionMain extends PluginBase implements Listener {
             "AllyLimitPerFaction" => 5,
             "enable-faction-tag" => true,
             "faction-tag" => "§3{player} §5| §3{faction}",
+            "tag-type" => "scoretag", //Options: scoretag, or nametag!
             "TheDefaultPowerEveryFactionStartsWith" => 0,
 	    "EnableOverClaim" => true,
             "ClaimWorlds" => [],
