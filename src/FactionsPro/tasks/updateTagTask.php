@@ -19,7 +19,7 @@ if($this->plugin->prefs->get("tag-type") == "scoretag"){
 			if($player instanceof Player){
 			$player->setNameTagVisible();
 			$f = $this->plugin->getPlayerFaction($player->getName());
-				$name = $player->getName();
+			$name = $player->getName();
 			$player->setScoreTag(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));
 } else {
 if($this->plugin->prefs->get("tag-type") == "nametag"){
@@ -27,12 +27,13 @@ foreach(Server::getInstance()->getOnlinePlayers() as $player){
 			if($player instanceof Player){
 			$player->setNameTagVisible();
 			$f = $this->plugin->getPlayerFaction($player->getName());
-				$name = $player->getName();			$player->setNameTag(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));
-			}
-		}
-	}
-}
-}
-}
-}
+			$name = $player->getName();
+			$player->setNameTag(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));
+	                }
+		 }
+	      }
+            }
+          }
+       }
+    }
 }
