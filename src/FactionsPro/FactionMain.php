@@ -68,6 +68,7 @@ class FactionMain extends PluginBase implements Listener {
             "PowerGainedPerAlly" => 100,
             "AllyLimitPerFaction" => 5,
             "enable-faction-tag" => true,
+	    "updateTag-tick" => 20,
             "faction-tag" => "§3{player} §5| §3{faction}",
             "tag-type" => "scoretag", //Options: scoretag, or nametag!
             "TheDefaultPowerEveryFactionStartsWith" => 0,
@@ -98,7 +99,7 @@ class FactionMain extends PluginBase implements Listener {
                 ],
 		));
 			if($this->prefs->get("enable-faction-tag") == "true"){
-		 $this->getScheduler()->scheduleRepeatingTask(new updateTagTask($this), 20);
+		 $this->getScheduler()->scheduleRepeatingTask(new updateTagTask($this), $this->prefs->get("updateTag-tick"));
 				$this->tagCheck();
 		$this->prefix = $this->prefs->get("prefix", $this->prefix);
 		$this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
