@@ -101,6 +101,7 @@ class FactionMain extends PluginBase implements Listener {
 			if($this->prefs->get("enable-faction-tag") == "true"){
 		 $this->getScheduler()->scheduleRepeatingTask(new updateTagTask($this), $this->prefs->get("updateTag-tick"));
 				$this->tagCheck();
+} else {
 		$this->prefix = $this->prefs->get("prefix", $this->prefix);
 		$this->db = new \SQLite3($this->getDataFolder() . "FactionsPro.db");
 		$this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
