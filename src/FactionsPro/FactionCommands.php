@@ -60,11 +60,7 @@ class FactionCommands {
                             }
                             $sender->sendMessage("$prefix §cYou must be in a war to do that");
                             return true;
-                        }
-                        if (!($this->alphanum($args[1]))) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou may only use letters and numbers"));
-                            return true;
-                        }
+			}
                         if (!$this->plugin->factionExists($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe Faction named §4$args[1] §cdoes not exist"));
                             return true;
@@ -123,10 +119,6 @@ class FactionCommands {
 			    $sender->sendMessage($this->plugin->formatMessage("$prefix §b§aDescription: §dCreates a faction."));
                             return true;
                         }
-			if (!($this->alphanum($args[1]))) {
-	                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou may only use letters and numbers"));
-	                            return true;
-	                        }
                         if ($this->plugin->isNameBanned($args[1])) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe name §4$args[1] §cis not allowed"));
                             return true;
@@ -1471,7 +1463,7 @@ class FactionCommands {
         if(function_exists('ctype_alnum')){
             $return = ctype_alnum($string);
         }else{
-            $return = preg_match('/^["a-z0-9]+$/i', $string) > 0;
+            $return = preg_match('/^[a-z0-9]+$/i', $string) > 0;
         }
         return $return;
     }
