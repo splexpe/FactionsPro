@@ -131,17 +131,17 @@ class FactionMain extends PluginBase implements Listener {
 		}
     }
     public function tagCheck() : void{
-if($this->prefs->get("tag-type")){
+if($this->prefs->get("tag-type") == true or $this->prefs->get("tag-type") == false){ //to-do fix some bugs with this.
 $this->getLogger()->info("Tag-type has an invalid option. Either select ‘nametag’ or ‘scoretag’ in prefs.yml. Plugin disabled.");
 $this->getServer()->getPluginManager()->disablePlugin($this);
 return;
 }
 if($this->prefs->get("tag-type") == "scoretag"){
-$this->getLogger()->info("Plugin enabled! Selected scoretag for faction tags!");
+$this->getLogger()->info("Plugin enabled! Selected 'scoretag' for faction tags!");
 return;
 }
 if($this->prefs->get("tag-type") == "nametag"){
-$this->getLogger()->info("Plugin enabled! Selected nametag for Faction tags!");
+$this->getLogger()->info("Plugin enabled! Selected 'nametag' for Faction tags!");
 return;
 }
 }
