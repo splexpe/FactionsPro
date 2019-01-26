@@ -4,6 +4,8 @@ namespace FactionsPro\tasks;
 
 use pocketmine\scheduler\Task;
 
+use FactionsPro\FactionMain;
+
 class FactionWarTask extends Task {
 	
 	public $plugin;
