@@ -10,7 +10,7 @@ use pocketmine\utils\TextFormat;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 
-use FactionsPro\tasks\FactionsWarTask;
+use FactionsPro\tasks\FactionWarTask;
 
 class FactionCommands {
     public $plugin;
