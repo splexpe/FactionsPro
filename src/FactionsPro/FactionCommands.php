@@ -48,7 +48,7 @@ class FactionCommands {
                                 if ($r == $fac) {
                                     $x = mt_rand(0, $this->plugin->getNumberOfPlayers($fac) - 1);
                                     $tper = $this->plugin->war_players[$f][$x];
-                                    $sender->teleport($this->plugin->getServer()->getPlayerByName($tper));
+                                    $sender->teleport($this->plugin->getServer()->getPlayerExact($tper));
                                     return true;
                                 }
                                 if ($f == $fac) {
