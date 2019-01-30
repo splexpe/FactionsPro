@@ -27,7 +27,7 @@ foreach(Server::getInstance()->getOnlinePlayers() as $player){
 			if($player instanceof Player){
 			$player->setNameTagVisible();
 			$f = $this->plugin->getPlayerFaction($player->getName());
-			$player->setNameTag(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag"))); //to-do see if this will work.
+			$player->setNameTag(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));
 	                }
 		 }
 	      }
