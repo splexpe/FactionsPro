@@ -1,9 +1,5 @@
 ---
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
+Name of the bug:
 
 ---
 
@@ -11,28 +7,29 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 **To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+Steps to reproduce the bug:
+1. 
+2.
+3. 
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**Expected results**
+What did you expect the results to be?
+
+**Actual results**
+What was the actual results?
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Pocketmine version**
+Latest is not a valid answer! Please give us the exact pocketmine API / version so we know where the issue could be from.
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
 
-**Additional context**
-Add any other context about the problem here.
+**FactionsPro build**
+What build from this plugin are you using? Did you get the build from poggit, or the releases tab on github?
+
+**Crashdump**
+Copy and paste the crashdump here (if any)
+
+**Error log:**
+If any errors are displayed, please copy and paste the error log into here!
