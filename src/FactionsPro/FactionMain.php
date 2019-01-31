@@ -1,5 +1,7 @@
 <?php
+
 namespace FactionsPro;
+
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
@@ -11,8 +13,13 @@ use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
+
 use onebone\economyapi\EconomyAPI;
+
 use FactionsPro\tasks\updateTagTask;
+
+use JackMD\UpdateNotifier\UpdateNotifier;
+
 class FactionMain extends PluginBase implements Listener {
 	
     public $db;
@@ -28,7 +35,18 @@ class FactionMain extends PluginBase implements Listener {
 	 private $prefix = "§7[§6Void§bFactions§cPE§7]";
 	  const HEX_SYMBOL = "e29688";
 	  
-	  
+    public function onLoad(): void{
+	    $this->checkVirions();
+	    UpdateNotifier::checkUpdate($this, $this->getDescription()->getName(), $this->getDescription()->getVersion());
+    }
+    /**
+    * Checks if the required virions/libraries are present before enabling the plugin.
+    */
+    private function checkVirions(): void{
+	   if(!class_exists(UpdateNotifier::class)){
+		   throw new \RuntimeException("FactionsPro plugin will only work if you use the plugin phar from Poggit.");
+	 }
+    }
     public function onEnable(): void {
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
