@@ -27,6 +27,8 @@ This branch is called the "beta" branch. It's nothing special, and the fact is; 
 
 * You can now: Forcefully remove someone's power, and balance with a simple command.
 
+* /f war is now fully working!
+
 * And still updating as we speak!
 
 ## Faction Commands
