@@ -33,10 +33,7 @@ class FactionMain extends PluginBase implements Listener {
     public $allyChatActive = [];
 	 private $prefix = "§7[§6Void§bFactions§cPE§7]";
 	  const HEX_SYMBOL = "e29688";
-	  
-    public function onLoad(): void{
-           $this->checkUpdate();
-    }
+	
     public function onEnable(): void {
         @mkdir($this->getDataFolder());
         if (!file_exists($this->getDataFolder() . "BannedNames.txt")) {
@@ -165,6 +162,9 @@ $this->prefix = $this->prefs->get("prefix", $this->prefix);
         }catch(\ErrorException $ex){
         }
 		}
+    }
+    public function onLoad(): void{
+           $this->checkUpdate();
     }
     public function checkUpdate(): void{
 if ($this->prefs->get("update-checker", true)) {
