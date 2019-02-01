@@ -3,6 +3,7 @@
 namespace FactionsPro;
 
 use pocketmine\plugin\PluginBase;
+use pocketmine\plugin\PluginDescription;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\event\Listener;
@@ -17,8 +18,6 @@ use pocketmine\math\Vector3;
 use onebone\economyapi\EconomyAPI;
 
 use FactionsPro\tasks\updateTagTask;
-
-use JackMD\UpdateNotifier\UpdateNotifier;
 
 class FactionMain extends PluginBase implements Listener {
 	
@@ -36,16 +35,7 @@ class FactionMain extends PluginBase implements Listener {
 	  const HEX_SYMBOL = "e29688";
 	  
     public function onLoad(): void{
-	    $this->checkVirions();
-	    UpdateNotifier::checkUpdate($this, $this->getDescription()->getName(), $this->getDescription()->getVersion());
-    }
-    /**
-    * Checks if the required virions/libraries are present before enabling the plugin.
-    */
-    private function checkVirions(): void{
-	   if(!class_exists(UpdateNotifier::class)){
-		   throw new \RuntimeException("FactionsPro plugin will only work if you use the plugin phar from Poggit.");
-	 }
+           $this->checkUpdate();
     }
     public function onEnable(): void {
         @mkdir($this->getDataFolder());
@@ -86,6 +76,7 @@ class FactionMain extends PluginBase implements Listener {
 	    "updateTag-tick" => 20,
             "faction-tag" => "§3{player} §5| §3{faction}",
             "tag-type" => "scoretag", //Options: scoretag, or nametag!
+            "update-checker" => true,
             "TheDefaultPowerEveryFactionStartsWith" => 0,
 	    "EnableOverClaim" => true,
             "ClaimWorlds" => [],
@@ -175,6 +166,20 @@ $this->prefix = $this->prefs->get("prefix", $this->prefix);
         }
 		}
     }
+    public function checkUpdate(): void{
+if ($this->prefs->get("update-checker", true)) {
+      $this->getLogger()->notice("Checking for updates... Please wait.");
+      try {
+        if (($version = (new PluginDescription(file_get_contents("https://raw.githubusercontent.com/TheFixerDevelopment/FactionsPro/beta/plugin.yml")))->getVersion()) != $this->getDescription()->getVersion()) {
+          $this->getLogger()->notice("A new version: $version is now available! Download the new update here: https://poggit.pmmp.io/ci/TheFixerDevelopment/FactionsPro/FactionsPro");
+        } else {
+          $this->getLogger()->info("FactionsPro is already updated to the latest version!");
+        }
+      } catch (\Exception $ex) {
+        $this->getLogger()->warning("Unable to check for updates");
+      }
+    }
+}
     public function tagCheck() : void{
 if($this->prefs->get("tag-type") == "scoretag"){
 $this->getLogger()->info("Plugin enabled! Selected 'scoretag' for faction tags!");
