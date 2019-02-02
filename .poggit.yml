@@ -6,7 +6,4 @@ projects:
     path: ""
     model: default
     icon: factionspro.png
-    libs:
-      - src: JackMD/UpdateNotifier/UpdateNotifier
-        version: ^1.0.0
 ...
