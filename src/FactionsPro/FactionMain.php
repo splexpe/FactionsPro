@@ -181,7 +181,7 @@ $this->prefix = $this->prefs->get("prefix", $this->prefix);
             "enable-faction-tag" => true,
 	    "updateTag-tick" => 20,
             "faction-tag" => "§3{player} §5| §3{faction}",
-            "tag-type" => "scoretag", //Options: scoretag, or nametag!
+            "tag-type" => "scoretag", //Options: scoretag, nametag or displaytag.
             "update-checker" => true,
             "TheDefaultPowerEveryFactionStartsWith" => 0,
 	    "EnableOverClaim" => true,
@@ -234,8 +234,12 @@ return;
 if($this->prefs->get("tag-type") == "nametag"){
 $this->getLogger()->info("Plugin enabled! Selected 'nametag' for Faction tags!");
 return;
+}
+if($this->prefs->get("tag-type") == "displaytag"){
+$this->getLogger()->info("Plugin enabled. Selected ‘displaytag’ for Faction tags!");
+return;
 } else {
-$this->getLogger()->error("Invalid tag type. Select either ‘nametag’ or ‘scoretag’ in config option. Plugin disabled.");
+$this->getLogger()->error("Invalid tag type. Select either ‘nametag’, ‘scoretag’ or ‘displaytag’ in config option. Plugin disabled.");
 Server::getInstance()->getPluginManager()->disablePlugin($this);
 return;
 }
