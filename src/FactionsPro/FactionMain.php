@@ -166,7 +166,7 @@ $this->prefix = $this->prefs->get("prefix", $this->prefix);
     }
     public function checkUpdate(): void{
 if ($this->prefs->get("update-checker", true)) {
-      $this->getLogger()->notice("Checking for updates... Please wait."){
+      $this->getLogger()->notice("Checking for updates... Please wait.");
         if (($version = (new PluginDescription(file_get_contents("https://raw.githubusercontent.com/TheFixerDevelopment/FactionsPro/beta/plugin.yml")))->getVersion()) != $this->getDescription()->getVersion()) {
           $this->getLogger()->notice("A new version: $version is now available! Download the new update here: https://poggit.pmmp.io/ci/TheFixerDevelopment/FactionsPro/FactionsPro");
         } else {
