@@ -74,7 +74,7 @@ class FactionCommands {
                             return true;
                         }
                         if (!$this->plugin->areEnemies($this->plugin->getPlayerFaction($playerName), $args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction is not an enemy of §4$args[1]"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction is not an enemy of §4$args[1]\n§aIn order to become an enemy of that faction, please use: §b/f enemy <faction>"));
                             return true;
                         } else {
                             $factionName = $args[1];
@@ -1005,7 +1005,7 @@ class FactionCommands {
                             return true;
                         }
                         $this->plugin->setEnemies($fac, $args[1]);
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §bYou are now enemies with §a$args[1]!", true));
+                        $sender->sendMessage($this->plugin->formatMessage("$prefix §bYou are now enemies with §a$args[1]!\n§aTo remove §2$args[1] §aas your enemy, please use: §b/f notenemy §3$args[1]", true));
                         $leader->sendMessage($this->plugin->formatMessage("$prefix §bThe leader of §a$fac §bhas declared your faction as an enemy", true));
                     }
 					if (strtolower($args[0] == "notenemy")) {
