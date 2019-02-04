@@ -172,11 +172,10 @@ if ($this->prefs->get("update-checker", true)) {
           $this->getLogger()->notice("A new version: $version is now available! Download the new update here: https://poggit.pmmp.io/ci/TheFixerDevelopment/FactionsPro/FactionsPro");
         } else {
           $this->getLogger()->info("FactionsPro is already updated to the latest version!");
-        }
-      } catch (\Exception $ex) {
-        $this->getLogger()->warning("Unable to check for updates");
+          return;
       }
     }
+}
 }
     public function tagCheck() : void{
 if($this->prefs->get("tag-type") == "scoretag"){
