@@ -1,7 +1,5 @@
 <?php
-
 namespace FactionsPro;
-
 use pocketmine\plugin\PluginBase;
 use pocketmine\plugin\PluginDescription;
 use pocketmine\command\CommandSender;
@@ -14,11 +12,8 @@ use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 use pocketmine\block\Snow;
 use pocketmine\math\Vector3;
-
 use onebone\economyapi\EconomyAPI;
-
 use FactionsPro\tasks\updateTagTask;
-
 class FactionMain extends PluginBase implements Listener {
 	
     public $db;
@@ -167,11 +162,14 @@ $this->prefix = $this->prefs->get("prefix", $this->prefix);
     public function checkUpdate(): void{
 if ($this->prefs->get("update-checker", true)) {
       $this->getLogger()->notice("Checking for updates... Please wait.");
+      try {
         if (($version = (new PluginDescription(file_get_contents("https://raw.githubusercontent.com/TheFixerDevelopment/FactionsPro/beta/plugin.yml")))->getVersion()) != $this->getDescription()->getVersion()) {
           $this->getLogger()->notice("A new version: $version is now available! Download the new update here: https://poggit.pmmp.io/ci/TheFixerDevelopment/FactionsPro/FactionsPro");
         } else {
           $this->getLogger()->info("FactionsPro is already updated to the latest version!");
-          return;
+        }
+      } catch (\Exception $ex) {
+        $this->getLogger()->warning("Unable to check for updates");
       }
     }
 }
