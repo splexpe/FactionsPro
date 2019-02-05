@@ -208,7 +208,7 @@ class FactionCommands {
                             return true;
                         }
                         if ($this->plugin->getPlayerFaction($playerName) != $this->plugin->getPlayerFaction($args[1])) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou need to add the player: §4$args[1] §cto faction first"));
+                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou need to add the player §4$args[1] §cto faction first"));
                             return true;
                         }
 			    $player = $this->plugin->getServer()->getPlayerExact($args[1]);
@@ -216,7 +216,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis currently not online"));
                             return true;
                         }
-                        if ($args[1] == $sender->getName()) {
+                       if ($player->getName() == $playerName) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't transfer the leadership to yourself"));
                             return true;
                         }
@@ -252,7 +252,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is not in this faction"));
                             return true;
                         }
-                        if ($args[1] == $sender->getPlayer()->getName()) {
+                         if ($playerName == $args[1]) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
                         }
@@ -291,7 +291,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is not in this faction"));
                             return true;
                         }
-                         if($args[1] == $sender->getPlayer()->getName()){
+                        if ($playerName == $args[1]) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't demote yourself"));
                             return true;
                         }
@@ -330,7 +330,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is not in this faction"));
                             return true;
                         }
-                        if ($args[1] ==  $sender->getPlayer()->getName()) {
+                        if ($playerName == $args[1]) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
                         }
