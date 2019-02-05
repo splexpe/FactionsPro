@@ -253,7 +253,7 @@ class FactionCommands {
                             return true;
                         }
 			   $player = $this->plugin->getServer()->getPlayerExact($args[1]);
-                        if (!($player instanceof Player)) {
+                        if ($player instanceof Player) {
                          if ($player->getName() == $playerName) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
@@ -295,7 +295,7 @@ class FactionCommands {
                             return true;
                         }
                        $player = $this->plugin->getServer()->getPlayerExact($args[1]);
-                        if (!($player instanceof Player)) {
+                        if ($player instanceof Player) {
                          if ($player->getName() == $playerName) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't demote yourself"));
                             return true;
@@ -337,7 +337,7 @@ class FactionCommands {
                             return true;
                         }
                        $player = $this->plugin->getServer()->getPlayerExact($args[1]);
-                        if (!($player instanceof Player)) {
+                        if ($player instanceof Player) {
                          if ($player->getName() == $playerName) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
