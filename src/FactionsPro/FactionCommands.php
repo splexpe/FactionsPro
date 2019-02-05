@@ -252,7 +252,9 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is not in this faction"));
                             return true;
                         }
-                         if ($playerName == $args[1]) {
+			   $player = $this->plugin->getServer()->getPlayerExact($args[1]);
+                        if (!($player instanceof Player)) {
+                         if ($player->getName() == $playerName) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
                         }
@@ -273,6 +275,7 @@ class FactionCommands {
                             return true;
                         }
                     }
+                    }
                     /////////////////////////////// DEMOTE ///////////////////////////////
                     if ($args[0] == "demote") {
                         if (!isset($args[1])) {
@@ -291,7 +294,9 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is not in this faction"));
                             return true;
                         }
-                        if ($playerName == $args[1]) {
+                       $player = $this->plugin->getServer()->getPlayerExact($args[1]);
+                        if (!($player instanceof Player)) {
+                         if ($player->getName() == $playerName) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't demote yourself"));
                             return true;
                         }
@@ -312,6 +317,7 @@ class FactionCommands {
                             return true;
                         }
                     }
+                    }
                     /////////////////////////////// KICK ///////////////////////////////
                     if ($args[0] == "kick") {
                         if (!isset($args[1])) {
@@ -330,7 +336,9 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cPlayer is not in this faction"));
                             return true;
                         }
-                        if ($playerName == $args[1]) {
+                       $player = $this->plugin->getServer()->getPlayerExact($args[1]);
+                        if (!($player instanceof Player)) {
+                         if ($player->getName() == $playerName) {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
                         }
@@ -345,6 +353,7 @@ class FactionCommands {
                             $kicked->sendMessage($this->plugin->formatMessage("$prefix §dYou have been kicked from \n §5$factionName", true));
                             return true;
                         }
+                    }
                     }
 					/////////////////////////////// CLAIM ///////////////////////////////
                     if(strtolower($args[0]) == "claim" or strtolower($args[0]) == "cl"){
