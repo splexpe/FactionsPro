@@ -1110,7 +1110,7 @@ class FactionCommands {
                             return true;
                         }
                         $fac = $this->plugin->getPlayerFaction($playerName);
-                        $leader = $this->plugin->getServer()->getPlayerExact($this->plugin->getLeader($args[1]);
+                        $leader = $this->plugin->getServer()->getPlayerExact($this->plugin->getLeader($args[1]));
                         $this->plugin->deleteAllies($fac, $args[1]);
                         $this->plugin->deleteAllies($args[1], $fac);
                         $this->plugin->subtractFactionPower($fac, $this->plugin->prefs->get("PowerGainedPerAlly"));
