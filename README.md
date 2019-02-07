@@ -29,14 +29,24 @@ This branch is called the "beta" branch. It's nothing special, and the fact is; 
 
 * /f war is now fully working!
 
+* You can now un enemy a faction by using /f notenemy <faction>
+  
+* You can no longer kick yourself from your own faction! Fixed in v2.1.5 Update
+
+* You can no longer promote yourself from your own faction! Fixed in v2.1.5 Update
+
+* You can no longer demote yourself from your own faction! Fixed in v2.1.5 Update
+
+* You can no longer make yourself leader even though you own the faction! Fixed in v2.1.5
+
 * And still updating as we speak!
 
 ## Faction Commands
-/f create - Create a faction.
+/f create <faction> - Create a faction.
 
 /f delete - Delete a faction.
 
-/f invite - Invite a player to your faction.
+/f invite <player> - Invite a player to your faction.
 
 /f accept - Accepts a leader's invitation to join your faction.
 
@@ -44,11 +54,11 @@ This branch is called the "beta" branch. It's nothing special, and the fact is; 
 
 /f who - Shows info about your faction.
 
-/f who - Shows other faction information.
+/f who <faction> - Shows other faction information.
 
 /f leave - Quit's a faction.
 
-/f kick - Kicks a player from your faction.
+/f kick <player> - Kicks a player from your faction.
 
 /f balance - Shows your faction money.
 
@@ -58,52 +68,51 @@ This branch is called the "beta" branch. It's nothing special, and the fact is; 
 
 /f top - Shows the /f top usage.
 
-/f enemy - Enemies with a faction.
+/f enemy <faction> - Enemies with a faction.
 
-/f notenemy - Undeclare an faction enemy.
+/f notenemy <faction> - Undeclare an faction enemy.
 
-/f ally - Requests an alli with a faction.
+/f ally <faction> - Requests an alli with a faction.
 
 /f allyok - Accepts an ally request.
 
 /f allyno - Denies a ally request.
 
-/f withdraw - Transfer money from your faction bank.
+/f withdraw <amount> - Transfer money from your faction bank.
 
-/f donate - Transfer money from your Economy Money.
+/f donate <amount> - Transfer money from your Economy Money.
 
-/f war :tp - Requests a war with a faction.
+/f war <faction> - Requests a war with a faction.
+  
+/f war tp <faction> - Teleport all faction members to you to start the war!
 
-/f say - Broadcast a message to your faction.
+/f say <message> - Broadcast a message to your faction.
 
 /f chat - Toggle on / off faction chat.
 
 /f ac - Toggle on / off Ally chat.
 
-/f promote - Promote a player in your faction.
+/f promote <player> - Promote a player in your faction.
 
-/f demote - Demote a player in your faction.
+/f demote <player> - Demote a player in your faction.
 
-/f listleader - Lists the leader in your faction.
+/f listleader <faction> - Lists the leader in your faction.
 
-/f listofficers - Lists the officers in your faction.
+/f listofficers <faction> - Lists the officers in your faction.
 
 /f ourfaction - Lists the player names currently in your faction.
 
 /f listfaction <faction> - Lists the player names currently in other factions.
 
 ## Admin Commands
-/f addstrto - Adds strength to a faction.
+/f addstrto <faction> <STR> - Adds strength to a faction.
 
-/f forcedelete - Force deletes a faction.
+/f forcedelete <faction> - Force deletes a faction.
 
-/f forceunclaim - Force unclaims a faction's plot.
+/f forceunclaim <faction> - Force unclaims a faction's plot.
 
-/f rmbalto - Force removes a faction's money.
+/f rmbalto <faction> <amount> - Force removes a faction's money.
 
-/f rmpower - Force removes a faction's STR / power.
-
-TO-DO LIST
-Check out the to-do list here: https://github.com/TheFixerDevelopment/FactionsPro/issues/16
+/f rmpower <faction> <STR> - Force removes a faction's STR / power.
 
 If you want anything else added, please open a issue. Thank you.
