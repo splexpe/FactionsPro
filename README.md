@@ -104,6 +104,8 @@ This branch is called the "beta" branch. It's nothing special, and the fact is; 
 
 /f listfaction <faction> - Lists the player names currently in other factions.
 
+/f plotinfo - Checks to see if a area is claimed or not at your location.
+
 ## Admin Commands
 /f addstrto <faction> <STR> - Adds strength to a faction.
 
