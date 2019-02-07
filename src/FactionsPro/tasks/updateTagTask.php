@@ -39,6 +39,10 @@ foreach(Server::getInstance()->getOnlinePlayers() as $player){
 				if($this->plugin->isInFaction($player->getName()) == true) {
 				$player->setDisplayName(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));
 				}
+			} else {
+				if($this->plugin->isInFaction($player->getName()) == false){
+					$this->plugin->getScheduler()->cancelTask($this->getTaskId());
+}
 }
 }
 }
