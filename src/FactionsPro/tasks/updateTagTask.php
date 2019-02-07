@@ -6,6 +6,7 @@ use FactionsPro\FactionMain;
 use pocketmine\Server;
 use pocketmine\scheduler\Task;
 use pocketmine\Player;
+use pocketmine\utils\TextFormat;
 
 class updateTagTask extends Task{
 	
@@ -24,7 +25,7 @@ if($this->plugin->prefs->get("tag-type") == "scoretag"){
 				$player->setScoreTag(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));
 					} else {
 				if($this->plugin->isInFaction($player->getName()) == false){
-					$this->plugin->getScheduler()->cancelTask($this->getTaskId());
+					$player->addActionBarMessage(TextFormat::colorize("&cYou have currently not made a faction. &aUse: &b/f create <faction>")); //To-Do add options for this (enable / disable), and be able to edit the messages.
 } else {
 if($this->plugin->prefs->get("tag-type") == "nametag"){
 foreach(Server::getInstance()->getOnlinePlayers() as $player){
@@ -35,7 +36,7 @@ foreach(Server::getInstance()->getOnlinePlayers() as $player){
 				$player->setNameTag(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag"))); 
 					} else {
 				if($this->plugin->isInFaction($player->getName()) == false){
-					$this->plugin->getScheduler()->cancelTask($this->getTaskId());
+					$player->addActionBarMessage(TextFormat::colorize("&cYou have currently not made a faction. &aUse: &b/f create <faction>")); //To-Do add options for this (enable / disable), and be able to edit the messages.
 				} else {
 if($this->plugin->prefs->get("tag-type") == "displaytag"){
 foreach(Server::getInstance()->getOnlinePlayers() as $player){
@@ -46,7 +47,7 @@ foreach(Server::getInstance()->getOnlinePlayers() as $player){
 				$player->setDisplayName(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));
 			} else {
 				if($this->plugin->isInFaction($player->getName()) == false){
-					$this->plugin->getScheduler()->cancelTask($this->getTaskId());
+					$player->addActionBarMessage(TextFormat::colorize("&cYou have currently not made a faction. &aUse: &b/f create <faction>")); //To-Do add options for this (enable / disable), and be able to edit the messages.
 }
 }
 }
