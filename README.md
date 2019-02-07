@@ -106,6 +106,37 @@ This branch is called the "beta" branch. It's nothing special, and the fact is; 
 
 /f plotinfo - Checks to see if a area is claimed or not at your location.
 
+/f leader <player> - Transfer leadership of a faction.
+  
+/f claim - Claims an area.
+
+/f overclaim - Overclaims a faction area, thus being they are able to overwrite the previous claim.
+
+/f playerfaction <player> - Shows what faction that specific player is in.
+
+/f unclaim - Unclaims a faction area.
+
+/f desc - Make a faction description.
+
+/f sethome - Set a faction home.
+
+/f home - Teleport to your faction home.
+
+/f power - Checks how much faction power you have.
+
+/f seepower <faction> - Check other player's faction power.
+
+/f unally <faction> - Unally a faction.
+  
+/f allies <faction> - Checks a list of allies a faction has.
+  
+/f about - Faction plugin information.
+
+/f seebalance <faction> - Checks other factions balance.
+  
+/f help - Shows a list of faction commands.
+  
+
 ## Admin Commands
 /f addstrto <faction> <STR> - Adds strength to a faction.
 
