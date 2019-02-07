@@ -20,29 +20,39 @@ if($this->plugin->prefs->get("tag-type") == "scoretag"){
 			if($player instanceof Player){
 			$player->setNameTagVisible();
 			$f = $this->plugin->getPlayerFaction($player->getName());
-			$player->setScoreTag(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));
+				if($this->plugin->isInFaction($player->getName()) == true) {
+				$player->setScoreTag(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));
 } else {
 if($this->plugin->prefs->get("tag-type") == "nametag"){
 foreach(Server::getInstance()->getOnlinePlayers() as $player){
 			if($player instanceof Player){
 			$player->setNameTagVisible();
 			$f = $this->plugin->getPlayerFaction($player->getName());
-			$player->setNameTag(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));              
-} else {
+				if($this->plugin->isInFaction($player->getName()) == true) {
+				$player->setNameTag(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));              
+				} else {
 if($this->plugin->prefs->get("tag-type") == "displaytag"){
 foreach(Server::getInstance()->getOnlinePlayers() as $player){
 			if($player instanceof Player){
 			$player->setNameTagVisible();
 			$f = $this->plugin->getPlayerFaction($player->getName());
-			$player->setDisplayName(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));
+				if($this->plugin->isInFaction($player->getName()) == true) {
+				$player->setDisplayName(str_replace(["{player}", "{faction}"], [$player->getName(), $f], $this->plugin->prefs->get("faction-tag")));
+				}
+			} else {
+			    if(!$this->plugin->isInFaction($player->getName())){
+			    $this->plugin->getScheduler()->cancelTask($this->getTaskId());
 }
 }
 }
-		 }
-	      }
-            }
-          }
-       }
-    }
+}
+}
+}
+}
+}
+}
+}
+}
+}
 }
 }
