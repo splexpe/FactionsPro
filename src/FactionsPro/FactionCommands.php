@@ -216,7 +216,7 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cThe player named §4$args[1] §cis currently not online"));
                             return true;
                         }
-                       if ($player->getName() == $playerName) {
+                       if ($player->getName() == $playerName) { //New check for making yourself leader error
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't transfer the leadership to yourself"));
                             return true;
                         }
@@ -254,7 +254,7 @@ class FactionCommands {
                         }
 			   $player = $this->plugin->getServer()->getPlayerExact($args[1]);
                         if ($player instanceof Player) {
-                         if ($player->getName() == $playerName) {
+                         if ($player->getName() == $playerName) { //New check for promoting yourself error.
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't promote yourself"));
                             return true;
                         }
@@ -296,7 +296,7 @@ class FactionCommands {
                         }
                        $player = $this->plugin->getServer()->getPlayerExact($args[1]);
                         if ($player instanceof Player) {
-                         if ($player->getName() == $playerName) {
+                         if ($player->getName() == $playerName) { //New check for demoting yourself error.
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't demote yourself"));
                             return true;
                         }
@@ -338,7 +338,7 @@ class FactionCommands {
                         }
                        $player = $this->plugin->getServer()->getPlayerExact($args[1]);
                         if ($player instanceof Player) {
-                         if ($player->getName() == $playerName) {
+                         if ($player->getName() == $playerName) { //New check for kicking yourself error
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou can't kick yourself"));
                             return true;
                         }
