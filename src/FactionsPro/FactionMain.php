@@ -81,8 +81,8 @@ class FactionMain extends PluginBase implements Listener {
 	    "MoneyGainedPerPlayerInFaction" => 20,
 	    "MoneyGainedPerAlly" => 50,
             "MoneyNeededToClaimAPlot" => 0,
-	    "ServerName" => "§6Void§bFactions§cPE",
-                "prefix" => "§7[§6Void§bFactions§cPE§7]",
+	    "ServerName" => "§7Splex§3PE",
+                "prefix" => "§a[§7Splex§3PE§a]",
                 "spawnerPrices" => [
                 	"skeleton" => 500,
                 	"pig" => 200,
