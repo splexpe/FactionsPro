@@ -1431,7 +1431,7 @@ class FactionCommands {
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
 			if($args[1] == 1){
-				$sender->sendMessage(TextFormat::BLUE . "$serverName §cHelp §7[§c1/7§7]"] . TextFormat::RED . "\n§c/f about|version - §7Shows Plugin information\n§3/f accept|yes - §7Accepts an faction invitation\n§a/f claim|cl - §7Claims a faction plot!\n§a/f create|make <name> - §7Creates a faction.\n§a/f del|disband - Deletes a faction.\n§a/f demote <player> - §7Demotes a player from a faction.\n§a/f deny|no - §7Denies a player's invitation.");
+				$sender->sendMessage(TextFormat::BLUE . "$serverName §cHelp §7[§c1/7§7]" . TextFormat::RED . "\n§c/f about|version - §7Shows Plugin information\n§3/f accept|yes - §7Accepts an faction invitation\n§a/f claim|cl - §7Claims a faction plot!\n§a/f create|make <name> - §7Creates a faction.\n§a/f del|disband - Deletes a faction.\n§a/f demote <player> - §7Demotes a player from a faction.\n§a/f deny|no - §7Denies a player's invitation.");
 				return true;
 			}
 			$serverName = $this->plugin->prefs->get("ServerName");
