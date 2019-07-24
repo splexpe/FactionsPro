@@ -26,7 +26,7 @@ class FactionMain extends PluginBase implements Listener {
     public $economyapi;
     public $factionChatActive = [];
     public $allyChatActive = [];
-	 private $prefix = "§a[§7Splex§3PE§a]";
+	 private $prefix = "§7< §e§lArchaic §6Factions§r§7 >";
 	  const HEX_SYMBOL = "e29688";
 	
     public function onEnable(): void {
@@ -81,8 +81,8 @@ class FactionMain extends PluginBase implements Listener {
 	    "MoneyGainedPerPlayerInFaction" => 20,
 	    "MoneyGainedPerAlly" => 50,
             "MoneyNeededToClaimAPlot" => 0,
-	    "ServerName" => "§7Splex§3PE",
-                "prefix" => "§a[§7Splex§3PE§a]",
+	    "ServerName" => "§7< §e§lArchaic §6Factions§r§7 >",
+                "prefix" => "§7< §e§lArchaic §6Factions§r§7 >",
                 "spawnerPrices" => [
                 	"skeleton" => 500,
                 	"pig" => 200,
@@ -340,7 +340,7 @@ return;
             $i = $i + 1;
         }
 		if($i > 0) {
-			$s->sendMessage($this->formatMessage("§-_(§3_§7)_§cFaction's Allies§7_(§3_§7)_", true));
+			$s->sendMessage($this->formatMessage("§7(§cList of §6factions §callies§7)", true));
 			$s->sendMessage($team);
 		} else {
 			$s->sendMessage($this->formatMessage("§2$faction §chas no allies", true));
@@ -349,7 +349,7 @@ return;
     public function sendListOfTop10FactionsTo($s) {
         $result = $this->db->query("SELECT faction FROM strength ORDER BY power DESC LIMIT 10;");
         $i = 0;
-        $s->sendMessage($this->formatMessage("§7_(§3_§7)_§cTop 10 Factions§7_(§3_§7)_", true));
+        $s->sendMessage($this->formatMessage("§7(§cList of the §8Top §6Factions§7)", true));
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $j = $i + 1;
             $cf = $resultArr['faction'];
@@ -513,7 +513,7 @@ return;
 	public function sendListOfTop10RichestFactionsTo($s){
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
-        $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§7_(§3_§7)_§cTop 10 Most Wealthy Factions§7_(§3_§7)_".TextFormat::RESET);
+        $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§7(§cList of the §8Top Most §aWealthy §6Factions§7)".TextFormat::RESET);
         while($resultArr = $result->fetchArray(SQLITE3_ASSOC)){
         	var_dump($resultArr);
             $j = $i + 1;
