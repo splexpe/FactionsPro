@@ -192,7 +192,7 @@ class FactionCommands {
                         $stmt->bindValue(":timestamp", time());
                         $result = $stmt->execute();
                         $sender->sendMessage($this->plugin->formatMessage("$prefix §a$invitedName §bhas been invited succesfully! §5Wait for $invitedName 's response.", true));
-                        $invited->sendMessage($this->plugin->formatMessage("$prefix §7You have been invited tp §6$factionname §7use §6/f accept §7or §6/f deny§7 to join or deny the requested faction.", true));
+                        $invited->sendMessage($this->plugin->formatMessage("$prefix §7You have been invited to §6$factionName §7use §6/f accept §7or §6/f deny§7 to join or deny the requested faction.", true));
                     }
                     /////////////////////////////// LEADER ///////////////////////////////
                     if ($args[0] == "leader"){
