@@ -735,81 +735,77 @@ class FactionCommands {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou successfully left §7$faction", true));
                             $this->plugin->subtractFactionPower($faction, $this->plugin->prefs->get("PowerGainedPerPlayerInFaction"));
 			    $this->plugin->takeFromBalance($faction, $this->plugin->prefs->get("MoneyGainedPerPlayerInFaction"));
-							unset($this->plugin->factionChatActive[$playerName]);
-							unset($this->plugin->allyChatActive[$playerName]);
-							$this->plugin->getScheduler()->scheduleDelayedTask(new FactionDeleteTask($this->plugin), 20);
+			    unset($this->plugin->factionChatActive[$playerName]);
+			    unset($this->plugin->allyChatActive[$playerName]);
+			    $this->plugin->getScheduler()->scheduleDelayedTask(new FactionDeleteTask($this->plugin), 20);
                         } else {
                             $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must delete the faction or give\nleadership to someone else first"));
 			    return true;
                         }
                     }
                     /////////////////////////////// SETHOME ///////////////////////////////
-                    if(strtolower($args[0]) == "sethome" or strtolower($args[0]) == "shome"){
-                        if ($this->plugin->isInFaction($sender->getName()) == false) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
-                            return true;
-                        }
-                        if ($this->plugin->isLeader($sender->getName()) == false) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to set home"));
-                            return true;
-                        }
-			$faction_power = $this->plugin->getFactionPower($this->plugin->getPlayerFaction($playerName));
-                        $needed_power = $this->plugin->prefs->get("PowerNeededToSetOrUpdateAHome");
-                        if($faction_power < $needed_power){
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYour faction doesn't have enough power to set a home."));
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §4$needed_power §cpower is required to set a home. Your faction has §4$faction_power §cpower."));
-			    return true;
-			}
-                        $factionName = $this->plugin->getPlayerFaction($sender->getName());
-                        $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO home (faction, x, y, z, world) wVALUES (:faction, :x, :y, :z, :world);");
-                        $stmt->bindValue(":faction", $factionName);
-                        $stmt->bindValue(":x", $sender->getX());
-                        $stmt->bindValue(":y", $sender->getY());
-                        $stmt->bindValue(":z", $sender->getZ());
-			$stmt->bindValue(":world", $sender->getLevel()->getName());
-                        $result = $stmt->execute();
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §cHome set succesfully for §7$factionName. §cNow, you can use: §3/f home", true));
+		    
+  	     if (strtolower($args[0] == "sethome")) {
+                if (!$this->plugin->isInFaction($playerName)) {
+                    $sender->sendMessage($this->plugin->formatMessage("You must be in a faction to do this"));
+                    return true;
+                }
+                if (!$this->plugin->isLeader($playerName)) {
+                    $sender->sendMessage($this->plugin->formatMessage("You must be leader to set home"));
+                    return true;
+                }
+                $factionName = $this->plugin->getPlayerFaction($sender->getName());
+                $stmt = $this->plugin->db->prepare("INSERT OR REPLACE INTO home (faction, x, y, z, world) VALUES (:faction, :x, :y, :z, :world);");
+                $stmt->bindValue(":faction", $factionName);
+                $stmt->bindValue(":x", $sender->getX());
+                $stmt->bindValue(":y", $sender->getY());
+                $stmt->bindValue(":z", $sender->getZ());
+                $stmt->bindValue(":world", $sender->getLevel()->getName());
+                $result = $stmt->execute();
+                $sender->sendMessage($this->plugin->formatMessage("Home set", true));
+            }
+            /////////////////////////////// UNSETHOME ///////////////////////////////
+		    
+            if (strtolower($args[0] == "unsethome")) {
+                if (!$this->plugin->isInFaction($playerName)) {
+                    $sender->sendMessage($this->plugin->formatMessage("You must be in a faction to do this"));
+                    return true;
+                }
+                if (!$this->plugin->isLeader($playerName)) {
+                    $sender->sendMessage($this->plugin->formatMessage("You must be leader to unset home"));
+                    return true;
+                }
+                $faction = $this->plugin->getPlayerFaction($sender->getName());
+                $this->plugin->db->query("DELETE FROM home WHERE faction = '$faction';");
+                $sender->sendMessage($this->plugin->formatMessage("Home unset", true));
+            }
+            /////////////////////////////// HOME ///////////////////////////////
+		    
+            if (strtolower($args[0] == "home")) {
+                if (!$this->plugin->isInFaction($playerName)) {
+                    $sender->sendMessage($this->plugin->formatMessage("You must be in a faction to do this"));
+                    return true;
+                }
+                $faction = $this->plugin->getPlayerFaction($sender->getName());
+                $result = $this->plugin->db->query("SELECT * FROM home WHERE faction = '$faction';");
+                $array = $result->fetchArray(SQLITE3_ASSOC);
+                if (!empty($array)) {
+                    if ($array['world'] === null || $array['world'] === "") {
+                        $sender->sendMessage($this->plugin->formatMessage("Home is missing world name, please delete and make it again"));
+                        return true;
                     }
-                    /////////////////////////////// UNSETHOME ///////////////////////////////
-                    if(strtolower($args[0]) == "unsethome" or strtolower($args[0]) == "delhome"){
-                        if ($this->plugin->isInFaction($sender->getName()) == false) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
-                            return true;
-                        }
-                        if ($this->plugin->isLeader($playerName) == false) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be leader to unset home"));
-                            return true;
-                        }
-                        $faction = $this->plugin->getPlayerFaction($sender->getName());
-                        $this->plugin->db->query("DELETE FROM home WHERE faction = '$faction';");
-                        $sender->sendMessage($this->plugin->formatMessage("$prefix §cFaction Home was unset succesfully for §7$faction §3/f home §cwas removed from your faction.", true));
+                    if (Server::getInstance()->loadLevel($array['world']) === false) {
+                        $sender->sendMessage($this->plugin->formatMessage("The world '" . $array['world'] . "'' could not be found"));
+                        return true;
                     }
-                    /////////////////////////////// HOME ///////////////////////////////
-                    if (strtolower($args[0] == "home")) {
-                        if ($this->plugin->isInFaction($sender->getName()) == false) {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cYou must be in a faction to do this"));
-                            return true;
-                        			
-		        }
-                        $faction = $this->plugin->getPlayerFaction($sender->getName());
-                        $result = $this->plugin->db->query("SELECT * FROM home WHERE faction = '$faction';");
-                        $array = $result->fetchArray(SQLITE3_ASSOC);
-                        if (!empty($array)) {
-			        if ($array['world'] === null || $array['world'] === ""){
-				                                $sender->sendMessage($this->plugin->formatMessage("$prefix §cHome is missing world name, please delete and make it again"));
-				       			        return true;
-			       				}
-			       				if(Server::getInstance()->loadLevel($array['world']) === false){
-								$sender->sendMessage($this->plugin->formatMessage("$prefix The world '" . $array['world'] .  "'' could not be found"));
-				       				return true;
-			      				 }
-                              				 $level = Server::getInstance()->getLevelByName($array['world']);
-                            $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §bTeleported to your faction home succesfully!", true));
-                        } else {
-                            $sender->sendMessage($this->plugin->formatMessage("$prefix §cFaction Home is not set. You can set it with: §4/f sethome"));
-                        }
-                    }
+                    $level = Server::getInstance()->getLevelByName($array['world']);
+                    $sender->getPlayer()->teleport(new Position($array['x'], $array['y'], $array['z'], $level));
+                    $sender->sendMessage($this->plugin->formatMessage("Teleported home", true));
+                } else {
+                    $sender->sendMessage($this->plugin->formatMessage("Home is not set"));
+                }
+            }
+
 		    /////////////////////////////// F WARP ///////////////////////////////
 		    /*if (strtolower($args[0] == "setwarp")) {
 			    if(!isset($args[1])){
