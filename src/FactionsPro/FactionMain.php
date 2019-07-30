@@ -349,7 +349,7 @@ return;
     public function sendListOfTop10FactionsTo($s) {
         $result = $this->db->query("SELECT faction FROM strength ORDER BY power DESC LIMIT 10;");
         $i = 0;
-        $s->sendMessage($this->formatMessage("§7(§cList of the §8Top §6Factions§7)", true));
+        $s->sendMessage($this->formatMessage("§7< §e§lStrongest §6Factions§r§7 >", true));
         while ($resultArr = $result->fetchArray(SQLITE3_ASSOC)) {
             $j = $i + 1;
             $cf = $resultArr['faction'];
@@ -513,7 +513,7 @@ return;
 	public function sendListOfTop10RichestFactionsTo($s){
         $result = $this->db->query("SELECT * FROM balance ORDER BY cash DESC LIMIT 10;");
         $i = 0;
-        $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§7(§cList of the §8Top Most §aWealthy §6Factions§7)".TextFormat::RESET);
+        $s->sendMessage(TextFormat::BOLD.TextFormat::AQUA."§7< §e§lRichest §6Factions§r§7 >".TextFormat::RESET);
         while($resultArr = $result->fetchArray(SQLITE3_ASSOC)){
         	var_dump($resultArr);
             $j = $i + 1;
